@@ -4,18 +4,23 @@ import fr.eni.ProjetEncheres.dal.article.DAOArticle;
 import fr.eni.ProjetEncheres.dal.article.DAOArticleJdbcImpl;
 
 public class DAOFactory {
-
+	
+	private static UtilisateurDAO utilisateurDao;
+	private static DAOArticle articleDao;
+	
 	
 	public static UtilisateurDAO getUtilisateurDAO() {
-		return new UtilisateurDAOImpl();
+		if(utilisateurDao == null) {
+			utilisateurDao = new UtilisateurDAOImpl();
+		}
+		return utilisateurDao; 
 	}
 	
-private static DAOArticle instance;
-	
-	public static DAOArticle getInstance() {
-		if (instance == null) {
-			instance = new DAOArticleJdbcImpl();
+
+	public static DAOArticle getDAOArticle() {
+		if (articleDao == null) {
+			articleDao = new DAOArticleJdbcImpl();
 		}
-		return instance;
+		return articleDao;
 	}
 }
