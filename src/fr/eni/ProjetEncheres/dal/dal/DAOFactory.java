@@ -1,7 +1,9 @@
-package fr.eni.ProjetEncheres.dal.utilisateur;
+package fr.eni.ProjetEncheres.dal.dal;
 
 import fr.eni.ProjetEncheres.dal.article.DAOArticle;
 import fr.eni.ProjetEncheres.dal.article.DAOArticleJdbcImpl;
+import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDAO;
+import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDAOImpl;
 
 public class DAOFactory {
 	

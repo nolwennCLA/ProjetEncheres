@@ -1,4 +1,4 @@
-package fr.eni.ProjetEncheres.dal.utilisateur;
+package fr.eni.ProjetEncheres.dal.dal;
 
 
 import java.sql.Connection;
@@ -10,7 +10,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-abstract class ConnectionProvider {
+public abstract class ConnectionProvider {
+	
+	// TODO voir pour peut etre externaliser les données de connection
+	
 	private static DataSource dataSource;
 	private static final String URL="jdbc:sqlserver://localhost:1433;databaseName=ENCHERE";
 	private static final String USER="sa";
