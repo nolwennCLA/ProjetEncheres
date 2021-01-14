@@ -15,7 +15,8 @@ import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Article;
-import fr.eni.ProjetEncheres.dal.utilisateur.ConnectionProvider;
+import fr.eni.ProjetEncheres.dal.dal.ConnectionProvider;
+
 
 public class DAOArticleJdbcImpl implements DAOArticle {
 	
@@ -123,7 +124,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					art.setDateDebutEncheres(rs.getDate("dateFinEncheres"));
 					art.setMiseAPrix(rs.getInt("miseAPrix"));
 					art.setPrixVente(rs.getInt("prixVente"));
-					art.setUtilisateur(um.getUtilisateur(rs.getInt("noUtilisateur")));
+					art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
 					//TODO faire un CategorieLanager pour recuperer une catagorie à partir de son no
 //					art.setCategorie(categorie);
 					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));

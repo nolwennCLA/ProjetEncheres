@@ -79,15 +79,31 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 		return list;
 	}
 
+	
+	
+	
+	
 	@Override
-	public Utilisateur getUtilisateur(String pseudo) throws UtilisateurExceptionBLL {
+	public Utilisateur getUtilisateurParPseudo(String pseudo) throws UtilisateurExceptionBLL {
+		Utilisateur utilisateur= new Utilisateur();
 		try {
-			utilDAO.selectByPseudo(pseudo);
+			utilisateur= utilDAO.selectByPseudo(pseudo);
 		} catch (UtilisateurDALException e) {
 			e.printStackTrace();
-			throw new UtilisateurExceptionBLL("selection de l'utilisateur impossible");
+			throw new UtilisateurExceptionBLL("selection de l'utilisateur par pseudo impossible");
 		}
-		return null;
+		return utilisateur;
 	}
 
+	@Override
+	public Utilisateur getUtilisateurParId(Integer id) throws UtilisateurExceptionBLL {
+		Utilisateur utilisateur= new Utilisateur();
+		try {
+			utilisateur= utilDAO.selectById(id);
+		} catch (UtilisateurDALException e) {
+			e.printStackTrace();
+			throw new UtilisateurExceptionBLL("selection de l'utilisateur par id impossible");
+		}
+		return utilisateur;
+	}
 }

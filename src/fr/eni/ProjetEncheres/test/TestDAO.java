@@ -23,7 +23,7 @@ public class TestDAO {
 		//System.out.println(dao.selectAll());
 		
 		
-		System.out.println(dao.selectByPseudo("vinc"));
+		System.out.println(dao.selectById(10));
 //		Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
 //		Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
 //		dao.insert(Julien);

@@ -25,7 +25,8 @@ public class TestUtilBLL {
 		//um.addUtilisateur(Julie);
 		
 		
-		System.out.println(um.getUtilisateur("vinc"));
+		//System.out.println(um.getUtilisateurParPseudo("vinc"));
+		System.out.println(um.getUtilisateurParId(10));
 		
 	}
 
