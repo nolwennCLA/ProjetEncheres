@@ -1,4 +1,4 @@
-package fr.eni.ProjetEncheres.dal.utilisateur;
+package fr.eni.ProjetEncheres.dal.dal;
 
 
 import java.sql.Connection;
@@ -11,8 +11,11 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 public abstract class ConnectionProvider {
+	
+	// TODO voir pour peut etre externaliser les données de connection
+	
 	private static DataSource dataSource;
-	private static final String URL="jdbc:sqlserver://localhost:1433;databaseName=ENCHERES";
+	private static final String URL="jdbc:sqlserver://localhost:1433;databaseName=ENCHERE";
 	private static final String USER="sa";
 	private static final String PASSWORD="Pa$$w0rd";
 	private static final String DRIVER="com.microsoft.sqlserver.jdbc.SQLServerDriver";
@@ -26,8 +29,8 @@ public abstract class ConnectionProvider {
 			context = new InitialContext();
 			ConnectionProvider.dataSource = (DataSource)context.lookup("java:comp/env/jdbc/pool_cnx");
 		} catch (NamingException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Impossible d'accéder à la base de données");
+//			e.printStackTrace();
+//			throw new RuntimeException("Impossible d'accéder à la base de données");
 		}
 	}
 	

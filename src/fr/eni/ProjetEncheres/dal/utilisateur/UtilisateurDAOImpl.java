@@ -1,5 +1,6 @@
 package fr.eni.ProjetEncheres.dal.utilisateur;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetEncheres.bo.Utilisateur;
+import fr.eni.ProjetEncheres.dal.dal.ConnectionProvider;
+
 
 
 public class UtilisateurDAOImpl implements UtilisateurDAO {
@@ -17,8 +20,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			+ "codePostal,ville,motDePasse,credit,administrateur ) values(?,?,?,?,?,?,?,?,?,?,?)";
 	private String DELETE = "DELETE from UTILISATEUR where noUtilisateur=?";
 	private String UPDATE = "UPDATE UTILISATEUR set pseudo=?,nom=?,prenom=?,email=?,telephone=?,"
-			+ "rue=?,codePostal=?,ville=?,motDePasse=?,credit=?, administrateur=?";
-	private String SELECT = "SELECT * FROM UTILISATEUR";	
+			+ "rue=?,codePostal=?,ville=?,motDePasse=?,credit=?, administrateur=? where noUtilisateur= ? ";
+	private String SELECTALL = "SELECT * FROM UTILISATEUR";	
+	private static final String SELECTBYPSEUDO = "select * from utilisateur where pseudo = ?";
 	
 
 	@Override
@@ -76,6 +80,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	public void update(Utilisateur utilisateur) throws UtilisateurDALException {
 		try (Connection cnx = ConnectionProvider.getConnection()){
 			PreparedStatement stmt = cnx.prepareStatement(UPDATE);
+			stmt.setInt(12, utilisateur.getNoUtilisateur());
 			stmt.setString(1, utilisateur.getPseudo());
 			stmt.setString(2, utilisateur.getNom());
 			stmt.setString(3, utilisateur.getPrenom());
@@ -88,7 +93,8 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			stmt.setInt(10, utilisateur.getCredit());
 			stmt.setBoolean(11, utilisateur.isAdministrateur());
 			
-			stmt.executeUpdate();
+			 stmt.executeUpdate();
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -99,10 +105,72 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
 	@Override
 	public List<Utilisateur> selectAll() throws UtilisateurDALException {
-		List<Utilisateur>liste = new ArrayList<Utilisateur>();
+		List<Utilisateur>list = new ArrayList<Utilisateur>();
+		
+		try (Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement stmt = cnx.prepareStatement(SELECTALL);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Utilisateur utilisateur = new Utilisateur();
+				utilisateur.setNoUtilisateur(rs.getInt(1));
+				utilisateur.setPseudo(rs.getString(2));
+				utilisateur.setNom(rs.getString(3));
+				utilisateur.setPrenom(rs.getString(4));
+				utilisateur.setEmail(rs.getString(5));
+				utilisateur.setTelephone(rs.getString(6));
+				utilisateur.setRue(rs.getString(7));
+				utilisateur.setCodePostal(rs.getString(8));
+				utilisateur.setVille(rs.getString(9));
+				utilisateur.setMotDePasse(rs.getString(10));
+				utilisateur.setCredit(rs.getInt(11));
+				utilisateur.setAdministrateur(rs.getBoolean(12));
+				
+				list.add(utilisateur);
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new UtilisateurDALException("problème avec la liste d'utilisateur");
+		}
 		
 		
-		return null;
+		return list;
+	}
+
+
+
+	@Override
+	public Utilisateur selectByPseudo(String pseudo) throws UtilisateurDALException {
+		Utilisateur utilisateur = new Utilisateur();
+
+		try (Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement stmt = cnx.prepareStatement(SELECTBYPSEUDO);
+			stmt.setString(1, pseudo);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				utilisateur.setNoUtilisateur(rs.getInt(1));
+				utilisateur.setPseudo(rs.getString(2));
+				utilisateur.setNom(rs.getString(3));
+				utilisateur.setPrenom(rs.getString(4));
+				utilisateur.setEmail(rs.getString(5));
+				utilisateur.setTelephone(rs.getString(6));
+				utilisateur.setRue(rs.getString(7));
+				utilisateur.setCodePostal(rs.getString(8));
+				utilisateur.setVille(rs.getString(9));
+				utilisateur.setMotDePasse(rs.getString(10));
+				utilisateur.setCredit(rs.getInt(11));
+				utilisateur.setAdministrateur(rs.getBoolean(12));
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new UtilisateurDALException("problème avec la selection d'un utilisateur");
+		}
+		
+		return utilisateur;
 	}
 
 }

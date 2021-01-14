@@ -1,42 +1,92 @@
 package fr.eni.ProjetEncheres.bll.utilisateur;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetEncheres.bo.Utilisateur;
+import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
+import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDALException;
+import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDAO;
 
 public class UtilisateurManagerImpl implements UtilisateurManager {
-	//TODO enlever la list et faire le lien avec la DAL
-	List<Utilisateur>listUtilisateur = new ArrayList<Utilisateur>();
+	UtilisateurDAO utilDAO = DAOFactory.getUtilisateurDAO();
 
 	@Override
 	public void addUtilisateur(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
-		listUtilisateur.add(utilisateur);
+		List<Utilisateur>list = new ArrayList<Utilisateur>();
+		try {
+			list= utilDAO.selectAll();
+		} catch (UtilisateurDALException e1) {
+			e1.printStackTrace();
+			throw new UtilisateurExceptionBLL("probleme à l'insertion");
+		}
+		
+		for (Utilisateur u : list) {
+			if (!u.getPseudo().equals(utilisateur.getPseudo())) {
+				try {
+					
+					utilDAO.insert(utilisateur);
+					
+					
+				} catch (UtilisateurDALException e) {
+					e.printStackTrace();
+					throw new UtilisateurExceptionBLL("insertion de l'utilisateur impossible");
+				}
+				
+				
+			}else {
+				System.out.println("Ce pseudo existe déjà");
+			}
+		}
+		
+		
 		
 	}
 
 	@Override
 	public void updateUtilisateur(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
-		// TODO relier avec la DAL pour faire le uptdate
+		try {
+			utilDAO.update(utilisateur);
+		} catch (UtilisateurDALException e) {
+			e.printStackTrace();
+			throw new UtilisateurExceptionBLL("modification de l'utilisateur impossible");
+		}
 		
 	}
 
 	@Override
 	public void deleteUtilisateur(Integer id) throws UtilisateurExceptionBLL {
-		// TODO relier avec la DAL 
+		try {
+			utilDAO.delete(id);
+		} catch (UtilisateurDALException e) {
+			e.printStackTrace();
+			throw new UtilisateurExceptionBLL("suppression de l'utilisateur impossible");
+		}
 		
 	}
 
 
 	@Override
 	public List<Utilisateur> getListUtilisateur() throws UtilisateurExceptionBLL {
-		// TODO Auto-generated method stub
-		return null;
+		List<Utilisateur>list = new ArrayList<Utilisateur>();
+		try {
+			list= utilDAO.selectAll();
+		} catch (UtilisateurDALException e) {
+			e.printStackTrace();
+			throw new UtilisateurExceptionBLL("selection de la liste d'utilisateurs impossible");
+		}
+		return list;
 	}
 
 	@Override
-	public Utilisateur getUtilisateur(Integer id) throws UtilisateurExceptionBLL {
-		// TODO Auto-generated method stub
+	public Utilisateur getUtilisateur(String pseudo) throws UtilisateurExceptionBLL {
+		try {
+			utilDAO.selectByPseudo(pseudo);
+		} catch (UtilisateurDALException e) {
+			e.printStackTrace();
+			throw new UtilisateurExceptionBLL("selection de l'utilisateur impossible");
+		}
 		return null;
 	}
 

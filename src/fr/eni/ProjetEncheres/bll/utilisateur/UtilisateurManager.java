@@ -10,6 +10,6 @@ public interface UtilisateurManager {
 	public void updateUtilisateur (Utilisateur utilisateur)throws UtilisateurExceptionBLL;
 	public void deleteUtilisateur(Integer id) throws UtilisateurExceptionBLL;
 	public List<Utilisateur> getListUtilisateur() throws UtilisateurExceptionBLL;
-	public Utilisateur getUtilisateur(Integer id) throws UtilisateurExceptionBLL;
+	public Utilisateur getUtilisateur(String pseudo) throws UtilisateurExceptionBLL;
 	
 }

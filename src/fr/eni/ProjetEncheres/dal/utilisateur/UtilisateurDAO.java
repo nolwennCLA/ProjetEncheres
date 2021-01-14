@@ -10,5 +10,6 @@ public interface UtilisateurDAO {
 	public void delete(Integer id) throws UtilisateurDALException;
 	public void update (Utilisateur utilisateur) throws UtilisateurDALException;
 	public List<Utilisateur> selectAll() throws UtilisateurDALException;
+	public Utilisateur selectByPseudo(String pseudo) throws UtilisateurDALException;
 	
 }
