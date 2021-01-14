@@ -2,13 +2,15 @@ package fr.eni.ProjetEncheres.dal.article;
 
 import java.util.List;
 
+import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bo.Article;
 
 public interface DAOArticle {
 	
 	public Article insert(Article article) throws DAL_ArticleException;
 	
-	public List<Article> selectAll() throws DAL_ArticleException;
+	public List<Article> selectAll() throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException;
 	
 	public Article select(Integer noArticle) throws DAL_ArticleException;
 	

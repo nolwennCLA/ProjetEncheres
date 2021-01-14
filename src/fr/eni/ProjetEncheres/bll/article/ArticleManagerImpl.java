@@ -13,11 +13,14 @@ import fr.eni.ProjetEncheres.bo.Retrait;
 
 public class ArticleManagerImpl implements ArticleManager {
 	
-	private final int MAX_LENGTH_DESCRIPTION = 200;
+	private final int MAX_LENGTH_DESCRIPTION = 300;
 	private List<Article> lstArt = new ArrayList<>();
 	
 	
 	private RetraitManager rm = RetraitManagerSing.getInstance();
+	
+	
+	//TODO relier à la DAO
 	
 	@Override
 	public Article creerArticle(Article article, Retrait retrait) throws BLL_ArticleException, BLL_RetraitException {
@@ -51,14 +54,24 @@ public class ArticleManagerImpl implements ArticleManager {
 	
 	@Override
 	public Article modifierArticle(Article article) throws BLL_ArticleException {
-		// TODO Auto-generated method stub
-		return null;
+		Article art = null;
+		
+		for(Article a : lstArt) {
+			if(a.getNoArticle() == article.getNoArticle()) {
+				art = this.selectionnerArticle(a.getNoArticle());
+			}
+		}
+		art.setNomArticle(article.getNomArticle());
+		return art;
 	}
 
 	@Override
 	public void supprimerArticle(Integer noArticle) throws BLL_ArticleException {
-		// TODO Auto-generated method stub
-		
+		for(Article a : lstArt) {
+			if(a.getNoArticle() == noArticle) {
+				lstArt.remove(a);
+			}
+		}
 	}
 	
 	public boolean verifArticle(Article article) throws BLL_ArticleException {
@@ -72,14 +85,14 @@ public class ArticleManagerImpl implements ArticleManager {
 		}
 		
 		//la date de fin d'enchère doit être >= à la date de début enchère
-		if(article.getDateFinEncheres().compareTo(article.getDateDebutEncheres()) < 0) {
+		if(article.getDateFinEncheres().compareTo(article.getDateDebutEncheres()) <= 0) {
 			autorise = false;
 			throw new BLL_ArticleException("la date de fin d'enchère doit être >= à la date de début enchère");
 		}
 		
 		//les deux dates doivent être >= à la date du jour
-		if(article.getDateDebutEncheres().compareTo(new Date()) < 0
-		|| article.getDateFinEncheres().compareTo(new Date()) < 0) {
+		if(article.getDateDebutEncheres().compareTo(new Date()) <= 0
+		|| article.getDateFinEncheres().compareTo(new Date()) <= 0) {
 			autorise = false;
 			throw new BLL_ArticleException("les dates doivent être >= à la date du jour");
 		}

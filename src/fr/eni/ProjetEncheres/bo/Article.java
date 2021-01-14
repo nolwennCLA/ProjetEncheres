@@ -9,12 +9,12 @@ public class Article {
 	private Date dateDebutEncheres;
 	private Date dateFinEncheres;
 	private Integer miseAPrix;
-	private Integer prixVente = miseAPrix;
+	private Integer prixVente = 0;
 	// etatVente soit AV, EC ou VT (vente terminée)
 	private String etatVente = "AV";
+	private Categorie categorie;
 	private Utilisateur utilisateur;
 	private Retrait retrait;
-	private Categorie categorie;
 
 	public Article() {
 
@@ -35,8 +35,6 @@ public class Article {
 	public Integer getNoArticle() {
 		return noArticle;
 	}
-
-	
 
 	public void setNoArticle(Integer noArticle) {
 		this.noArticle = noArticle;
@@ -112,7 +110,6 @@ public class Article {
 
 	public void setRetrait(Retrait retrait) {
 		this.retrait = retrait;
-		this.retrait.getListArticle().add(this);
 	}
 
 	public Categorie getCategorie() {
@@ -142,10 +139,16 @@ public class Article {
 		builder.append(prixVente);
 		builder.append(", etatVente=");
 		builder.append(etatVente);
+		builder.append(", categorie=");
+		builder.append(categorie);
 		builder.append(", utilisateur=");
 		builder.append(utilisateur);
+		builder.append(", retrait=");
+		builder.append(retrait);
 		builder.append("]");
 		return builder.toString();
 	}
+
+
 
 }

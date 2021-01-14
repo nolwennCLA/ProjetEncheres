@@ -1,14 +1,10 @@
 package fr.eni.ProjetEncheres.bo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Retrait {
 	private Integer noRetrait;
 	private String rue;
 	private String codePostal;
 	private String ville;
-	private List<Article> listArticle = new ArrayList<>();
 
 	public Retrait() {
 
@@ -22,20 +18,10 @@ public class Retrait {
 		this.ville = ville;
 	}
 
-
-	public Retrait(String rue, String codePostal, String ville, List<Article> listArticle) {
-
-		this.rue = rue;
-		this.codePostal = codePostal;
-		this.ville = ville;
-		this.listArticle = listArticle;
-	}
-
 	
 	public Integer getNoRetrait() {
 		return noRetrait;
 	}
-
 
 	public String getRue() {
 		return rue;
@@ -61,14 +47,6 @@ public class Retrait {
 		this.ville = ville;
 	}
 
-	public List<Article> getListArticle() {
-		return listArticle;
-	}
-
-	public void setListArticle(List<Article> listArticle) {
-		this.listArticle = listArticle;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -78,8 +56,6 @@ public class Retrait {
 		builder.append(codePostal);
 		builder.append(", ville=");
 		builder.append(ville);
-		builder.append(", listArticle=");
-		builder.append(listArticle);
 		builder.append("]");
 		return builder.toString();
 	}
