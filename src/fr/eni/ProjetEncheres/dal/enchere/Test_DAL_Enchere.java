@@ -23,10 +23,10 @@ public class Test_DAL_Enchere {
 		
 		Utilisateur ut = new Utilisateur("1", "nom", "prenom", "email", "telephone", "rue", "codePostal", "ville", "motDePasse");
 		Categorie cat = new Categorie("meuble");
-		Article art = new Article("nomArticle", "description", aujourdhui, sdf.parse(demain), 200, ut, cat);
-		Enchere ench = new Enchere(aujourdhui, 40, ut, art);
+//		Article art = new Article("nomArticle", "description", aujourdhui, sdf.parse(demain), 200, ut, cat);
+//		Enchere ench = new Enchere(aujourdhui, 40, ut, art);
 		
-		dao.insert(ench);
+//		dao.insert(ench);
 
 	}
 
