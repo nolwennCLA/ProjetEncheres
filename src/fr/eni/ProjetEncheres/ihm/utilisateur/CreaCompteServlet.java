@@ -34,7 +34,7 @@ public class CreaCompteServlet extends HttpServlet {
 		
 		CreaCompteModel model= new CreaCompteModel();
 		
-		if (request.getParameter("nom")!=null) {
+		if (request.getParameter("creer")!=null) {
 			String pseudo = request.getParameter("pseudo");
 			String nom = request.getParameter("nom");
 			String prenom = request.getParameter("prenom");
@@ -45,38 +45,35 @@ public class CreaCompteServlet extends HttpServlet {
 			String ville = request.getParameter("ville");
 			String motDePasse = request.getParameter("mdp");
 			String ConfirmationMotDePasse = request.getParameter("conf");
+			request.setAttribute("mdp", motDePasse);
+			request.setAttribute("conf", ConfirmationMotDePasse);
 			
-			Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
-			try {
-				um.addUtilisateur(util);
-			} catch (UtilisateurExceptionBLL e) {
-				e.printStackTrace();
-				request.setAttribute("message", "probleme à l'ajout de l'utilisateur");
+			if (motDePasse.equals(ConfirmationMotDePasse)) {
+				Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
+				try {
+					um.addUtilisateur(util);
+				} catch (UtilisateurExceptionBLL e) {
+					e.printStackTrace();
+					request.setAttribute("message1", "probleme à l'ajout de l'utilisateur");
+				}
+			}else {
+				request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
+//				response.getWriter().print("Erreur lors de la confirmation du mot de passe");
+//				System.out.println("Erreur lors de la confirmation du mot de passe");
 			}
 			
-			
-			
-			
-			try {
-				model.setListUtilisateur(um.getListUtilisateur());
-			} catch (UtilisateurExceptionBLL e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				request.setAttribute("message", "problème dans la selection");
-			}
-			
-			request.setAttribute("model", model);
-			request.getRequestDispatcher("creaCompte.jsp").forward(request, response);
-			
+	}
+		
+		try {
+			model.setListUtilisateur(um.getListUtilisateur());
+		} catch (UtilisateurExceptionBLL e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			request.setAttribute("message3", "problème dans la selection");
 		}
 		
-		
-		
-		
-		
-		
-		
-		
+		request.setAttribute("model", model);
+		request.getRequestDispatcher("creaCompte.jsp").forward(request, response);
 		
 		
 		
