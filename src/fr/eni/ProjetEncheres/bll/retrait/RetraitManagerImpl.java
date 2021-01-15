@@ -46,10 +46,12 @@ public class RetraitManagerImpl implements RetraitManager {
 					retraitDao.insert(retrait);
 					article.setRetrait(retrait);
 				}
-			
-				
-				
-			//si l'adresse de retrait indiquée est l'adresse de l'utilisateur, alors on ne fait rien
+	
+			//si l'adresse de retrait indiquée est l'adresse de l'utilisateur, on ajoute le retrait à l'Utilisateur
+			//dans ce cas, le retrait n'est pas ajouté à la bdd et n'a donc pas de noRetrait (null)
+			//NE RIEN FAIRE ICI SERAIT PEUT ÊTRE PLUS PROPRE
+			} else {
+				article.setRetrait(retrait);
 			}
 			
 		//on retourne le retrait

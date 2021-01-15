@@ -21,7 +21,7 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 //		}
 		
 		
-		if (verifPseudo(utilisateur) || verifEmail(utilisateur)) {
+		//if (verifPseudo(utilisateur) || verifEmail(utilisateur)) {
 			try {
 				utilDAO.insert(utilisateur);
 
@@ -29,7 +29,7 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 				e.printStackTrace();
 				throw new UtilisateurExceptionBLL("insertion de l'utilisateur impossible");
 			}
-		}
+		//}
 
 	}
 
