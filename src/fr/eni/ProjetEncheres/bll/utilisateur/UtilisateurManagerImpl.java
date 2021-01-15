@@ -12,31 +12,37 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 	UtilisateurDAO utilDAO = DAOFactory.getUtilisateurDAO();
 
 	@Override
-	public void addUtilisateur(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
-	
-//		if (utilisateur.getPseudo().matches(".*\\w.*")) {
-//			System.out.println("le pseudo est bien");
-//		}else {
-//			System.out.println("le pseudo n'est pas bon");
-//		}
-		
-		
-		if (verifPseudo(utilisateur) || verifEmail(utilisateur)) {
-			try {
-				utilDAO.insert(utilisateur);
+	public Utilisateur addUtilisateur(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
 
-			} catch (UtilisateurDALException e) {
-				e.printStackTrace();
-				throw new UtilisateurExceptionBLL("insertion de l'utilisateur impossible");
+		Utilisateur util = new Utilisateur();
+
+		// d'abord vérifier que le pseudo n'accepte que les caracteres alphanumérique
+		// expression regulière: le \w veut dire caractere alphanumérique et le * signifie autant de caracteres que l'on veut
+		// le 2eme \ est pour pouvoir utiliser le \w en tant qu'expression régulière.
+		
+		if (utilisateur.getPseudo().matches("\\w*")) {
+
+			// puis verifier que le pseudo et l'email sont uniques
+			if (!verifPseudo(utilisateur) && !verifEmail(utilisateur)) {
+				try {
+					utilDAO.insert(utilisateur);
+
+				} catch (UtilisateurDALException e) {
+					e.printStackTrace();
+					throw new UtilisateurExceptionBLL("insertion de l'utilisateur impossible");
+				}
 			}
+		} else {
+			System.out.println("le pseudo ne doit contenir que les chiffres ou des lettres");
 		}
 
+		return util;
 	}
 
 	// RG: L'email doit etre unique
 	private boolean verifEmail(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
 		List<Utilisateur> list = new ArrayList<Utilisateur>();
-		boolean ok = false;
+		boolean probleme = false;
 		try {
 			// je récupere la liste de la BDD
 			list = utilDAO.selectAll();
@@ -47,19 +53,19 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 		// je parcours la liste
 		for (Utilisateur u : list) {
 
-			if (!u.getEmail().equals(utilisateur.getEmail())) {
-				ok=true;
-			} else {
+			if (u.getEmail().equals(utilisateur.getEmail())) {
+				probleme = true;
 				System.out.println("Cet email existe déjà");
 			}
 		}
-		return ok;
+
+		return probleme;
 	}
 
 	// RG: le pseudo doit etre unique
 	private boolean verifPseudo(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
 		List<Utilisateur> list = new ArrayList<Utilisateur>();
-		boolean ok = false;
+		boolean probleme = false;
 		try {
 			// je récupere la liste de la BDD
 			list = utilDAO.selectAll();
@@ -67,19 +73,19 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 			e1.printStackTrace();
 			throw new UtilisateurExceptionBLL("probleme à la récuperation de la liste pour verif Pseudo");
 		}
+
 		// je parcours la liste
 		for (Utilisateur u : list) {
 
-			if (!u.getPseudo().equals(utilisateur.getPseudo())) {
-				ok = true;
-
-			} else {
-				
+			if (u.getPseudo().equals(utilisateur.getPseudo())) {
+				probleme = true;
 				System.out.println("Ce pseudo existe déjà");
+
 			}
 
 		}
-		return ok;
+
+		return probleme;
 	}
 
 	@Override
