@@ -7,6 +7,9 @@ import fr.eni.ProjetEncheres.bll.article.ArticleManager;
 import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
 import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereExceptionBLL;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereManager;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereManagerSingl;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
@@ -23,23 +26,40 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public class TestClaire {
 
-	public static void main(String[] args) throws UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException, BLL_RetraitException, DAL_RetraitException, ParseException, EnchereDALException, BLL_CategorieException, DAL_CategorieException {
+	public static void main(String[] args) throws UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
+			BLL_RetraitException, DAL_RetraitException, ParseException, EnchereDALException, BLL_CategorieException,
+			DAL_CategorieException, EnchereExceptionBLL {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	       
         UtilisateurManager um = UtilisateurManagerSingl.getInstance();
         ArticleManager am = ArticleManagerSing.getInstance();
+        EnchereManager em = EnchereManagerSingl.getInstance();
        
         EnchereDAO enchereDAO = DAOFactory.getEnchereDAO();
        
+        
        
         Utilisateur user = um.getUtilisateurParId(7);
+        Utilisateur user2 = um.getUtilisateurParId(8);
         Article art1 = am.selectionnerArticle(2);
        
         Enchere ench = new Enchere(sdf.parse("2021-01-15"), 50, user, art1);
-        System.out.println(ench.toString());
+        Enchere ench2 = new Enchere(sdf.parse("2021-01-15"), 55, user2, art1);
+        
        
-        enchereDAO.insert(ench);
+//        enchereDAO.insert(ench);
+//        enchereDAO.insert(ench2);
+//        System.out.println(em.getListEnchere());
+        
+        em.addEnchere(ench);
+        em.addEnchere(ench2);
+        System.out.println(em.getListEnchere());
+        
+        
+        
+        
+       
 
 	}
 

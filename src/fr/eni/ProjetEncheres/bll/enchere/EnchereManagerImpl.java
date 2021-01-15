@@ -66,75 +66,37 @@ public class EnchereManagerImpl implements EnchereManager {
 		return lstEnchereArticle;
 	}
 
-//	Insetion d'une enchère dans la BDD après avoir validé l'enchère
-	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL {
+//	Insetion d'une enchère dans la BDD après avoir validé l'enchère (voir méthode validerEnchere)
+	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException {
+		List<Enchere> lstEnchere = new ArrayList<Enchere>();
+
+		// Vérifie que l'enchère n'existe pas déjà dans la BDD
 		if (enchere.getNoEnchere() != null) {
 			throw new EnchereExceptionBLL("Enchère déjà existante");
 		}
+
+		// Test la validation de l'enchère, si ok insertion dans la BDD
 		try {
-			validerAddEnchere(enchere);
+			validerEnchere(enchere);
 			enchereDAO.insert(enchere);
 		} catch (EnchereDALException e) {
 			e.printStackTrace();
 			throw new EnchereExceptionBLL("Echec de addEnchere");
 		}
-	}
 
-	public void validerAddEnchere(Enchere enchere) throws EnchereExceptionBLL {
-		boolean valide = true;
-		StringBuffer sb = new StringBuffer();
-
-		if (enchere == null) {
-			throw new EnchereExceptionBLL("Enchère null");
-		}
-		// Les attributs date et montant (>0) des enchères sont obligatoires
-		if (enchere.getDateEnchere() == null) {
-			sb.append("La date de l'enchère est obligatoire");
-			valide = false;
-		}
-		if (enchere.getMontantEnchere() == null || enchere.getMontantEnchere() <= 0) {
-			sb.append("Le montant de l'enchère est obligatoire et celui-ci doit être supérieur à 0");
-			valide = false;
-		}
-		if (!valide) {
-			throw new EnchereExceptionBLL(sb.toString());
-		}
-
-		//RG ; règle de gestion -> gestion des contraintes
-		boolean RG1OK, RG2OK = false;
-
-		// RG1 : mon prix proposé > tarif actuel de l'article
-		if (enchere.getMontantEnchere() > enchere.getArticle().getMiseAPrix()) {
-			RG1OK = true;
-		} else {
-			throw new EnchereExceptionBLL("Le prix proposé doit être supérieur au tarif actuel de l'enchère");
-		}
-		
-		// RG2 : enchère acceptée si mon nombre de points ne devient pas négatif
-		if (enchere.getUtilisateur().getCredit() >= enchere.getMontantEnchere()) {
-			RG2OK = true;
-		} else {
-			throw new EnchereExceptionBLL("Enchère non valide : votre crédit n'est pas suffisant");
-		}
-
-	}
-
-	@Override
-	public void faireEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException {
-		List<Enchere> lstEnchere = new ArrayList<Enchere>();
-
-		// Le montant de l'enchère devient la nouvelle mise à prix de l'article --> NON !! Ré-écrire
+		// L'enchère rentre alors dans une liste	
 		lstEnchere.add(enchere);
-		Integer meilleureOffre = enchere.getMontantEnchere();
-		enchere.getArticle().setMiseAPrix(meilleureOffre);
-
-		// Le crédit de points de l'utilisateur est débité du montant de l'enchère proposé
+		
+		// Le crédit de points de l'enchérisseur est débité du montant de l'enchère proposé
 		Integer nouveauCredit = 0;
 		nouveauCredit = enchere.getUtilisateur().getCredit() - enchere.getMontantEnchere();
 		enchere.getUtilisateur().setCredit(nouveauCredit);
 		enchereDAO.updateUtilisateur(enchere);
-
 		
+		Integer meilleureOffre = enchere.getMontantEnchere();
+		enchere.getArticle().setMiseAPrix(meilleureOffre);
+
+
 		System.out.println(lstEnchere);
 		System.out.println(
 				"Enchère acceptée. Votre nouveau crédit est de : " + enchere.getUtilisateur().getCredit() + " points");
@@ -145,7 +107,50 @@ public class EnchereManagerImpl implements EnchereManager {
 			Integer AncienEncherisseur = lstEnchere.size() - 1;
 
 		}
+	}
 
+	public void validerEnchere(Enchere enchere) throws EnchereExceptionBLL {
+		boolean valide = true;
+		StringBuffer sb = new StringBuffer();
+
+		if (enchere == null) {
+			throw new EnchereExceptionBLL("Enchère null");
+		}
+
+		// La date de l'enchère est obligatoire
+		if (enchere.getDateEnchere() == null) {
+			sb.append("La date de l'enchère est obligatoire");
+			valide = false;
+		}
+		// La date de l'enchère >= dateDebutEnchere et <= dateFinEnchere
+		if (enchere.getDateEnchere().before(enchere.getArticle().getDateDebutEncheres())
+				|| enchere.getDateEnchere().after(enchere.getArticle().getDateFinEncheres())) {
+			sb.append(
+					"La date de l'enchère doit être comprise entre la date de début et la date de fin spécifié dans l'article en vente");
+			valide = false;
+		}
+
+		// Le montant de l'enchère n'est ni null ni inférieure à 0
+		if (enchere.getMontantEnchere() == null || enchere.getMontantEnchere() <= 0) {
+			sb.append("Le montant de l'enchère est obligatoire et celui-ci doit être supérieur à 0");
+			valide = false;
+		}
+
+		// Mon prix proposé > mise à prix de l'article
+		if (enchere.getMontantEnchere() < enchere.getArticle().getMiseAPrix()) {
+			sb.append("Le prix proposé doit être supérieur au tarif actuel de l'enchère");
+			valide = false;
+		}
+
+		// L'enchère est acceptée si mon nombre de points ne devient pas négatif
+		if (enchere.getUtilisateur().getCredit() >= enchere.getMontantEnchere()) {
+			sb.append("Enchère non valide : votre crédit n'est pas suffisant");
+			valide = false;
+		}
+
+		if (!valide) {
+			throw new EnchereExceptionBLL(sb.toString());
+		}
 	}
 
 //	En tant qu'enchérisseur, je deviens acquéreur si au terme de l'enchère j'ai

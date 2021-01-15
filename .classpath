@@ -8,11 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="C:/Users/nclaquin2020/Desktop/ENI/8 - Java EE/Apache TomCat/apache-tomcat-8.5.61/lib/servlet-api.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="https://docs.oracle.com/javaee/7/api/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="C:/apache-tomcat-8.5.61/lib/servlet-api.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="https://docs.oracle.com/javaee/7/api/"/>

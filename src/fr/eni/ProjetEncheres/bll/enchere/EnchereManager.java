@@ -16,11 +16,9 @@ public interface EnchereManager {
 	
 	public List<Enchere> getListEnchereParArticle (Article article) throws EnchereExceptionBLL;
 	
-	public void addEnchere (Enchere enchere) throws EnchereExceptionBLL;
+	public void addEnchere (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
 	
-	public void validerAddEnchere(Enchere enchere) throws EnchereExceptionBLL;
-
-	public void faireEnchere (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
+	public void validerEnchere(Enchere enchere) throws EnchereExceptionBLL;
 	
 	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
 	
