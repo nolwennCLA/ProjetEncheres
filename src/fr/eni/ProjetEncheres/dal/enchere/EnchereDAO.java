@@ -10,6 +10,8 @@ public interface EnchereDAO {
 	public void delete (Integer id) throws EnchereDALException;
 	public void update (Enchere enchere) throws EnchereDALException;
 	public List<Enchere> selectAll() throws EnchereDALException;
+	public void updateArticle(Enchere enchere) throws EnchereDALException;
+	public void updateUtilisateur(Enchere enchere) throws EnchereDALException;
 	
 
 }

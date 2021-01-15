@@ -5,6 +5,7 @@ import java.util.List;
 import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Categorie;
 import fr.eni.ProjetEncheres.bo.Enchere;
+import fr.eni.ProjetEncheres.dal.enchere.EnchereDALException;
 
 public interface EnchereManager {
 
@@ -15,8 +16,8 @@ public interface EnchereManager {
 
 	public List<Enchere> getListEnchereConnect();
 
-	public void faireEnchere (Enchere enchere) throws EnchereException;
+	public void faireEnchere (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
 	
-	public void remporteVente(Enchere enchere) throws EnchereException;
+	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
 
 }

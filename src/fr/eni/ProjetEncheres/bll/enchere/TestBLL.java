@@ -9,12 +9,13 @@ import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Categorie;
 import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
+import fr.eni.ProjetEncheres.dal.enchere.EnchereDALException;
 
 public class TestBLL {
 
 	private static EnchereManager manager = EnchereManagerSingl.getInstance();
 	
-	public static void main(String[] args) throws ParseException, EnchereException {
+	public static void main(String[] args) throws ParseException, EnchereExceptionBLL, EnchereDALException {
 
 		Date aujourdhui = new Date();
 		
