@@ -20,16 +20,34 @@ public class Article {
 
 	}
 
-	public Article( String nomArticle, String description, Date dateDebutEncheres,
-			Date dateFinEncheres, Integer miseAPrix, Utilisateur utilisateur, Categorie categorie) {
+//	public Article( String nomArticle, String description, Date dateDebutEncheres,
+//			Date dateFinEncheres, Integer miseAPrix, Utilisateur utilisateur, Categorie categorie) {
+//
+//		this.nomArticle = nomArticle;
+//		this.description = description;
+//		this.dateDebutEncheres = dateDebutEncheres;
+//		this.dateFinEncheres = dateFinEncheres;
+//		this.miseAPrix = miseAPrix;
+//		this.utilisateur = utilisateur;
+//		this.categorie = categorie;
+//	}
+	
+	
+
+	public Article(String nomArticle, String description, Date dateDebutEncheres, Date dateFinEncheres,
+			Integer miseAPrix, Integer prixVente, String etatVente, Categorie categorie, Utilisateur utilisateur,
+			Retrait retrait) {
 
 		this.nomArticle = nomArticle;
 		this.description = description;
 		this.dateDebutEncheres = dateDebutEncheres;
 		this.dateFinEncheres = dateFinEncheres;
 		this.miseAPrix = miseAPrix;
-		this.utilisateur = utilisateur;
+		this.prixVente = prixVente;
+		this.etatVente = etatVente;
 		this.categorie = categorie;
+		this.utilisateur = utilisateur;
+		this.retrait = retrait;
 	}
 
 	public Integer getNoArticle() {
