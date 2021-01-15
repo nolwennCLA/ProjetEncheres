@@ -11,7 +11,7 @@ public class TestDAO {
 	
 	public static void main(String[] args) throws UtilisateurDALException {
 	
-		//dao.insert(new Utilisateur("nono", "cla", "nolw", "abc", "0298870000", "rue du grand large", "29000", "quimper", "bidule"));
+		dao.insert(new Utilisateur("nono", "cla", "nolw", "abc", "0298870000", "rue du grand large", "29000", "quimper", "bidule"));
 	//dao.delete(7);
 //	Utilisateur claire= new Utilisateur("clacla", "denis", "claire", "email", "telephone", "rue", "codePostal", "ville", "motDePasse");
 //		dao.insert(claire);
@@ -23,7 +23,7 @@ public class TestDAO {
 		//System.out.println(dao.selectAll());
 		
 		
-		System.out.println(dao.selectById(10));
+//		System.out.println(dao.selectById(10));
 //		Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
 //		Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
 //		dao.insert(Julien);
