@@ -12,13 +12,17 @@ public class Retrait {
 
 	
 	public Retrait(String rue, String codePostal, String ville) {
-		super();
 		this.rue = rue;
 		this.codePostal = codePostal;
 		this.ville = ville;
 	}
-
 	
+	
+	
+	public void setNoRetrait(Integer noRetrait) {
+		this.noRetrait = noRetrait;
+	}
+
 	public Integer getNoRetrait() {
 		return noRetrait;
 	}
@@ -47,10 +51,13 @@ public class Retrait {
 		this.ville = ville;
 	}
 
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Retrait [rue=");
+		builder.append("Retrait [noRetrait=");
+		builder.append(noRetrait);
+		builder.append(", rue=");
 		builder.append(rue);
 		builder.append(", codePostal=");
 		builder.append(codePostal);
@@ -60,4 +67,5 @@ public class Retrait {
 		return builder.toString();
 	}
 
+	
 }

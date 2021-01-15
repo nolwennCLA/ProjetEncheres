@@ -1,19 +1,27 @@
 package fr.eni.ProjetEncheres.bll.retrait;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.ProjetEncheres.bll.article.ArticleManager;
+import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
+import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Retrait;
+import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
+import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
+import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
+import fr.eni.ProjetEncheres.dal.retrait.DAORetrait;
 
 public class RetraitManagerImpl implements RetraitManager {
 	
-	private List<Retrait> lstRet = new ArrayList<>();
+//	private List<Retrait> lstRet = new ArrayList<>();
+	private DAORetrait retraitDao = DAOFactory.getDAORetrait();
+//	private ArticleManager am = ArticleManagerSing.getInstance();
 
 	@Override
-	public Retrait creerRetrait(Article article, Retrait retrait) throws BLL_RetraitException {
-		
-//		if(article != null && retrait != null) {
+	public Retrait creerRetrait(Article article, Retrait retrait) throws BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL, DAL_ArticleException, BLL_ArticleException {
 		
 			//si l'adresse de retrait indiquée par l'utilisateur est différente de sa propre adresse
 			if(!retrait.getRue().equalsIgnoreCase(article.getUtilisateur().getRue())
@@ -35,40 +43,37 @@ public class RetraitManagerImpl implements RetraitManager {
 				//si l'adresse de retrait n'existe pas, alors on crée un nouveau Retrait et on l'ajoute à l'article	
 				} else {
 					
-					lstRet.add(retrait);
+					retraitDao.insert(retrait);
 					article.setRetrait(retrait);
 				}
 			
+				
+				
 			//si l'adresse de retrait indiquée est l'adresse de l'utilisateur, alors on ne fait rien
 			}
-		
-//		}
-		
+			
+		//on retourne le retrait
 		return retrait;
 	}
 
 	@Override
-	public List<Retrait> listerRetraits() throws BLL_RetraitException {
-		
-		return lstRet;
+	public List<Retrait> listerRetraits() throws BLL_RetraitException, DAL_RetraitException {
+		return retraitDao.selectAll();
 	}
 
 	@Override
-	public Retrait selectionnerRetrait(Integer noRetrait) throws BLL_RetraitException {
-		
-		return lstRet.get(noRetrait);
+	public Retrait selectionnerRetrait(Integer noRetrait) throws BLL_RetraitException, DAL_RetraitException {
+		return retraitDao.select(noRetrait);
 	}
 
 	@Override
-	public Retrait modifierRetrait(Retrait retrait) throws BLL_RetraitException {
-		
-		return null;
+	public Retrait modifierRetrait(Retrait retrait) throws BLL_RetraitException, DAL_RetraitException {
+		return retraitDao.update(retrait);
 	}
 
 	@Override
-	public void supprimerRetrait(Integer noRetrait) throws BLL_RetraitException {
-		
-		lstRet.remove(noRetrait);
+	public void supprimerRetrait(Integer noRetrait) throws BLL_RetraitException, DAL_RetraitException {
+		retraitDao.delete(noRetrait);
 	}
 
 	
