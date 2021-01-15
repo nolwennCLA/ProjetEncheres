@@ -47,7 +47,7 @@ public class _04_test_DAL_gestionRetrait {
 //		System.out.println(cat.toString());
 		
 		//création de 2 retraits
-		Retrait ret = new Retrait("av.Goncourt", "35000", "Rennes");
+		Retrait ret1 = new Retrait("av.Goncourt", "35000", "Rennes");
 //		System.out.println(ret.toString());
 		
 		Retrait ret2 = new Retrait("rue vermeil", "29400", "Brest");
@@ -60,8 +60,8 @@ public class _04_test_DAL_gestionRetrait {
 		System.out.println("----------------------");
 		
 //		rm.creerRetrait(art, ret2);
-		am.creerArticle(art, ret2);
-		System.out.println(ret2.toString());
+		am.creerArticle(art, ret1);
+		System.out.println(ret1.toString());
 		System.out.println(art.toString());
 
 	}

@@ -4,6 +4,7 @@ package fr.eni.ProjetEncheres.bll.article;
 import java.util.Date;
 import java.util.List;
 
+import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.retrait.RetraitManager;
 import fr.eni.ProjetEncheres.bll.retrait.RetraitManagerSing;
@@ -12,6 +13,7 @@ import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Retrait;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.article.DAOArticle;
+import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
@@ -55,12 +57,12 @@ public class ArticleManagerImpl implements ArticleManager {
 	}
 
 	@Override
-	public List<Article> listerArticles() throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException {
+	public List<Article> listerArticles() throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		return articleDao.selectAll();
 	}
 
 	@Override
-	public Article selectionnerArticle(Integer noArticle) throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException {
+	public Article selectionnerArticle(Integer noArticle) throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		return articleDao.select(noArticle);
 	}
 	

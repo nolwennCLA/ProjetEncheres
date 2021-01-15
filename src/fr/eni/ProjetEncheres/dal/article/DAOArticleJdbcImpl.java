@@ -8,6 +8,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
+import fr.eni.ProjetEncheres.bll.categorie.CategorieManager;
+import fr.eni.ProjetEncheres.bll.categorie.CategorieManagerSing;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.retrait.RetraitManager;
 import fr.eni.ProjetEncheres.bll.retrait.RetraitManagerSing;
@@ -15,6 +18,7 @@ import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Article;
+import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.dal.ConnectionProvider;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
@@ -49,6 +53,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
 	private RetraitManager rm = RetraitManagerSing.getInstance();
+	private CategorieManager cm = CategorieManagerSing.getInstance();
 
 	@Override
 	public Article insert(Article article) throws DAL_ArticleException {
@@ -105,7 +110,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	}
 
 	@Override
-	public List<Article> selectAll() throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException {
+	public List<Article> selectAll() throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		
 		lstArt = new ArrayList<>();
 		
@@ -131,11 +136,14 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					art.setDateDebutEncheres(rs.getDate("dateFinEncheres"));
 					art.setMiseAPrix(rs.getInt("miseAPrix"));
 					art.setPrixVente(rs.getInt("prixVente"));
+					art.setEtatVente(rs.getString("etatVente"));
 					art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
-					//TODO faire un CategorieLanager pour recuperer une catagorie à partir de son no
+					art.setCategorie(cm.selectionnerCategorie(rs.getInt("noCategorie")));
+					if(rs.getInt("noRetrait") != 0) {
+						art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
+					}
 					
 					
-					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 					
 					lstArt.add(art);
 				}
@@ -151,7 +159,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	}
 
 	@Override
-	public Article select(Integer noArticle) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException {
+	public Article select(Integer noArticle) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		
 		try(Connection conn = ConnectionProvider.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT);) {
@@ -173,11 +181,13 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				art.setDateDebutEncheres(rs.getDate("dateFinEncheres"));
 				art.setMiseAPrix(rs.getInt("miseAPrix"));
 				art.setPrixVente(rs.getInt("prixVente"));
+				art.setEtatVente(rs.getString("etatVente"));
 				art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
-				//TODO faire un CategorieLanager pour recuperer une catagorie à partir de son no
-//				art.setCategorie(categorie);
-				art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
-				
+				art.setCategorie(cm.selectionnerCategorie(rs.getInt("noCategorie")));
+				if(rs.getInt("noRetrait") != 0) {
+					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
+				}
+
 			//si la requête ne retourne pas de résultat, on lance une exception	
 			} else  {
 				throw new DAL_ArticleException("DAL_aucun résultat pour select() dans DAOArticleJdbcImpl");
