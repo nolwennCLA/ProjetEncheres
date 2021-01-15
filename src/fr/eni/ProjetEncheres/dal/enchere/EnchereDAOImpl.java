@@ -15,10 +15,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	private final String INSERT = "INSERT into ENCHERE (dateEnchere, montantEnchere, noUtilisateur, noArticle) values (?,?,?,?)";
 	private final String DELETE = "DELETE from ENCHERE where noEnchere=?";
-	private final String UPDATE_ARTICLE = "UPDATE ARTICLE set miseAPrix=? where noArticle=?";
 	private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEUR set credit=? where noUtilisateur=?";
 	private final String UPDATE_RECREDITATION = "";
 	private final String SELECT_ALL = "SELECT * from ENCHERE";
+	private final String SELECTBYID = "select * from ENCHERE where noEnchere = ?";
 
 	@Override
 	public Enchere insert(Enchere enchere) throws EnchereDALException {
@@ -41,7 +41,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 			// récupération de la clé générée
 			ResultSet rs = stmt.getGeneratedKeys();
 
-			// si une clé a bien été générée, alors on l'intégre à l'Article
+			// si une clé a bien été générée, alors on l'intégre à l'Enchere
 			if (rs.next()) {
 				enchere.setNoEnchere(rs.getInt(1));
 				System.out.println(enchere.toString());
@@ -60,17 +60,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	}
 
-	public void updateArticle(Enchere enchere) throws EnchereDALException {
-		try (Connection cnx = ConnectionProvider.getConnection()){
-			PreparedStatement stmt = cnx.prepareStatement(UPDATE_ARTICLE);
-			stmt.setInt(1, enchere.getArticle().getMiseAPrix());
-			stmt.setInt(2, enchere.getArticle().getNoArticle());
-			stmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new EnchereDALException("problème pour modifier l'enchère");
-		}
-	}
+
 	
 	public void updateUtilisateur(Enchere enchere) throws EnchereDALException {
 		try (Connection cnx = ConnectionProvider.getConnection()){
@@ -111,6 +101,27 @@ public class EnchereDAOImpl implements EnchereDAO {
 	public void update(Enchere enchere) throws EnchereDALException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Enchere selectById(Integer id) throws EnchereDALException {
+		Enchere enchere = new Enchere();
+		
+		try (Connection cnx = ConnectionProvider.getConnection()){
+			PreparedStatement stmt = cnx.prepareStatement(SELECTBYID);
+			stmt.setInt(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				enchere.setDateEnchere(rs.getDate(1));
+				enchere.setMontantEnchere(rs.getInt(2));
+				enchere.getUtilisateur().setNoUtilisateur(rs.getInt(3));
+				enchere.getArticle().setNoArticle(rs.getInt(4));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new EnchereDALException("problème avec la selection d'une enchère par id");
+		}
+		return enchere;
 	}
 
 }
