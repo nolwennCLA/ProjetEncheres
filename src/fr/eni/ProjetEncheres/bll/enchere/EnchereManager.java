@@ -9,15 +9,21 @@ import fr.eni.ProjetEncheres.dal.enchere.EnchereDALException;
 
 public interface EnchereManager {
 
-//	create, read, update, delete
 
-
-	public List<Enchere> getListEnchereNonConnect(Categorie categorie, Article article);
-
-	public List<Enchere> getListEnchereConnect();
+	public List<Enchere> getListEnchere() throws EnchereExceptionBLL;
+	
+	public List<Enchere> getListEnchereParCategorie (Categorie categorie) throws EnchereExceptionBLL;
+	
+	public List<Enchere> getListEnchereParArticle (Article article) throws EnchereExceptionBLL;
+	
+	public void addEnchere (Enchere enchere) throws EnchereExceptionBLL;
+	
+	public void validerAddEnchere(Enchere enchere) throws EnchereExceptionBLL;
 
 	public void faireEnchere (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
 	
 	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
+	
+	public Enchere selectionneEnchere (Integer id) throws EnchereExceptionBLL;
 
 }
