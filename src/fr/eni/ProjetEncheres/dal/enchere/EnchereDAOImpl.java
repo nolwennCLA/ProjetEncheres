@@ -8,8 +8,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.eni.ProjetEncheres.bll.article.ArticleManager;
+import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
+import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
+import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
+import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Enchere;
+import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
+import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.dal.ConnectionProvider;
+import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public class EnchereDAOImpl implements EnchereDAO {
 
@@ -19,6 +30,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 	private final String UPDATE_RECREDITATION = "";
 	private final String SELECT_ALL = "SELECT * from ENCHERE";
 	private final String SELECTBYID = "select * from ENCHERE where noEnchere = ?";
+	private final String SELECT_MONTANT = "select montantEnchere from enchere where noEnchere = ?";
+
+	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+	private ArticleManager am = ArticleManagerSing.getInstance();
 
 	@Override
 	public Enchere insert(Enchere enchere) throws EnchereDALException {
@@ -56,14 +71,19 @@ public class EnchereDAOImpl implements EnchereDAO {
 
 	@Override
 	public void delete(Integer id) throws EnchereDALException {
-		// TODO Auto-generated method stub
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement stmt = cnx.prepareStatement(DELETE);
+			stmt.setInt(1, id);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new EnchereDALException("Problème dans le delete d'une enchère ");
+		}
 
 	}
 
-
-	
 	public void updateUtilisateur(Enchere enchere) throws EnchereDALException {
-		try (Connection cnx = ConnectionProvider.getConnection()){
+		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(UPDATE_UTILISATEUR);
 			stmt.setInt(1, enchere.getUtilisateur().getCredit());
 			stmt.setInt(2, enchere.getUtilisateur().getNoUtilisateur());
@@ -75,18 +95,20 @@ public class EnchereDAOImpl implements EnchereDAO {
 	}
 
 	@Override
-	public List<Enchere> selectAll() throws EnchereDALException {
+	public List<Enchere> selectAll()
+			throws EnchereDALException, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
+			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		List<Enchere> list = new ArrayList<Enchere>();
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_ALL);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Enchere enchere = new Enchere();
-				enchere.setNoEnchere(rs.getInt(1));
-				enchere.setDateEnchere(rs.getDate(2));
-				enchere.setMontantEnchere(rs.getInt(3));
-				enchere.getUtilisateur().setNoUtilisateur(rs.getInt(4));
-				enchere.getArticle().setNoArticle(rs.getInt(5));
+				enchere.setNoEnchere(rs.getInt("noEnchere"));
+				enchere.setDateEnchere(rs.getDate("dateEnchere"));
+				enchere.setMontantEnchere(rs.getInt("montantEnchere"));
+				enchere.setArticle(am.selectionnerArticle(rs.getInt("noArticle")));
+				enchere.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
 
 				list.add(enchere);
 			}
@@ -100,14 +122,14 @@ public class EnchereDAOImpl implements EnchereDAO {
 	@Override
 	public void update(Enchere enchere) throws EnchereDALException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Enchere selectById(Integer id) throws EnchereDALException {
 		Enchere enchere = new Enchere();
-		
-		try (Connection cnx = ConnectionProvider.getConnection()){
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SELECTBYID);
 			stmt.setInt(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -120,6 +142,24 @@ public class EnchereDAOImpl implements EnchereDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new EnchereDALException("problème avec la selection d'une enchère par id");
+		}
+		return enchere;
+	}
+
+	@Override
+	public Enchere selectByMontant(Integer noArticle) throws EnchereDALException {
+		Enchere enchere = new Enchere();
+
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement stmt = cnx.prepareStatement(SELECT_MONTANT);
+			stmt.setInt(1, noArticle);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.previous()) {
+				enchere.setMontantEnchere(rs.getInt(2));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new EnchereDALException("problème avec la selection du montant d'une enchère par son noArticle");
 		}
 		return enchere;
 	}
