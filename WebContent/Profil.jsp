@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Mon profil</title>
+<title>Profil</title>
 </head>
 <body>
 
@@ -40,7 +40,7 @@
 
 
 <form action="ModifProfilServlet" method="post">
-<input type="submit" value="Modifier" >
+<input type="submit" value="Modifier">
 </form>
 
 </body>

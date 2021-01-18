@@ -64,8 +64,7 @@ public class LoginServlet extends HttpServlet {
 					request.getSession().setAttribute("motDePasse", utilisateur.getMotDePasse());
 					request.getSession().setAttribute("credit", utilisateur.getCredit());
 					
-					//TODO modifier la redirection quand la page acceuil enchere connectée sera prete
-					request.getRequestDispatcher("/CreaCompteServlet").forward(request, response);
+					request.getRequestDispatcher("/AccueilConnecteServlet").forward(request, response);
 					System.out.println("je met en session");
 				}else {
 					request.setAttribute("message1", "L'identifiant et/ou le mot de passe n'existe pas");
