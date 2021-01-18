@@ -81,7 +81,7 @@ public class ArticleManagerImpl implements ArticleManager {
 	
 	
 	@Override
-	public List<Article> selectionnerArticleParNom(String nomArticle) throws BLL_ArticleException, DAL_ArticleException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, UtilisateurExceptionBLL {
+	public List<Article> selectionnerArticleParNom(String nomArticle) throws BLL_ArticleException, DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL {
 		if(nomArticle != null && !"".equals(nomArticle)) {
 			lstArt = articleDao.selectByName(nomArticle);
 		} else {
@@ -144,7 +144,7 @@ public class ArticleManagerImpl implements ArticleManager {
 	public boolean verifArticle(Article article) throws BLL_ArticleException {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar cal1 = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
 		
 		boolean autorise = true;
 		
@@ -164,13 +164,14 @@ public class ArticleManagerImpl implements ArticleManager {
 		///on ne compare que les dates (pas les heures, min, sec)
 		////date du jour
 		Date dJour = null;
-		cal1.setTime(new Date());
+		cal.setTime(new Date());
 		try {
-			dJour = new Date(sdf.parse(cal1.get(Calendar.YEAR) + "-" + cal1.get(Calendar.MONTH)+1 + "-" + cal1.get(Calendar.DAY_OF_MONTH)).getTime());
+			dJour = new Date(sdf.parse(cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)+1 + "-" + cal.get(Calendar.DAY_OF_MONTH)).getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+		
+		//TODO améliorer la méthode avec Calendar
 		if(article.getDateDebutEncheres().compareTo(dJour) < 0
 		|| article.getDateFinEncheres().compareTo(dJour) < 0) {
 			autorise = false;

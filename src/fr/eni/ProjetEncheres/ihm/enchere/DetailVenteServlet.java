@@ -1,4 +1,4 @@
-package fr.eni.ProjetEncheres.ihm.utilisateur;
+package fr.eni.ProjetEncheres.ihm.enchere;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,20 +7,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
-import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
-
 /**
- * Servlet implementation class PageProfilServlet
+ * Servlet implementation class DetailVenteServlet
  */
-@WebServlet("/PageProfilServlet")
-public class PageProfilServlet extends HttpServlet {
+@WebServlet("/DetailVenteServlet")
+public class DetailVenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PageProfilServlet() {
+    public DetailVenteServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,12 +26,19 @@ public class PageProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		
 		
 		
 		
 		
 		
+		
+		
+		
+		
+		
+		request.getRequestDispatcher("DetailVente.jsp").forward(request, response);
 	}
 
 	/**

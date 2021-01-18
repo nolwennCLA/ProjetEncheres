@@ -33,24 +33,41 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		
-		if(request.getParameter("pseudo")!=null ) {
-			String pseudo = request.getParameter("pseudo");
+		if(request.getParameter("identifiant")!=null && request.getParameter("mdp")!=null) {
+			String identifiant = request.getParameter("identifiant");
 			String mdp= request.getParameter("mdp");
+			Utilisateur utilisateur= new Utilisateur();
 			Boolean trouve = false;
 			try {
 				for (Utilisateur util : um.getListUtilisateur()) {
-					if (pseudo.equals(util.getPseudo()) && mdp.equals(util.getMotDePasse())) {
+					//identifiant = pseudo ou email
+					//je recherche si l'identifiant est bien dans la BDD et qu'il correspond bien au mdp
+					if ((identifiant.equals(util.getPseudo()) || identifiant.equals(util.getEmail())) && mdp.equals(util.getMotDePasse())) {
 						trouve =true;
+						utilisateur=util;
+						System.out.println("ok pour logger");
 					}
-					//TODO verifier si l'identifiant et le mot de passe sont present dans la table
+
 				}
+				// si ok, je mets tout en session
 				if (trouve) {
-					request.getSession().setAttribute("identifiant", request.getParameter("pseudo"));
-					request.getSession().setAttribute("mdp", request.getParameter("mdp"));
-					request.getRequestDispatcher("/CreaCompteServlet").forward(request, response);
+					request.getSession().setAttribute("identifiant", request.getParameter("identifiant"));
+					request.getSession().setAttribute("utilisateur", utilisateur);
+					request.getSession().setAttribute("pseudo", utilisateur.getPseudo());
+					request.getSession().setAttribute("nom", utilisateur.getNom());
+					request.getSession().setAttribute("prenom", utilisateur.getPrenom());
+					request.getSession().setAttribute("email", utilisateur.getEmail());
+					request.getSession().setAttribute("telephone", utilisateur.getTelephone());
+					request.getSession().setAttribute("rue", utilisateur.getRue());
+					request.getSession().setAttribute("codePostal", utilisateur.getCodePostal());
+					request.getSession().setAttribute("ville", utilisateur.getVille());
+					request.getSession().setAttribute("motDePasse", utilisateur.getMotDePasse());
+					request.getSession().setAttribute("credit", utilisateur.getCredit());
+					
+					request.getRequestDispatcher("/AccueilConnecteServlet").forward(request, response);
+					System.out.println("je met en session");
 				}else {
-					System.out.println("Le pseudo et/ou le mot de passe n'existe pas");
-					request.setAttribute("message1", "Le pseudo et/ou le mot de passe n'existe pas");
+					request.setAttribute("message1", "L'identifiant et/ou le mot de passe n'existe pas");
 					request.getRequestDispatcher("login.jsp").forward(request, response);
 				}
 			} catch (UtilisateurExceptionBLL e) {

@@ -18,6 +18,8 @@ import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManager;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManagerSing;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
+import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Categorie;
 import fr.eni.ProjetEncheres.bo.Retrait;
@@ -39,6 +41,8 @@ public class NouvelleVenteArticleServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ArticleManager am = ArticleManagerSing.getInstance();
+		UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+		
 		CategorieManager cm = CategorieManagerSing.getInstance();
 		
 		
