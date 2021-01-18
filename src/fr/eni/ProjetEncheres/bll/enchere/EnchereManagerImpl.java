@@ -39,21 +39,21 @@ public class EnchereManagerImpl implements EnchereManager {
 
 //	Utilisateur non connecté : liste des enchères par catégorie
 	@Override
-	public List<Enchere> getListEnchereParCategorie(Categorie libelle)
+	public List<Enchere> getListEnchereParCategorie(String libelle)
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
 		List<Enchere> lstEnchere = new ArrayList<Enchere>();
 		List<Enchere> lstEnchereCategorie = new ArrayList<Enchere>();
 //		TODO : vérifier que je peux griser le try/catch (pour éviter la répétition) et appeler la méthode getListEnchere()
-//		try {
-//			lstEnchere = enchereDAO.selectAll();
-//		} catch (EnchereDALException e) {
-//			e.printStackTrace();
-//			throw new EnchereExceptionBLL("Sélection de la liste d'enchères impossible");
-//		}
-		getListEnchere();
+//		getListEnchere();
+		try {
+			lstEnchere = enchereDAO.selectAll();
+		} catch (EnchereDALException e) {
+			e.printStackTrace();
+			throw new EnchereExceptionBLL("Sélection de la liste d'enchères impossible");
+		}
 		for (Enchere e : lstEnchere) {
-			if (e.getArticle().getCategorie().equals(libelle)) {
+			if (e.getArticle().getCategorie().getLibelle().equals(libelle)) {
 				lstEnchereCategorie.add(e);
 			}
 		}
@@ -194,7 +194,7 @@ public class EnchereManagerImpl implements EnchereManager {
 		}
 		
 		// Le montant de l'enchère proposée > mise à prix de l'article (1ère enchère)
-		if (enchere.getMontantEnchere() < enchere.getArticle().getMiseAPrix()) {
+		if (enchere.getMontantEnchere() > enchere.getArticle().getMiseAPrix()) {
 			sb.append("Le montant proposé doit être supérieur au tarif de l'enchère");
 			valide = false;
 		}

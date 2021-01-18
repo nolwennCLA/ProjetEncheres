@@ -57,7 +57,9 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	private List<Article> lstArt;
 	private Article art;
 	
+//	private UtilisateurManager um = UtilisateurManagerSing.getInstance();
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+	
 	private RetraitManager rm = RetraitManagerSing.getInstance();
 	private CategorieManager cm = CategorieManagerSing.getInstance();
 

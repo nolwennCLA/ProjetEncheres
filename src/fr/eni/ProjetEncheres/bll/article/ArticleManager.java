@@ -11,6 +11,7 @@ import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
+
 public interface ArticleManager {
 	
 	public Article creerArticle(Article article, Retrait retrait) throws BLL_ArticleException, DAL_ArticleException, BLL_RetraitException, DAL_RetraitException;
