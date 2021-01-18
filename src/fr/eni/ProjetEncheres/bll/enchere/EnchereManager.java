@@ -16,15 +16,30 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public interface EnchereManager {
 
+	public void validerEnchere(Enchere enchere) throws EnchereExceptionBLL,
+			EnchereDALException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
+	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException,
+			BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
+	public void gestionCredit (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
+	
+	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
+	
+	public void deleteEnchere(Integer id) throws EnchereExceptionBLL;
+	
+	public Enchere selectionnerEnchere(Integer id) throws EnchereExceptionBLL,
+			BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
 	public List<Enchere> getListEnchere()
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
 
-	public List<Enchere> getListEnchereParCategorie(String libelle)
+	public List<Enchere> getListEnchereParCategorie(Integer noCategorie)
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
 
-	public List<Enchere> getListEnchereParArticle(Article article)
+	public List<Enchere> getListEnchereParArticle(Integer noArticle)
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
 
@@ -34,14 +49,14 @@ public interface EnchereManager {
 
 	public List<Enchere> getListMesEnchereGagnees() throws EnchereExceptionBLL;
 
-	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
+	
 
-	public void validerEnchere(Enchere enchere) throws EnchereExceptionBLL;
+	
 
-	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
 
-	public Enchere selectionnerEnchere(Integer id) throws EnchereExceptionBLL;
 
-	public void deleteEnchere(Integer id) throws EnchereExceptionBLL;
+	
+
+	
 
 }
