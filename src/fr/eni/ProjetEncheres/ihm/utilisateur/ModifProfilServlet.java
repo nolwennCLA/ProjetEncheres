@@ -35,24 +35,57 @@ public class ModifProfilServlet extends HttpServlet {
 		
 		CreaCompteModel model= new CreaCompteModel();
 		
-		if (request.getParameter("creer")!=null) {
-			String pseudo = request.getParameter("pseudo");
-			String nom = request.getParameter("nom");
-			String prenom = request.getParameter("prenom");
-			String email = request.getParameter("email");
-			String telephone = request.getParameter("tel");
-			String rue = request.getParameter("rue");
-			String codePostal = request.getParameter("cpo");
-			String ville = request.getParameter("ville");
-			String NouveauMotDePasse = request.getParameter("nouveauMdp");
-			String ConfirmationMotDePasse = request.getParameter("conf");
+		String pseudo = request.getParameter("pseudo");
+		String nom = request.getParameter("nom");
+		String prenom = request.getParameter("prenom");
+		String email = request.getParameter("email");
+		String telephone = request.getParameter("tel");
+		String rue = request.getParameter("rue");
+		String codePostal = request.getParameter("cpo");
+		String ville = request.getParameter("ville");
+		String mdpActuel = request.getParameter("mdpActuel");
+		String NouveauMotDePasse = request.getParameter("nouveauMdp");
+		String ConfirmationMotDePasse = request.getParameter("conf");
+		
+		// si l'utilisateur clique sur le bouton enregistrer
+		if (request.getParameter("enregistrer")!=null) {
 			
-			//TODO verifier le mot de passe actuel
+			// si le mot de passe actuel est bon
+			if (mdpActuel.equals(request.getSession().getAttribute("motDePasse"))) {
 			
+				// si le nouveau mot de passe est identique à la confirmation du mot de passe
 			if (NouveauMotDePasse.equals(ConfirmationMotDePasse)) {
-				Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, NouveauMotDePasse);
+				// je cree un nouvel utilisateur avec les nouvelles infos
+				Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, NouveauMotDePasse);
+				// je modifie la liste en BDD
 				try {
-					um.updateUtilisateur(util);
+					um.updateUtilisateur(utilisateur);
+					// je modifie la liste du model avec la nouvelle liste en BDD
+					try {
+						model.setListUtilisateur(um.getListUtilisateur());
+					} catch (UtilisateurExceptionBLL e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						request.setAttribute("message3", e.getMessage());
+					}
+					// je met à jour le model
+					request.setAttribute("model", model);
+					// je met en session toutes les infos de l'utilisateur
+					request.getSession().setAttribute("utilisateur", utilisateur);
+					request.getSession().setAttribute("pseudo", utilisateur.getPseudo());
+					request.getSession().setAttribute("nom", utilisateur.getNom());
+					request.getSession().setAttribute("prenom", utilisateur.getPrenom());
+					request.getSession().setAttribute("email", utilisateur.getEmail());
+					request.getSession().setAttribute("telephone", utilisateur.getTelephone());
+					request.getSession().setAttribute("rue", utilisateur.getRue());
+					request.getSession().setAttribute("codePostal", utilisateur.getCodePostal());
+					request.getSession().setAttribute("ville", utilisateur.getVille());
+					request.getSession().setAttribute("motDePasse", utilisateur.getMotDePasse());
+					request.getSession().setAttribute("credit", utilisateur.getCredit());
+					
+					// je dirige vers la page d'accueil connecté
+					request.getRequestDispatcher("accueilConnecteVue.jsp").forward(request, response);
+			
 					
 				} catch (UtilisateurExceptionBLL e) {
 					e.printStackTrace();
@@ -63,29 +96,46 @@ public class ModifProfilServlet extends HttpServlet {
 				request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
 				
 			}
+			} else {
+				request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");
+			}
 			
 	}
-//		if (request.getParameter("delete")!= null) {
-//			//TODO faire un delete par pseuso et ici recuperer le pseudo dans la session
-//			um.deleteUtilisateur(id);
-//		}
 		
-		try {
-			model.setListUtilisateur(um.getListUtilisateur());
-		} catch (UtilisateurExceptionBLL e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message3", e.getMessage());
+		// si l'utilisateur clique sur le bouton supprimer
+		if (request.getParameter("delete")!=null) {
+			// si le mot de passe est le bon
+			if (mdpActuel.equals(request.getSession().getAttribute("motDePasse"))) {
+				
+				// je supprime l'utilisateur de la liste de BDD
+				
+				try {
+					um.deleteUtilisateur((String)request.getSession().getAttribute("pseudo"));
+				} catch (UtilisateurExceptionBLL e1) {
+					request.setAttribute("message5", e1.getMessage());
+					e1.printStackTrace();
+				}
+						
+				// je modifie le model
+				try {
+					model.setListUtilisateur(um.getListUtilisateur());
+				} catch (UtilisateurExceptionBLL e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					request.setAttribute("message3", e.getMessage());
+				}
+				// je mets à jour le model
+				request.setAttribute("model", model);
+				//je renvoie vers la page accueil non connecté
+				request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
+				
+			
+		} else {
+			request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");
 		}
-		
-		request.setAttribute("model", model);
+		}
+	
 		request.getRequestDispatcher("modifProfil.jsp").forward(request, response);
-		
-		
-		
-		
-		
-		
 		
 	}
 

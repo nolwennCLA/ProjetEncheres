@@ -92,19 +92,28 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 
 	@Override
 	public void updateUtilisateur(Utilisateur utilisateur) throws UtilisateurExceptionBLL {
-		try {
-			utilDAO.update(utilisateur);
-		} catch (UtilisateurDALException e) {
-			e.printStackTrace();
-			throw new UtilisateurExceptionBLL("modification de l'utilisateur impossible");
+		
+		// je verifie si l'utilisateur est en BDD
+		if (utilisateur.getNoUtilisateur()!=null) {
+			// si oui, j'update
+			try {
+				utilDAO.update(utilisateur);
+			} catch (UtilisateurDALException e) {
+				e.printStackTrace();
+				throw new UtilisateurExceptionBLL("modification de l'utilisateur impossible");
+			}
+		} else {
+			throw new UtilisateurExceptionBLL("L'utilisateur n'existe pas");
 		}
+		
+		
 
 	}
 
 	@Override
-	public void deleteUtilisateur(Integer id) throws UtilisateurExceptionBLL {
+	public void deleteUtilisateur(String pseudo) throws UtilisateurExceptionBLL {
 		try {
-			utilDAO.delete(id);
+			utilDAO.delete(pseudo);
 		} catch (UtilisateurDALException e) {
 			e.printStackTrace();
 			throw new UtilisateurExceptionBLL("suppression de l'utilisateur impossible");

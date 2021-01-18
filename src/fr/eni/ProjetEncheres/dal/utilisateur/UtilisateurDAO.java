@@ -7,7 +7,7 @@ import fr.eni.ProjetEncheres.bo.Utilisateur;
 public interface UtilisateurDAO {
 
 	public Utilisateur insert(Utilisateur utilisateur) throws UtilisateurDALException;
-	public void delete(Integer id) throws UtilisateurDALException;
+	public void delete(String pseudo) throws UtilisateurDALException;
 	public void update (Utilisateur utilisateur) throws UtilisateurDALException;
 	public List<Utilisateur> selectAll() throws UtilisateurDALException;
 	public Utilisateur selectByPseudo(String pseudo) throws UtilisateurDALException;

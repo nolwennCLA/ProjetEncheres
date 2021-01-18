@@ -12,7 +12,8 @@
 	
 	<jsp:include page="header.jsp"></jsp:include>
 	
-	<p><a href="CreationCompteServlet">S'inscrire</a> - <a href="ConnexionServlet">Se connecter</a></p>
+	<p><a href="CreaCompteServlet">S'inscrire</a> - <a href="LoginServlet">Se connecter</a></p>
+
 	
 	<h2>Liste des enchères</h2>
 	
