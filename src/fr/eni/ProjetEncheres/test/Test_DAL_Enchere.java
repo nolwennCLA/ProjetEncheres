@@ -55,7 +55,7 @@ public class Test_DAL_Enchere {
         DAORetrait retraitDAO = DAOFactory.getDAORetrait();
         DAOCategorie categorieDAO = DAOFactory.getDAOCategorie();
        
-        
+        	
        
         Utilisateur user = um.getUtilisateurParId(7);
         Utilisateur user2 = um.getUtilisateurParId(8);
@@ -69,7 +69,7 @@ public class Test_DAL_Enchere {
         
         Categorie cat1 = new Categorie("meuble");    
         Categorie cat = cm.selectionnerCategorie(3);
-//        
+        
         Retrait ret1 = new Retrait("rue2", "codePostal2", "ville2");
 //        retraitDAO.insert(ret1);
         Retrait ret = rm.selectionnerRetrait(3);
@@ -77,7 +77,7 @@ public class Test_DAL_Enchere {
         
         Article art2 = new Article("nomArticle", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 45, 0, "AV", cat, user, null);
 //        am.creerArticle(art2, ret1);
-        Article art3 = am.selectionnerArticle(6);
+        Article art3 = am.selectionnerArticleParId(6);
        
         
         Utilisateur user_3 = new Utilisateur("3", "nom", "prenom", "email3", "telephone", "rue", "codePostal", "ville", "motDePasse");
@@ -95,7 +95,15 @@ public class Test_DAL_Enchere {
         
         Article art4  =new Article("nomArticle", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 10, 0, "AV", cat, user_30, null);
 //        am.creerArticle(art4, ret1);
-        Article art_4 = am.selectionnerArticle(7);
+        Article art_4 = am.selectionnerArticleParId(7);
+        
+        Categorie cat2 = new Categorie("literie");
+//        Categorie cat_20 = cm.creerCategorie(cat2);
+        Categorie cat_2 = cm.selectionnerCategorie(4);
+//        
+        Article art5  =new Article("5", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 10, 0, "AV", cat_2, user_30, null);
+//      am.creerArticle(art5, ret1);
+//        Article art_5 = am.selectionnerArticle(9);
         
         
         Enchere ench = new Enchere(sdf.parse("2021-01-22"), 51, user, art3);
@@ -115,10 +123,12 @@ public class Test_DAL_Enchere {
         Enchere ench6 = new Enchere(sdf.parse("2021-01-22"), 15, user_30, art_4);
 //      em.addEnchere(ench4);
 
+//        Enchere ench7 = new Enchere(sdf.parse("2021-01-22"), 15, user_30, art_5);
+//      em.addEnchere(ench7);
     
         //Test des méthodes listes
-      System.out.println(em.getListEnchere());
-//      System.out.println(em.getListEnchereParCategorie(cat1)); //-> essayer avec une requete sql ?
+//      System.out.println(em.getListEnchere());
+//      System.out.println(em.getListEnchereParCategorie("meuble"));
        
 
 	}

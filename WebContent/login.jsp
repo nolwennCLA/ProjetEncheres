@@ -11,7 +11,7 @@
 
 <form method="post" action="LoginServlet">
 
-<label for="pseudo">Identifiant:</label> <input type="text" name="pseudo" id="pseudo" required ><br>
+<label for="identifiant">Identifiant:</label> <input type="text" name="identifiant" id="identifiant" required ><br>
 <label for="mdp">Mot de passe:</label> <input type="password" name="mdp" id="mdp" required ><br>
 <input type="submit" value="Connexion">
 <input type="checkbox" name="souvenir" value="1" > Se souvenir de moi <br>

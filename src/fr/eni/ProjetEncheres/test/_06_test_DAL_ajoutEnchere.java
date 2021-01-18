@@ -37,7 +37,7 @@ public class _06_test_DAL_ajoutEnchere {
 		
 		
 		Utilisateur user = um.getUtilisateurParId(6);
-        Article art1 = am.selectionnerArticle(11);
+        Article art1 = am.selectionnerArticleParId(11);
         
         Enchere ench = new Enchere(sdf.parse("2021-01-15"), 50, user, art1);
         System.out.println(ench.toString());

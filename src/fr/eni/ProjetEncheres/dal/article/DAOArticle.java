@@ -13,11 +13,17 @@ public interface DAOArticle {
 	
 	public Article insert(Article article) throws DAL_ArticleException;
 	
-	public List<Article> selectAll() throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
+	public List<Article> selectAll() throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
 	
-	public Article select(Integer noArticle) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
+	public Article selectById(Integer noArticle) throws BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, UtilisateurExceptionBLL;
 	
-	public Article update(Article article) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException;
+	public List<Article> selectByName(String nomArticle) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
+	
+	public List<Article> selectByCategory(Integer noCategorie) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
+	
+	public List<Article> selectByNameAndCategory(String nomArticle, Integer noCategorie) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
+	
+	public Article update(Article article) throws DAL_ArticleException;
 	
 	public void delete(Integer noArticle) throws DAL_ArticleException;
 	

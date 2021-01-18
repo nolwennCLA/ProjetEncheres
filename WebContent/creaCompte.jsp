@@ -13,6 +13,7 @@
 
 <h2>Mon profil</h2>
 
+
 <form action="CreaCompteServlet" method="post">
 
 <label for="pseudo">Pseudo:</label> <input type="text" name="pseudo" id="pseudo" required ><br>
