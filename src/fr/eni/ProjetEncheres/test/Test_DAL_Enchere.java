@@ -103,7 +103,7 @@ public class Test_DAL_Enchere {
 //        
         Article art5  =new Article("5", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 10, 0, "AV", cat_2, user_30, null);
 //      am.creerArticle(art5, ret1);
-        Article art_5 = am.selectionnerArticle(9);
+//        Article art_5 = am.selectionnerArticle(9);
         
         
         Enchere ench = new Enchere(sdf.parse("2021-01-22"), 51, user, art3);
@@ -123,8 +123,8 @@ public class Test_DAL_Enchere {
         Enchere ench6 = new Enchere(sdf.parse("2021-01-22"), 15, user_30, art_4);
 //      em.addEnchere(ench4);
 
-        Enchere ench7 = new Enchere(sdf.parse("2021-01-22"), 15, user_30, art_5);
-      em.addEnchere(ench7);
+//        Enchere ench7 = new Enchere(sdf.parse("2021-01-22"), 15, user_30, art_5);
+//      em.addEnchere(ench7);
     
         //Test des méthodes listes
 //      System.out.println(em.getListEnchere());

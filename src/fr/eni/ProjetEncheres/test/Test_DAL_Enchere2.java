@@ -85,7 +85,7 @@ public class Test_DAL_Enchere2 {
 //        am.creerArticle(ordi, ret);
 //        am.creerArticle(armoire, ret);
 //        am.creerArticle(pull, ret);
-        Article ordi1 = am.selectionnerArticle(10);
+//        Article ordi1 = am.selectionnerArticle(10);
       
 
         
