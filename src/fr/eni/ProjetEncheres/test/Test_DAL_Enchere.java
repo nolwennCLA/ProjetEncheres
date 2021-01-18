@@ -77,7 +77,7 @@ public class Test_DAL_Enchere {
         
         Article art2 = new Article("nomArticle", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 45, 0, "AV", cat, user, null);
 //        am.creerArticle(art2, ret1);
-        Article art3 = am.selectionnerArticle(6);
+        Article art3 = am.selectionnerArticleParId(6);
        
         
         Utilisateur user_3 = new Utilisateur("3", "nom", "prenom", "email3", "telephone", "rue", "codePostal", "ville", "motDePasse");
@@ -95,7 +95,7 @@ public class Test_DAL_Enchere {
         
         Article art4  =new Article("nomArticle", "description", sdf.parse("2021-01-21"), sdf.parse("2021-01-25"), 10, 0, "AV", cat, user_30, null);
 //        am.creerArticle(art4, ret1);
-        Article art_4 = am.selectionnerArticle(7);
+        Article art_4 = am.selectionnerArticleParId(7);
         
         
         Enchere ench = new Enchere(sdf.parse("2021-01-22"), 51, user, art3);

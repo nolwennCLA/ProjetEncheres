@@ -107,7 +107,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 				enchere.setNoEnchere(rs.getInt("noEnchere"));
 				enchere.setDateEnchere(rs.getDate("dateEnchere"));
 				enchere.setMontantEnchere(rs.getInt("montantEnchere"));
-				enchere.setArticle(am.selectionnerArticle(rs.getInt("noArticle")));
+				enchere.setArticle(am.selectionnerArticleParId(rs.getInt("noArticle")));
 				enchere.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
 
 				list.add(enchere);
