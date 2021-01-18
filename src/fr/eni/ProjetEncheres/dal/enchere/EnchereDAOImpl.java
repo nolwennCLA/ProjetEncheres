@@ -154,7 +154,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 			PreparedStatement stmt = cnx.prepareStatement(SELECT_MONTANT);
 			stmt.setInt(1, noArticle);
 			ResultSet rs = stmt.executeQuery();
-			while (rs.previous()) {
+			while (rs.next()) {
 				enchere.setMontantEnchere(rs.getInt(2));
 			}
 		} catch (SQLException e) {

@@ -117,8 +117,8 @@ public class Test_DAL_Enchere {
 
     
         //Test des méthodes listes
-//      System.out.println(em.getListEnchere()); -> OK
-      System.out.println(em.getListEnchereParCategorie(cat1)); //-> essayer avec une requete sql ?
+      System.out.println(em.getListEnchere());
+//      System.out.println(em.getListEnchereParCategorie(cat1)); //-> essayer avec une requete sql ?
        
 
 	}

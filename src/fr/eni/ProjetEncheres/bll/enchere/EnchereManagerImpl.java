@@ -45,13 +45,13 @@ public class EnchereManagerImpl implements EnchereManager {
 		List<Enchere> lstEnchere = new ArrayList<Enchere>();
 		List<Enchere> lstEnchereCategorie = new ArrayList<Enchere>();
 //		TODO : vérifier que je peux griser le try/catch (pour éviter la répétition) et appeler la méthode getListEnchere()
-		try {
-			lstEnchere = enchereDAO.selectAll();
-		} catch (EnchereDALException e) {
-			e.printStackTrace();
-			throw new EnchereExceptionBLL("Sélection de la liste d'enchères impossible");
-		}
-//		getListEnchere();
+//		try {
+//			lstEnchere = enchereDAO.selectAll();
+//		} catch (EnchereDALException e) {
+//			e.printStackTrace();
+//			throw new EnchereExceptionBLL("Sélection de la liste d'enchères impossible");
+//		}
+		getListEnchere();
 		for (Enchere e : lstEnchere) {
 			if (e.getArticle().getCategorie().equals(libelle)) {
 				lstEnchereCategorie.add(e);
@@ -106,27 +106,6 @@ public class EnchereManagerImpl implements EnchereManager {
 		return null;
 	}
 
-	//Utilisateur connecté : liste de mes ventes en cours
-	@Override
-	public List<Enchere> getListMesVentesEnCours() throws EnchereExceptionBLL {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//Utilisateur connecté : liste de mes ventes non débutées
-	@Override
-	public List<Enchere> getListMesVentesNonDebutees() throws EnchereExceptionBLL {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//Utilisateur connecté : liste de mes ventes terminées
-	@Override
-	public List<Enchere> getListMesVentesTerminees() throws EnchereExceptionBLL {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 //	Insertion d'une enchère dans la BDD après avoir validé l'enchère (voir méthode validerEnchere)
 	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException {
 		List<Enchere> lstEnchere = new ArrayList<Enchere>();
@@ -152,13 +131,15 @@ public class EnchereManagerImpl implements EnchereManager {
 		enchere.getUtilisateur().setCredit(nouveauCredit);
 		enchereDAO.updateUtilisateur(enchere);
 
-		// L'enchère rentre alors dans une liste
+		// L'enchère rentre alors dans une liste : besoin de cette liste ? A voir plus tard
 		lstEnchere.add(enchere);
 		System.out.println(lstEnchere);
 
 		// Le meilleur enchérisseur précédent (s'il existe donc si la table enchère à au
 		// moins 1 enchère) est re-crédité de son offre
+		//TODO : à finir !!
 		if (enchere.getNoEnchere() != null) {
+			//Va chercher le montant de la dernière enchère dans la liste
 			Integer AncienEncherisseur = lstEnchere.size() - 1;
 
 		}
@@ -180,19 +161,19 @@ public class EnchereManagerImpl implements EnchereManager {
 			valide = false;
 		}
 
-//		// La date de l'enchère >= dateDebutEnchere et <= dateFinEnchere
+//		// La date de l'enchère >= dateDebutEnchere
 //		if (enchere.getDateEnchere().before(enchere.getArticle().getDateDebutEncheres())) {
 //			sb.append("La date de l'enchère doit être après la dateDébutEnchère");
 //			valide = false;
 //		}
 
-////		// La date de l'enchère >= dateDebutEnchere et <= dateFinEnchere
+//		// La date de l'enchère <= dateFinEnchere
 //		if (enchere.getDateEnchere().after(enchere.getArticle().getDateFinEncheres())) {
 //			sb.append("La date de l'enchère doit être avant la date de fin d'enchère");
 //			valide = false;
 //		}
 
-		 // La date de l'enchère = dateDebutEnchere et = dateFinEnchere : OK -> test de cette méthode pour égalité 
+		 // La date de l'enchère = dateDebutEnchere et = dateFinEnchere : true -> test de cette méthode pour égalité 
 // 		if (enchere.getDateEnchere().equals((enchere.getArticle().getDateFinEncheres()))
 // 				|| enchere.getDateEnchere().equals((enchere.getArticle().getDateDebutEncheres()))) {
 // 			sb.append("Vous ne pouvez faire une enchère qu'entre les dates de début et de fin de vente de l'article");
