@@ -15,7 +15,13 @@ public class CategorieManagerImpl implements CategorieManager {
 
 	@Override
 	public Categorie creerCategorie(Categorie categorie) throws BLL_CategorieException, DAL_CategorieException {
-		return categorieDao.insert(categorie);
+		if(categorie != null && categorie.getNoCategorie() == null) {
+			categorie = categorieDao.insert(categorie);
+		} else {
+			throw new BLL_CategorieException("BLL_CategorieManagerImpl_creerCategorie() : La Categorie existe déjà en base ou est nulle");
+		}
+		return categorie;
+		
 	}
 
 	@Override
@@ -25,17 +31,32 @@ public class CategorieManagerImpl implements CategorieManager {
 
 	@Override
 	public Categorie selectionnerCategorie(Integer noCategorie) throws BLL_CategorieException, DAL_CategorieException {
-		return categorieDao.select(noCategorie);
+		Categorie categorie = null;
+		if(noCategorie != null) {
+			categorie = categorieDao.select(noCategorie);
+		} else {
+			throw new BLL_CategorieException("BLL_CategorieManagerImpl_selectionnerCategorie() : Le noCategorie est null");
+		}
+		return categorie;
 	}
 
 	@Override
 	public Categorie modifierCategorie(Categorie categorie) throws BLL_CategorieException, DAL_CategorieException {
-		return categorieDao.update(categorie);
+		if(categorie.getNoCategorie() != null && categorie != null) {
+			categorie = categorieDao.update(categorie);
+		} else {
+			throw new BLL_CategorieException("BLL_CategorieManagerImpl_modifierCategorie() : La Categorie n'existe pas ou son numéro est null");
+		}
+		return categorie;
 	}
 
 	@Override
 	public void supprimerCategorie(Integer noCategorie) throws BLL_CategorieException, DAL_CategorieException {
-		categorieDao.delete(noCategorie);
+		if(noCategorie != null) {
+			categorieDao.delete(noCategorie);
+		} else {
+			throw new BLL_CategorieException("BLL_CategorieManagerImpl_supprimerCategorie() : Le noCategorie est null");
+		}
 	}
 
 }

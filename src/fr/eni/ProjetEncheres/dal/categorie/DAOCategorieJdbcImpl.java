@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetEncheres.bo.Categorie;
 import fr.eni.ProjetEncheres.dal.dal.ConnectionProvider;
-import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public class DAOCategorieJdbcImpl implements DAOCategorie {
 	
@@ -47,12 +47,12 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 			if(rs.next()) {
 				categorie.setNoCategorie(rs.getInt(1));
 			} else {
-				throw new DAL_CategorieException("DAL_problème méthode insert() dans DAOCategorieJdbcImpl");
+				throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_insert() : Clé non générée");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_CategorieException("DAL_problème connexion dans DAOCategorieJdbcImpl");
+			throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_insert() : Problème dans la méthode");
 		}
 		
 		//on retourne categorie
@@ -61,7 +61,9 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 
 	@Override
 	public List<Categorie> selectAll() throws DAL_CategorieException {
-
+		
+		lstCat = new ArrayList<>();
+		
 		try(Connection conn = ConnectionProvider.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(SELECT_ALL);) {
 			
@@ -70,7 +72,8 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 			
 			//si la requête ne revoie aucun résultat, on lance une exception
 			if(rs == null) {
-				throw new DAL_CategorieException("DAL_aucun résultat pour selectAll() dans DAOCategorieJdbcImpl");
+//				throw new DAL_CategorieException("DAL_aucun résultat pour selectAll() dans DAOCategorieJdbcImpl");
+				System.out.println("DAL_DAOCategorieJdbcImpl_selectAll() : Aucun résultat en base");
 				
 			//sinon pour chaque ligne de résultat on crée une Categorier et on l'ajoute à une liste	
 			} else {
@@ -86,7 +89,7 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_CategorieException("DAL_problème connexion dans DAOCategorieJdbcImpl");
+			throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_selectAll() : Problème dans la méthode");
 		}
 		
 		//on retourne la liste
@@ -114,12 +117,13 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 			
 			//sinon on lance une exception
 			} else {
-				throw new DAL_CategorieException("DAL_aucun résultat pour select() dans DAOCategorieJdbcImpl");
+//				throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_select() : Aucun résultat en base");
+				System.out.println("DAL_DAOCategorieJdbcImpl_select() : Aucun résultat en base");
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_CategorieException("DAL_problème connexion dans DAOCategorieJdbcImpl");
+			throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_select() : Problème dans la méthode");
 		}
 		
 		//on retourne la Categorie
@@ -138,12 +142,12 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 			
 			//exécution de la requête
 			if(pstmt.executeUpdate() < 1) {
-				throw new DAL_CategorieException("DAL_problème méthode update() dans DAOCategorieJdbcImpl");
+				throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_update() : Categorie non modifiée");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_CategorieException("DAL_problème connexion dans DAOCategorieJdbcImpl");
+			throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_update() : Problème dans la méthode");
 		}
 		
 		//on retourne la Categorie
@@ -160,12 +164,12 @@ public class DAOCategorieJdbcImpl implements DAOCategorie {
 				
 				//exécution de la requête
 				if(pstmt.executeUpdate() < 1) {
-					throw new DAL_CategorieException("DAL_problème méthode delete() dans DAOCategorieJdbcImpl");
+					throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_delete() : Categorie non supprimée");
 				}
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				throw new DAL_CategorieException("DAL_problème connexion dans DAOCategorieJdbcImpl");
+				throw new DAL_CategorieException("DAL_DAOCategorieJdbcImpl_update() : Problème dans la méthode");
 			}
 
 	}
