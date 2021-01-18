@@ -9,6 +9,7 @@ import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManager;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManagerSing;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereExceptionBLL;
 import fr.eni.ProjetEncheres.bll.enchere.EnchereManager;
 import fr.eni.ProjetEncheres.bll.enchere.EnchereManagerSingl;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
@@ -27,6 +28,7 @@ import fr.eni.ProjetEncheres.dal.article.DAOArticle;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.categorie.DAOCategorie;
 import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
+import fr.eni.ProjetEncheres.dal.enchere.EnchereDALException;
 import fr.eni.ProjetEncheres.dal.enchere.EnchereDAO;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 import fr.eni.ProjetEncheres.dal.retrait.DAORetrait;
@@ -37,7 +39,7 @@ public class Test_DAL_Enchere2 {
 
 	public static void main(String[] args)
 			throws UtilisateurExceptionBLL, UtilisateurDALException, BLL_CategorieException, DAL_CategorieException,
-			ParseException, BLL_ArticleException, BLL_RetraitException, DAL_ArticleException, DAL_RetraitException {
+			ParseException, BLL_ArticleException, BLL_RetraitException, DAL_ArticleException, DAL_RetraitException, EnchereExceptionBLL, EnchereDALException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -54,9 +56,9 @@ public class Test_DAL_Enchere2 {
 		DAOCategorie categorieDAO = DAOFactory.getDAOCategorie();
 
 		
-		// ***************************************************
-		// *********** CREATION UTILISATEUR ******************
-		// ***************************************************
+		// *********************************************************************
+		// *********** CREATION UTILISATEUR-CATEGORIE-RETRAIT ******************
+		// *********************************************************************
 
 		Utilisateur claire = new Utilisateur("claire", "denis", "claire", "claire@eni", "0298", "rue", "29000",
 				"Quimper", "ClDe");
@@ -71,31 +73,19 @@ public class Test_DAL_Enchere2 {
 		Retrait ret = new Retrait("rue1", "29000", "Quimper");
 		
 		// Décommenter les lignes suivantes pour l'insertion dans la BDD
-//        um.addUtilisateur(claire);
-//        um.addUtilisateur(nolwenn);
-//        um.addUtilisateur(vincent);
-//      cm.creerCategorie(catInf);
-//      cm.creerCategorie(catAmeu);
-//      cm.creerCategorie(catVet);
-//      cm.creerCategorie(catSL);
+//       um.addUtilisateur(claire);
+//       um.addUtilisateur(nolwenn);
+//       um.addUtilisateur(vincent);
+//    	 cm.creerCategorie(catInf);
+//     	 cm.creerCategorie(catAmeu);
+//     	 cm.creerCategorie(catVet);
+//     	 cm.creerCategorie(catSL);
 
 		// Récupération des id des utilisateurs : attention à bien noter le n°
 		// d'utilisateur venant de votre BDD
 		Utilisateur claire1 = um.getUtilisateurParId(12);
 		Utilisateur nolwenn1 = um.getUtilisateurParId(13);
 		Utilisateur vincent1 = um.getUtilisateurParId(14);
-
-		
-		// *************************************************
-		// *********** CREATION CATEGORIE ******************
-		// *************************************************
-
-
-		// Décommenter les lignes suivantes pour l'insertion dans la BDD
-//      cm.creerCategorie(catInf);
-//      cm.creerCategorie(catAmeu);
-//      cm.creerCategorie(catVet);
-//      cm.creerCategorie(catSL);
 
 		// Récupération des id des catégories : attention à bien noter le n° de
 		// catégorie venant de votre BDD
@@ -104,14 +94,7 @@ public class Test_DAL_Enchere2 {
 		Categorie catVet1 = cm.selectionnerCategorie(7);
 		Categorie catSL1 = cm.selectionnerCategorie(8);
 
-		
-		// ***********************************************
-		// *********** CREATION RETRAIT ******************
-		// ***********************************************
 
-		
-
-		
 		// ***********************************************
 		// *********** CREATION ARTICLE ******************
 		// ***********************************************
@@ -142,7 +125,10 @@ public class Test_DAL_Enchere2 {
         // *********** CREATION ENCHERE ******************
      	// ***********************************************
         
-//        Enchere ench1 = new Enchere(sdf.parse("2021-01-20"), 15, utilisateur, article)
+        Enchere ench1 = new Enchere(sdf.parse("2021-01-20"), 15, claire1, ordi1);
+        Enchere ench2 = new Enchere (sdf.parse("2021-01-20"), 12, nolwenn1, ordi1);
+//      em.addEnchere(ench1);
+        em.addEnchere(ench2);
 
 	}
 
