@@ -79,7 +79,7 @@ public class ModifProfilServlet extends HttpServlet {
 		}
 		
 		request.setAttribute("model", model);
-		request.getRequestDispatcher("creaCompte.jsp").forward(request, response);
+		request.getRequestDispatcher("modifProfil.jsp").forward(request, response);
 		
 		
 		

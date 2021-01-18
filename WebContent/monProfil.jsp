@@ -8,6 +8,8 @@
 </head>
 <body>
 
+${identifiant}
+
 <p>
 Pseudo: ${model.utilisateur.pseudo} <br>
 Nom: ${model.utilisateur.nom} <br>
