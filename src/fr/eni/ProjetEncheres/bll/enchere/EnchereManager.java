@@ -20,7 +20,7 @@ public interface EnchereManager {
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
 
-	public List<Enchere> getListEnchereParCategorie(Categorie libelle)
+	public List<Enchere> getListEnchereParCategorie(String libelle)
 			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
 			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
 
