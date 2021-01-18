@@ -31,6 +31,8 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 					e.printStackTrace();
 					throw new UtilisateurExceptionBLL("insertion de l'utilisateur impossible");
 				}
+			}else {
+				throw new UtilisateurExceptionBLL("le pseudo et/ou l'email existent déjà. Veuillez recommencer la saisie");
 			}
 		} else {
 			System.out.println("le pseudo ne doit contenir que les chiffres ou des lettres");
