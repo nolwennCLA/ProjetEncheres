@@ -16,22 +16,47 @@
 
 <form action="CreaCompteServlet" method="post">
 
-<label for="pseudo">Pseudo:</label> <input type="text" name="pseudo" id="pseudo" required ><br>
-<label for="prenom">Prénom:</label> <input type="text" name="prenom" id="prenom" required><br>
-<label for="tel">Téléphone:</label> <input type="tel" name="tel" id="tel" required><br>
-<label for="cpo">Code Postal:</label> <input type="number" name="cpo" id="cpo" min="01000" max="99999" required><br>
-<label for="mdp">Mot de passe:</label> <input type="password" name="mdp" id="mdp" required><br>
+<table>
+<tr>
+<td><label for="pseudo">Pseudo :</label></td>
+<td> <input type="text" name="pseudo" id="pseudo" required ></td>
+<td><label for="nom">Nom:</label></td>
+<td><input type="text" name="nom" id="nom" required></td>
 
+</tr>
+<tr>
+<td><label for="prenom">Prénom : </label> </td>
+<td><input type="text" name="prenom" id="prenom" required></td>
+<td><label for="tel">Téléphone : </label> </td>
+<td><input type="tel" name="tel" id="tel" required></td>
+</tr>
+<tr>
+<td><label for="cpo">Code Postal : </label></td>
+<td><input type="number" name="cpo" id="cpo" min="01000" max="99999" required></td>
+<td><label for="mdp">Mot de passe : </label></td>
+<td><input type="password" name="mdp" id="mdp" required></td>
+</tr>
+<tr>
+<td><label for="email">Email : </label></td>
+<td><input type="email" name="email" id="email" required></td>
+<td><label for="rue">Rue : </label></td>
+<td><input type="text" name="rue" id="rue" required></td>
+</tr>
+<tr>
+<td><label for="ville">Ville : </label></td> 
+<td><input type="text" name="ville" id="ville" required></td>
+<td><label for="conf">Confirmation : </label></td>
+<td> <input type="password" name="conf" id="conf" required></td>
+</tr>
 
-<label for="nom">Nom:</label><input type="text" name="nom" id="nom" required><br>
-<label for="email">Email:</label><input type="email" name="email" id="email" required><br>
-<label for="rue">Rue:</label> <input type="text" name="rue" id="rue" required><br>
-<label for="ville">Ville:</label> <input type="text" name="ville" id="ville" required><br>
-<label for="conf">Confirmation:</label> <input type="password" name="conf" id="conf" required><br>
+</table>
 
-
-<input type="submit" value="Créer" name="creer">
-<input type="submit" value="Annuler" name="annuler">
+<table>
+<tr>
+<td><input type="submit" value="Créer" name="creer"></td>
+<td><input type="submit" value="Annuler" name="annuler"></td>
+</tr>
+</table>
 
 </form>
 ${message1}

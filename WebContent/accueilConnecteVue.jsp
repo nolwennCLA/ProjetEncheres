@@ -14,7 +14,7 @@
 	
 	<p style="color: red">${pseudoSess}</p>
 	
-	<p><a href="">Enchères</a> - <a href="nouvelleVenteArticleVue.jsp">Vendre un article</a> - <a href="">Mon profil</a> - <a href="">Déconnexion</a></p>
+	<p><a href="">Enchères</a> - <a href="nouvelleVenteArticleVue.jsp">Vendre un article</a> - <a href="monProfil.jsp">Mon profil</a> - <a href="">Déconnexion</a></p>
 	
 	<h2>Liste des enchères</h2>
 	
