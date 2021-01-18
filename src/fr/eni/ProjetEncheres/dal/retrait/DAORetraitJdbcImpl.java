@@ -55,12 +55,12 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 			
 			//si aucune clé n'a été générée, alors on lance une exception
 			} else {
-				throw new DAL_RetraitException("DAL_problème méthode insert() dans DAORetraitJdbcImpl: clé non générée");
+				throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_insert() : Clé non générée");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_RetraitException("DAL_problème méthode insert() dans DAORetraitJdbcImpl");
+			throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_insert() : Problème dans la méthode");
 		}
 		
 		//on retourne retrait
@@ -80,7 +80,8 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 			
 			//si la requête ne envoie aucun résultat, alors on lacne une exception
 			if(rs == null) {
-				throw new DAL_RetraitException("DAL_aucun résultat pour selectAll() dans DAORetraitJdbcImpl");
+//				throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_selectAll() : Aucun résultat dans la base");
+				System.out.println("DAL_DAORetraitJdbcImpl_selectAll() : Aucun résultat dans la base");
 			
 			//si la requête renvoie un résultat, alors pour chaque ligne on crée un Retrait et on l'insère dans une liste
 			} else {
@@ -98,7 +99,7 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_RetraitException("DAL_problème dans DAORetraitJdbcImpl");
+			throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_selectAll() : Problème dans la méthode");
 		}
 		
 		//on retourne la liste
@@ -128,12 +129,13 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 			
 			//si la requête ne retourne rien, on lance un exception
 			} else {
-				throw new DAL_RetraitException("DAL_aucun résultat pour select() dans DAORetraitJdbcImpl");
+//				throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_select() : Aucun résultat dans la base");
+				System.out.println("DAL_DAORetraitJdbcImpl_select() : Aucun résultat dans la base");
 			}
 					
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_RetraitException("DAL_problème dans DAORetraitJdbcImpl");
+			throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_selectAll() : Problème dans la méthode");
 		}
 		
 		//on retourne le Retrait
@@ -154,12 +156,12 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 				
 				//exécution de la requête
 				if(pstmt.executeUpdate() < 1) {
-					throw new DAL_RetraitException("DAL_problème méthode update() dans DAORetraitJdbcImpl");
+					throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_update() : Retrait non modifié");
 				}
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_RetraitException("DAL_problème dans DAORetraitJdbcImpl");
+			throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_update() : Problème dans la méthode");
 		}
 		
 		//on retourne le Retrait
@@ -176,12 +178,12 @@ public class DAORetraitJdbcImpl implements DAORetrait {
 			
 			//exécution de la requête
 			if(pstmt.executeUpdate() < 1) {
-				throw new DAL_RetraitException("DAL_problème méthode delete() dans DAORetraitJdbcImpl");
+				throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_delete() : Retrait non supprimé");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_RetraitException("DAL_problème dans DAORetraitJdbcImpl");
+			throw new DAL_RetraitException("DAL_DAORetraitJdbcImpl_delete() : Problème dans la méthode");
 		}
 
 	}
