@@ -5,7 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
@@ -57,11 +61,14 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	private List<Article> lstArt;
 	private Article art;
 	
-//	private UtilisateurManager um = UtilisateurManagerSing.getInstance();
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
 	
 	private RetraitManager rm = RetraitManagerSing.getInstance();
 	private CategorieManager cm = CategorieManagerSing.getInstance();
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	Calendar cal = Calendar.getInstance();
+	Date dJour = null;
 
 	
 	
@@ -136,6 +143,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				while(rs.next()) {
 					art = new Article();
 					
+					//alimentation de l'article
 					art.setNoArticle(rs.getInt("noArticle"));
 					art.setNomArticle(rs.getString("nomArticle"));
 					art.setDescription(rs.getString("description"));
@@ -149,7 +157,11 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					if(rs.getInt("noRetrait") != 0) {
 						art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 					}
-
+					
+					//mise à jour éventuelle de l'état de la vente
+					this.checkEtatVente(art);
+					
+					//ajout de l'Article à une liste
 					lstArt.add(art);
 				}
 			}
@@ -193,6 +205,9 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				if(rs.getInt("noRetrait") != 0) {
 					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 				}
+				
+				//mise à jour éventuelle de l'état de la vente
+				this.checkEtatVente(art);
 
 			//si la requête ne retourne pas de résultat, on lance une exception	
 			} else  {
@@ -247,6 +262,9 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					if(rs.getInt("noRetrait") != 0) {
 						art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 					}
+					
+					//mise à jour éventuelle de l'état de la vente
+					this.checkEtatVente(art);
 
 					lstArt.add(art);
 				}
@@ -298,7 +316,10 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				if(rs.getInt("noRetrait") != 0) {
 					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 				}
-
+				
+				//mise à jour éventuelle de l'état de la vente
+				this.checkEtatVente(art);
+				
 				lstArt.add(art);
 			}
 		}
@@ -351,7 +372,10 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				if(rs.getInt("noRetrait") != 0) {
 					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 				}
-
+				
+				//mise à jour éventuelle de l'état de la vente
+				this.checkEtatVente(art);
+				
 				lstArt.add(art);
 			}
 		}
@@ -389,12 +413,11 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				pstmt.setString(7, article.getEtatVente());
 				pstmt.setInt(8, article.getCategorie().getNoCategorie());
 				pstmt.setInt(9, article.getUtilisateur().getNoUtilisateur());
-				if(article.getRetrait().getNoRetrait() != null) {
+				if(article.getRetrait() != null) {
 					pstmt.setInt(10, article.getRetrait().getNoRetrait());
 				} else {
 					pstmt.setNull(10, Types.INTEGER);
 				}
-				System.out.println("Article " + article.getNoArticle() + " - noRetrait : " + article.getRetrait().getNoRetrait());
 				
 				pstmt.setInt(11, article.getNoArticle());
 				
@@ -435,13 +458,35 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	}
 
 	
-	
-
-	
-
-	
-
-	
+	public void checkEtatVente(Article article) throws DAL_ArticleException {
+		
+		//mise au format yyy-MM-dd de la date du jour
+		cal.setTime(new Date());
+		
+		try {
+			dJour = new Date(sdf.parse(cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)+1 + "-" + cal.get(Calendar.DAY_OF_MONTH)).getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		//si date début <= date du jour
+		//et date fin >= date du jour
+		//alors vente en cours "EC"
+		if(article.getDateDebutEncheres().compareTo(dJour) <= 0
+		&& article.getDateFinEncheres().compareTo(dJour) >= 0) {
+			article.setEtatVente("EC");
+			article = this.update(article);
+		}
+		
+		//si date début < date du jour
+		//et date fin < date du jour
+		//alors vente terminée "VT"
+		if(article.getDateDebutEncheres().compareTo(dJour) < 0
+		&& article.getDateFinEncheres().compareTo(dJour) < 0) {
+			article.setEtatVente("VT");
+			article = this.update(article);
+		}
+	}
 
 	
 
