@@ -88,6 +88,7 @@ public class Test_DAL_Enchere2 {
 //        Article ordi1 = am.selectionnerArticle(10);
       
 
+        String blabla;
         
         
         
