@@ -70,7 +70,7 @@ public class Test_DAL_Enchere {
 		Utilisateur user = um.getUtilisateurParId(7);
 		Categorie cat1 = cm.selectionnerCategorie(3);
 //		Retrait ret1 = rm.selectionnerRetrait(3);
-		Article art1 = am.selectionnerArticle(2);
+		Article art1 = am.selectionnerArticleParId(2);
 
 		Article art = new Article("peigne", "peigne traditionnel", sdf.parse("2021-01-20"), sdf.parse("2021-01-25"),
 				150, 0, "AV", cat1, user, null);

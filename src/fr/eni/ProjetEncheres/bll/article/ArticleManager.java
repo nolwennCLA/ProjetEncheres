@@ -13,14 +13,20 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public interface ArticleManager {
 	
-	public Article creerArticle(Article article, Retrait retrait) throws BLL_ArticleException, BLL_RetraitException, DAL_ArticleException, DAL_RetraitException, UtilisateurExceptionBLL;
+	public Article creerArticle(Article article, Retrait retrait) throws BLL_ArticleException, DAL_ArticleException, BLL_RetraitException, DAL_RetraitException;
 	
-	public List<Article> listerArticles() throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
+	public List<Article> listerArticles() throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
 	
-	public Article selectionnerArticle(Integer noArticle) throws BLL_ArticleException, DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
+	public Article selectionnerArticleParId(Integer noArticle) throws BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-	public Article modifierArticle(Article article) throws UtilisateurExceptionBLL, BLL_RetraitException, DAL_ArticleException, BLL_ArticleException;
+	public List<Article> selectionnerArticleParNom(String nomArticle) throws BLL_ArticleException, DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
 	
-	public void supprimerArticle(Integer noArticle) throws BLL_ArticleException, DAL_ArticleException;
+	public List<Article> selectionnerArticleParCategorie(Integer noCategorie) throws BLL_ArticleException, DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
+	
+	public List<Article> selectionnerArticleParNomEtCategorie(String nomArticle, Integer noCategorie) throws BLL_ArticleException, DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL;
+	
+	public Article modifierArticle(Article article) throws BLL_ArticleException, DAL_ArticleException;
+	
+	public void supprimerArticle(Integer noArticle) throws DAL_ArticleException, BLL_ArticleException;
 	
 }
