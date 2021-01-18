@@ -31,7 +31,13 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	
 	private final String SELECT_ALL = "SELECT * FROM Article";
 	
-	private final String SELECT = "SELECT * FROM Article WHERE noArticle = ?";
+	private final String SELECT_BY_ID = "SELECT * FROM Article WHERE noArticle = ?";
+	
+	private final String SELECT_BY_NAME = "SELECT * FROM Article WHERE nomArticle LIKE ?";
+	
+	private final String SELECT_BY_CATEGORY = "SELECT * FROM Article WHERE noCategorie = ?";
+	
+	private final String SELECT_BY_NAME_AND_CATEGORY = "SELECT * FROM Article WHERE nomArticle LIKE ? AND noCategorie = ?";
 	
 	private final String UPDATE = "UPDATE Article SET "
 			+ "nomArticle = ?,"
@@ -51,10 +57,14 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 	private List<Article> lstArt;
 	private Article art;
 	
+//	private UtilisateurManager um = UtilisateurManagerSing.getInstance();
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+	
 	private RetraitManager rm = RetraitManagerSing.getInstance();
 	private CategorieManager cm = CategorieManagerSing.getInstance();
 
+	
+	
 	@Override
 	public Article insert(Article article) throws DAL_ArticleException {
 		
@@ -79,11 +89,6 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 			pstmt.setInt(8, article.getCategorie().getNoCategorie());
 			pstmt.setInt(9, article.getUtilisateur().getNoUtilisateur());
 			pstmt.setNull(10, Types.INTEGER);
-//			if(article.getRetrait() == null || article.getRetrait().getNoRetrait() == null) {
-//				pstmt.setNull(10, Types.INTEGER);
-//			} else {
-//				pstmt.setInt(10, article.getRetrait().getNoRetrait());
-//			}
 			
 			//exécution de a requête
 			pstmt.executeUpdate();
@@ -97,20 +102,21 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 			
 			//si aucune clé n'a été générée, alors on lance une exception
 			} else {
-				throw new DAL_ArticleException("DAL_problème méthode insert() dans DAOArticleJdbcImpl");
+				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_insert() : Article non créé");
 			}
 	
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_ArticleException("DAL_problème dans DAOArticleJdbcImpl");
+			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_insert() : Problème dans la méthode");
 		}
 		
 		//on retourne l'article
 		return article;
 	}
 
+	
 	@Override
-	public List<Article> selectAll() throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
+	public List<Article> selectAll() throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL {
 		
 		lstArt = new ArrayList<>();
 		
@@ -122,7 +128,8 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 			
 			//si la requête ne renvoie pas de résultat, on lance une exception
 			if(rs == null) {
-				throw new DAL_ArticleException("DAL_aucun résultat pour selectAll() dans DAOArticleJdbcImpl");
+//				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectAll() : Aucun résultat en base");
+				System.out.println("DAL_DAOArticleJdbcImp_selectAll() : Aucun résultat en base");
 			
 			//si la requête renvoie un résultat, pour chaque ligne on crée un Article et on l'insère à une liste
 			} else {
@@ -133,7 +140,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					art.setNomArticle(rs.getString("nomArticle"));
 					art.setDescription(rs.getString("description"));
 					art.setDateDebutEncheres(rs.getDate("dateDebutEncheres"));
-					art.setDateDebutEncheres(rs.getDate("dateFinEncheres"));
+					art.setDateFinEncheres(rs.getDate("dateFinEncheres"));
 					art.setMiseAPrix(rs.getInt("miseAPrix"));
 					art.setPrixVente(rs.getInt("prixVente"));
 					art.setEtatVente(rs.getString("etatVente"));
@@ -142,27 +149,26 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 					if(rs.getInt("noRetrait") != 0) {
 						art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
 					}
-					
-					
-					
+
 					lstArt.add(art);
 				}
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_ArticleException("DAL_problème dans DAOArticleJdbcImpl");
+			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectAll() : Problème dans le méthode");
 		}
 		
 		//on retourne la liste
 		return lstArt;
 	}
 
+	
 	@Override
-	public Article select(Integer noArticle) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException {
+	public Article selectById(Integer noArticle) throws BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, UtilisateurExceptionBLL {
 		
 		try(Connection conn = ConnectionProvider.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement(SELECT);) {
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_ID);) {
 			
 			//alimentation de la requête
 			pstmt.setInt(1, noArticle);
@@ -178,7 +184,7 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				art.setNomArticle(rs.getString("nomArticle"));
 				art.setDescription(rs.getString("description"));
 				art.setDateDebutEncheres(rs.getDate("dateDebutEncheres"));
-				art.setDateDebutEncheres(rs.getDate("dateFinEncheres"));
+				art.setDateFinEncheres(rs.getDate("dateFinEncheres"));
 				art.setMiseAPrix(rs.getInt("miseAPrix"));
 				art.setPrixVente(rs.getInt("prixVente"));
 				art.setEtatVente(rs.getString("etatVente"));
@@ -190,20 +196,178 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 
 			//si la requête ne retourne pas de résultat, on lance une exception	
 			} else  {
-				throw new DAL_ArticleException("DAL_aucun résultat pour select() dans DAOArticleJdbcImpl");
+//				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_select() : Aucun résultat en base");
+				System.out.println("DAL_DAOArticleJdbcImp_selectById() : Aucun résultat en base");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_ArticleException("DAL_problème dans DAOArticleJdbcImpl");
+			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectById() : Problème dans la méthode");
 		}
 		
 		//on retourne l'article
 		return art;
 	}
-
+	
+	
 	@Override
-	public Article update(Article article) throws DAL_ArticleException, UtilisateurExceptionBLL, BLL_RetraitException {
+	public List<Article> selectByName(String nomArticle) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL {
+			lstArt = new ArrayList<>();
+			nomArticle = "%"+nomArticle+"%";
+		
+		try(Connection conn = ConnectionProvider.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_NAME);) {
+			
+			//alimentation de la requête
+			pstmt.setString(1, nomArticle);
+			
+			//exécution de la requête
+			ResultSet rs = pstmt.executeQuery();
+			
+			//si la requête ne renvoie pas de résultat, on lance une exception
+			if(rs == null) {
+//				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectAll() : Aucun résultat en base");
+				System.out.println("DAL_DAOArticleJdbcImp_selectByName() : Aucun résultat en base");
+			
+			//si la requête renvoie un résultat, pour chaque ligne on crée un Article et on l'insère à une liste
+			} else {
+				while(rs.next()) {
+					art = new Article();
+					
+					art.setNoArticle(rs.getInt("noArticle"));
+					art.setNomArticle(rs.getString("nomArticle"));
+					art.setDescription(rs.getString("description"));
+					art.setDateDebutEncheres(rs.getDate("dateDebutEncheres"));
+					art.setDateFinEncheres(rs.getDate("dateFinEncheres"));
+					art.setMiseAPrix(rs.getInt("miseAPrix"));
+					art.setPrixVente(rs.getInt("prixVente"));
+					art.setEtatVente(rs.getString("etatVente"));
+					art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
+					art.setCategorie(cm.selectionnerCategorie(rs.getInt("noCategorie")));
+					if(rs.getInt("noRetrait") != 0) {
+						art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
+					}
+
+					lstArt.add(art);
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectByName() : Problème dans le méthode");
+		}
+		
+		//on retourne la liste
+		return lstArt;
+	}
+	
+	
+	@Override
+	public List<Article> selectByCategory(Integer noCategorie) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL {
+		lstArt = new ArrayList<>();
+	
+	try(Connection conn = ConnectionProvider.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_CATEGORY);) {
+		
+		//alimentation de la requête
+		pstmt.setInt(1, noCategorie);
+		
+		//exécution de la requête
+		ResultSet rs = pstmt.executeQuery();
+		
+		//si la requête ne renvoie pas de résultat, on lance une exception
+		if(rs == null) {
+//			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectAll() : Aucun résultat en base");
+			System.out.println("DAL_DAOArticleJdbcImp_selectByCategory() : Aucun résultat en base");
+		
+		//si la requête renvoie un résultat, pour chaque ligne on crée un Article et on l'insère à une liste
+		} else {
+			while(rs.next()) {
+				art = new Article();
+				
+				art.setNoArticle(rs.getInt("noArticle"));
+				art.setNomArticle(rs.getString("nomArticle"));
+				art.setDescription(rs.getString("description"));
+				art.setDateDebutEncheres(rs.getDate("dateDebutEncheres"));
+				art.setDateFinEncheres(rs.getDate("dateFinEncheres"));
+				art.setMiseAPrix(rs.getInt("miseAPrix"));
+				art.setPrixVente(rs.getInt("prixVente"));
+				art.setEtatVente(rs.getString("etatVente"));
+				art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
+				art.setCategorie(cm.selectionnerCategorie(rs.getInt("noCategorie")));
+				if(rs.getInt("noRetrait") != 0) {
+					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
+				}
+
+				lstArt.add(art);
+			}
+		}
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+		throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectByCategory() : Problème dans la méthode");
+	}
+	
+	//on retourne la liste
+	return lstArt;
+	}
+	
+	
+	@Override
+	public List<Article> selectByNameAndCategory(String nomArticle, Integer noCategorie) throws DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, UtilisateurExceptionBLL {
+		lstArt = new ArrayList<>();
+		nomArticle = "%"+nomArticle+"%";
+	
+	try(Connection conn = ConnectionProvider.getConnection();
+		PreparedStatement pstmt = conn.prepareStatement(SELECT_BY_NAME_AND_CATEGORY);) {
+		
+		//alimentation de la requête
+		pstmt.setString(1, nomArticle);
+		pstmt.setInt(2, noCategorie);
+		
+		//exécution de la requête
+		ResultSet rs = pstmt.executeQuery();
+		
+		//si la requête ne renvoie pas de résultat, on lance une exception
+		if(rs == null) {
+//			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectAll() : Aucun résultat en base");
+			System.out.println("DAL_DAOArticleJdbcImp_selectByNameAndCategory() : Aucun résultat en base");
+		
+		//si la requête renvoie un résultat, pour chaque ligne on crée un Article et on l'insère à une liste
+		} else {
+			while(rs.next()) {
+				art = new Article();
+				
+				art.setNoArticle(rs.getInt("noArticle"));
+				art.setNomArticle(rs.getString("nomArticle"));
+				art.setDescription(rs.getString("description"));
+				art.setDateDebutEncheres(rs.getDate("dateDebutEncheres"));
+				art.setDateFinEncheres(rs.getDate("dateFinEncheres"));
+				art.setMiseAPrix(rs.getInt("miseAPrix"));
+				art.setPrixVente(rs.getInt("prixVente"));
+				art.setEtatVente(rs.getString("etatVente"));
+				art.setUtilisateur(um.getUtilisateurParId(rs.getInt("noUtilisateur")));
+				art.setCategorie(cm.selectionnerCategorie(rs.getInt("noCategorie")));
+				if(rs.getInt("noRetrait") != 0) {
+					art.setRetrait(rm.selectionnerRetrait(rs.getInt("noRetrait")));
+				}
+
+				lstArt.add(art);
+			}
+		}
+		
+	} catch (SQLException e) {
+		e.printStackTrace();
+		throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_selectByNameAndCategory() : Problème dans le méthode");
+	}
+	
+	//on retourne la liste
+	return lstArt;
+	}
+
+	
+	@Override
+	public Article update(Article article) throws DAL_ArticleException {
 
 		try(Connection conn = ConnectionProvider.getConnection();
 				PreparedStatement pstmt = conn.prepareStatement(UPDATE);) {
@@ -225,28 +389,30 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				pstmt.setString(7, article.getEtatVente());
 				pstmt.setInt(8, article.getCategorie().getNoCategorie());
 				pstmt.setInt(9, article.getUtilisateur().getNoUtilisateur());
-//				pstmt.setInt(10, article.getRetrait().getNoRetrait());
-				if(article.getRetrait() != null && article.getRetrait().getNoRetrait() != null) {
+				if(article.getRetrait().getNoRetrait() != null) {
 					pstmt.setInt(10, article.getRetrait().getNoRetrait());
 				} else {
 					pstmt.setNull(10, Types.INTEGER);
 				}
+				System.out.println("Article " + article.getNoArticle() + " - noRetrait : " + article.getRetrait().getNoRetrait());
+				
 				pstmt.setInt(11, article.getNoArticle());
 				
 				//exécution de a requête
 				if(pstmt.executeUpdate() < 1) {
-					throw new DAL_ArticleException("DAL_problème méthode update() dans DAOArticleJdbcImpl");
+					throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_update() : Article non modifié");
 				}
 		
 			} catch (SQLException e) {
 				e.printStackTrace();
-				throw new DAL_ArticleException("DAL_problème méthode update() dans DAOArticleJdbcImpl");
+				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_update() : Problème dans la méthode");
 			}
 			
-			//on retourne l'article
+			//on retourne l'Article
 			return article;
 	}
 
+	
 	@Override
 	public void delete(Integer noArticle) throws DAL_ArticleException {
 		
@@ -258,14 +424,26 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 			
 			//exécution de la requête
 			if(pstmt.executeUpdate() < 1) {
-				throw new DAL_ArticleException("DAL_problème méthode delete() dans DAOArticleJdbcImpl");
+				throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_insert() : Article non supprimé");
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DAL_ArticleException("DAL_problème connexion dans DAOArticleJdbcImpl");
+			throw new DAL_ArticleException("DAL_DAOArticleJdbcImp_insert() : Problème dans la méthode");
 		}
 
 	}
+
+	
+	
+
+	
+
+	
+
+	
+
+	
+
 
 }
