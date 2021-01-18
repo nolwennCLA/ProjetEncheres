@@ -13,17 +13,18 @@ import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 
 /**
- * Servlet implementation class CreaCompteServlet
+ * Servlet implementation class ModifProfilServlet
  */
-@WebServlet("/CreaCompteServlet")
-public class CreaCompteServlet extends HttpServlet {
+@WebServlet("/ModifProfilServlet")
+public class ModifProfilServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
-
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public CreaCompteServlet() {
+    public ModifProfilServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -43,20 +44,20 @@ public class CreaCompteServlet extends HttpServlet {
 			String rue = request.getParameter("rue");
 			String codePostal = request.getParameter("cpo");
 			String ville = request.getParameter("ville");
-			String motDePasse = request.getParameter("mdp");
+			String NouveauMotDePasse = request.getParameter("nouveauMdp");
 			String ConfirmationMotDePasse = request.getParameter("conf");
-			request.setAttribute("mdp", motDePasse);
-			request.setAttribute("conf", ConfirmationMotDePasse);
 			
-			if (motDePasse.equals(ConfirmationMotDePasse)) {
-				Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
+			//TODO verifier le mot de passe actuel
+			
+			if (NouveauMotDePasse.equals(ConfirmationMotDePasse)) {
+				Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, NouveauMotDePasse);
 				try {
-					um.addUtilisateur(util);
+					um.updateUtilisateur(util);
 					
 				} catch (UtilisateurExceptionBLL e) {
 					e.printStackTrace();
 					request.setAttribute("message1", e.getMessage());
-					System.out.println("email et/ou pseudo existent dejà");
+					System.out.println("erreur lors de la modification de l'utilisateur");
 				}
 			}else {
 				request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
@@ -64,6 +65,10 @@ public class CreaCompteServlet extends HttpServlet {
 			}
 			
 	}
+//		if (request.getParameter("delete")!= null) {
+//			//TODO faire un delete par pseuso et ici recuperer le pseudo dans la session
+//			um.deleteUtilisateur(id);
+//		}
 		
 		try {
 			model.setListUtilisateur(um.getListUtilisateur());
@@ -75,6 +80,9 @@ public class CreaCompteServlet extends HttpServlet {
 		
 		request.setAttribute("model", model);
 		request.getRequestDispatcher("creaCompte.jsp").forward(request, response);
+		
+		
+		
 		
 		
 		

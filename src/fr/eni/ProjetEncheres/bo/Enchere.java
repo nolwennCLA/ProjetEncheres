@@ -72,10 +72,10 @@ public class Enchere {
 		builder.append(dateEnchere);
 		builder.append(", montantEnchere=");
 		builder.append(montantEnchere);
-		builder.append(", utilisateur=");
-		builder.append(utilisateur);
-		builder.append(", article=");
-		builder.append(article);
+//		builder.append(", utilisateur=");
+//		builder.append(utilisateur);
+//		builder.append(", article=");
+//		builder.append(article);
 		builder.append("]");
 		return builder.toString();
 	}
