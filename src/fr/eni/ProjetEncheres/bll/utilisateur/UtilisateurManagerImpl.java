@@ -112,6 +112,7 @@ public class UtilisateurManagerImpl implements UtilisateurManager {
 
 	@Override
 	public void deleteUtilisateur(String pseudo) throws UtilisateurExceptionBLL {
+		
 		try {
 			utilDAO.delete(pseudo);
 		} catch (UtilisateurDALException e) {

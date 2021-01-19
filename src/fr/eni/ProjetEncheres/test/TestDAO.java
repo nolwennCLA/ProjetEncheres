@@ -11,7 +11,7 @@ public class TestDAO {
 	
 	public static void main(String[] args) throws UtilisateurDALException {
 	
-		dao.insert(new Utilisateur("nono", "cla", "nolw", "abc", "0298870000", "rue du grand large", "29000", "quimper", "bidule"));
+		//dao.insert(new Utilisateur("nono", "cla", "nolw", "abc", "0298870000", "rue du grand large", "29000", "quimper", "bidule"));
 	//dao.delete(7);
 //	Utilisateur claire= new Utilisateur("clacla", "denis", "claire", "email", "telephone", "rue", "codePostal", "ville", "motDePasse");
 //		dao.insert(claire);
@@ -32,6 +32,9 @@ public class TestDAO {
 //		Vincent.setPseudo("abc");
 //		dao.update(Vincent);
 //		
+	System.out.println(dao.selectById(45));
+		
+		
 	
 	}
 

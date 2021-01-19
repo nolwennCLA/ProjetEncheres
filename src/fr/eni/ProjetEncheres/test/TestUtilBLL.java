@@ -10,8 +10,8 @@ public class TestUtilBLL {
 		
 		UtilisateurManager um= new UtilisateurManagerSingl().getInstance();
 		
-		Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
-		Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
+		//Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
+		//Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
 		//um.addUtilisateur(Vincent);
 		//Vincent.setPseudo("hello");
 		//um.updateUtilisateur(Vincent);
@@ -39,10 +39,12 @@ public class TestUtilBLL {
 //		Utilisateur HervePseudo = new Utilisateur("RV", "Rico", "RV", "wanadoo", "022", "ljhl", "2147", "rennes", "doudou");
 //		um.addUtilisateur(HervePseudo);
 		
-		Utilisateur HerveCaractere = new Utilisateur("78ab", "Rico", "RV", "free", "022", "ljhl", "2147", "rennes", "doudou");
-		um.addUtilisateur(HerveCaractere);
+//		Utilisateur HerveCaractere = new Utilisateur("78ab", "Rico", "RV", "free", "022", "ljhl", "2147", "rennes", "doudou");
+//		um.addUtilisateur(HerveCaractere);
 		
 		//um.deleteUtilisateur(37);
+		
+		System.out.println(um.getUtilisateurParId(45));
 		
 	}
 

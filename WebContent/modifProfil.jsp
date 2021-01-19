@@ -40,5 +40,6 @@ ${message2}
 ${message3}
 ${message4}
 ${message5}
+${message6}
 </body>
 </html>

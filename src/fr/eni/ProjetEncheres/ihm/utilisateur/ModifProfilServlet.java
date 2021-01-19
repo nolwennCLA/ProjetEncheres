@@ -34,6 +34,14 @@ public class ModifProfilServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		CreaCompteModel model= new CreaCompteModel();
+		Utilisateur utilisateur = null;
+		// je récupere l'utilisateur en session
+		try {
+			 utilisateur = um.getUtilisateurParPseudo((String)request.getSession().getAttribute("pseudo"));
+		} catch (UtilisateurExceptionBLL e2) {
+			request.setAttribute("message6", e2.getMessage());
+			e2.printStackTrace();
+		}
 		
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
@@ -55,9 +63,19 @@ public class ModifProfilServlet extends HttpServlet {
 			
 				// si le nouveau mot de passe est identique à la confirmation du mot de passe
 			if (NouveauMotDePasse.equals(ConfirmationMotDePasse)) {
-				// je cree un nouvel utilisateur avec les nouvelles infos
-				Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, NouveauMotDePasse);
-				// je modifie la liste en BDD
+				
+				// je met à jour les infos de l'utilisateur
+				utilisateur.setPseudo(pseudo);
+				utilisateur.setNom(nom);
+				utilisateur.setPrenom(prenom);
+				utilisateur.setEmail(email);
+				utilisateur.setTelephone(telephone);
+				utilisateur.setRue(rue);
+				utilisateur.setCodePostal(codePostal);
+				utilisateur.setVille(ville);
+				utilisateur.setMotDePasse(NouveauMotDePasse);
+			
+				// j'update en BDD
 				try {
 					um.updateUtilisateur(utilisateur);
 					// je modifie la liste du model avec la nouvelle liste en BDD
