@@ -4,8 +4,8 @@ import fr.eni.ProjetEncheres.dal.article.DAOArticle;
 import fr.eni.ProjetEncheres.dal.article.DAOArticleJdbcImpl;
 import fr.eni.ProjetEncheres.dal.categorie.DAOCategorie;
 import fr.eni.ProjetEncheres.dal.categorie.DAOCategorieJdbcImpl;
-import fr.eni.ProjetEncheres.dal.enchere.EnchereDAO;
-import fr.eni.ProjetEncheres.dal.enchere.EnchereDAOImpl;
+import fr.eni.ProjetEncheres.dal.enchere.DAOEnchere;
+import fr.eni.ProjetEncheres.dal.enchere.DAOEnchereJdbcImpl;
 import fr.eni.ProjetEncheres.dal.retrait.DAORetrait;
 import fr.eni.ProjetEncheres.dal.retrait.DAORetraitJdbcImpl;
 import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDAO;
@@ -17,7 +17,7 @@ public class DAOFactory {
 	private static DAOArticle articleDao;
 	private static DAORetrait retraitDao;
 	private static DAOCategorie categorieDao;
-	private static EnchereDAO enchereDAO;
+	private static DAOEnchere enchereDAO;
 	
 	
 	public static UtilisateurDAO getUtilisateurDAO() {
@@ -48,9 +48,9 @@ public class DAOFactory {
 		return categorieDao;
 	}
 	
-	public static EnchereDAO getEnchereDAO() {
+	public static DAOEnchere getDAOEnchere() {
 		if (enchereDAO == null) {
-			enchereDAO = new EnchereDAOImpl();
+			enchereDAO = new DAOEnchereJdbcImpl();
 		}
 		return enchereDAO;
 	}
