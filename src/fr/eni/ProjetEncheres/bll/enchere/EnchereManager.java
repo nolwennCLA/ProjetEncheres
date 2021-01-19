@@ -6,57 +6,27 @@ import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
-import fr.eni.ProjetEncheres.bo.Article;
-import fr.eni.ProjetEncheres.bo.Categorie;
 import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
-import fr.eni.ProjetEncheres.dal.enchere.EnchereDALException;
+import fr.eni.ProjetEncheres.dal.enchere.DAL_EnchereException;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public interface EnchereManager {
-
-	public void validerEnchere(Enchere enchere) throws EnchereExceptionBLL,
-			EnchereDALException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-	public void addEnchere(Enchere enchere) throws EnchereExceptionBLL, EnchereDALException,
-			BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	public Enchere creerEnchere(Enchere enchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-	public void gestionCredit (Enchere enchere) throws EnchereExceptionBLL, EnchereDALException;
+	public List<Enchere> listerEncheres() throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-	public void remporteVente(Enchere enchere) throws EnchereExceptionBLL;
+	public Enchere selectionnerEnchereParId(Integer noEnchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-	public void deleteEnchere(Integer id) throws EnchereExceptionBLL;
+	//a priori inutile
+	public Enchere modifierEnchere(Enchere enchere) throws BLL_EnchereException;
 	
-	public Enchere selectionnerEnchere(Integer id) throws EnchereExceptionBLL,
-			BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	public void supprimerEnchere(Integer noEnchere) throws BLL_EnchereException, DAL_EnchereException;
 	
-	public List<Enchere> getListEnchere()
-			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
-			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
-
-	public List<Enchere> getListEnchereParCategorie(Integer noCategorie)
-			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
-			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
-
-	public List<Enchere> getListEnchereParArticle(Integer noArticle)
-			throws EnchereExceptionBLL, UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException,
-			BLL_RetraitException, DAL_RetraitException, BLL_CategorieException, DAL_CategorieException;
-
-	public List<Enchere> getListEnchereOuvertes() throws EnchereExceptionBLL;
-
-	public List<Enchere> getListMesEnchereEnCours() throws EnchereExceptionBLL;
-
-	public List<Enchere> getListMesEnchereGagnees() throws EnchereExceptionBLL;
-
 	
-
 	
-
-
-
+	public List<Enchere> selectionnerEnchereParNoArticle(Integer noArticle) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
 	
-
-	
-
 }
