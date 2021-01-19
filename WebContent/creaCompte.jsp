@@ -54,11 +54,14 @@
 <table>
 <tr>
 <td><input type="submit" value="Créer" name="creer"></td>
-<td><input type="submit" value="Annuler" name="annuler"></td>
-</tr>
 </table>
-
 </form>
+<form><input type="submit" value="Annuler" name="annuler"></form>
+
+
+
+
+
 ${message1}
 ${message2}
 

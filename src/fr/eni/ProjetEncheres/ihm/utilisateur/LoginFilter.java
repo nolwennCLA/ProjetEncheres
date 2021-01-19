@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter( urlPatterns= {"/ModifProfilServlet,/MonProfilServlet","/monProfil.jsp"})
+@WebFilter( urlPatterns= {"/ModifProfilServlet,/MonProfilServlet","/monProfil.jsp","/AccueilConnecteServlet"})
 
 		
 public class LoginFilter implements Filter {
@@ -36,7 +36,7 @@ public class LoginFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if(((HttpServletRequest)request).getSession().getAttribute("identifiant")==null) {
+		if(((HttpServletRequest)request).getSession().getAttribute("pseudo")==null) {
 			request.getRequestDispatcher("LoginServlet").forward(request, response);
 		}
 		else {

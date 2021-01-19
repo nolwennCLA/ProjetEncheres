@@ -33,7 +33,7 @@ public class CreaCompteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		CreaCompteModel model= new CreaCompteModel();
-		
+		// si l'utilisateur clique sur le bouton creer
 		if (request.getParameter("creer")!=null) {
 			String pseudo = request.getParameter("pseudo");
 			String nom = request.getParameter("nom");
@@ -45,35 +45,62 @@ public class CreaCompteServlet extends HttpServlet {
 			String ville = request.getParameter("ville");
 			String motDePasse = request.getParameter("mdp");
 			String ConfirmationMotDePasse = request.getParameter("conf");
-			request.setAttribute("mdp", motDePasse);
-			request.setAttribute("conf", ConfirmationMotDePasse);
 			
+			// si le mot de passe est le meme que la confirmation
 			if (motDePasse.equals(ConfirmationMotDePasse)) {
-				Utilisateur util = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
+				
+				// je cree un utilisateur avec les données entrées
+				Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, motDePasse);
+				
+				// j'ajoute l'utilisateur en BDD
 				try {
-					um.addUtilisateur(util);
-					
+					um.addUtilisateur(utilisateur);
 				} catch (UtilisateurExceptionBLL e) {
 					e.printStackTrace();
 					request.setAttribute("message1", e.getMessage());
-					System.out.println("email et/ou pseudo existent dejà");
+					
 				}
+				// je modifie la liste du model
+					try {
+						model.setListUtilisateur(um.getListUtilisateur());
+					} catch (UtilisateurExceptionBLL e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						request.setAttribute("message3", e.getMessage());
+					}
+					// je mets à jour le model
+					request.setAttribute("model", model);
+					
+					// je met en session toutes les infos de l'utilisateur
+					request.getSession().setAttribute("identifiant", request.getParameter("identifiant"));
+					request.getSession().setAttribute("utilisateur", utilisateur);
+					request.getSession().setAttribute("pseudo", utilisateur.getPseudo());
+					request.getSession().setAttribute("nom", utilisateur.getNom());
+					request.getSession().setAttribute("prenom", utilisateur.getPrenom());
+					request.getSession().setAttribute("email", utilisateur.getEmail());
+					request.getSession().setAttribute("telephone", utilisateur.getTelephone());
+					request.getSession().setAttribute("rue", utilisateur.getRue());
+					request.getSession().setAttribute("codePostal", utilisateur.getCodePostal());
+					request.getSession().setAttribute("ville", utilisateur.getVille());
+					request.getSession().setAttribute("motDePasse", utilisateur.getMotDePasse());
+					request.getSession().setAttribute("credit", utilisateur.getCredit());
+					
+					// je dirige vers la pasge d'accueil connecté
+					request.getRequestDispatcher("accueilConnecteVue.jsp").forward(request, response);
+					
+				
 			}else {
 				request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
 				
 			}
-			
+
 	}
-		
-		try {
-			model.setListUtilisateur(um.getListUtilisateur());
-		} catch (UtilisateurExceptionBLL e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("message3", e.getMessage());
+		// si l'utilisateur clique sur le bouton annuler il est renvoyé vers la page d'acceuilnon connecté
+		if (request.getParameter("annuler")!=null) {
+			request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
 		}
 		
-		request.setAttribute("model", model);
+		
 		request.getRequestDispatcher("creaCompte.jsp").forward(request, response);
 		
 		

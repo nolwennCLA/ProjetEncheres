@@ -18,7 +18,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	
 	private String INSERT = "INSERT into UTILISATEUR (pseudo,nom,prenom,email,telephone,rue,"
 			+ "codePostal,ville,motDePasse,credit,administrateur ) values(?,?,?,?,?,?,?,?,?,?,?)";
-	private String DELETE = "DELETE from UTILISATEUR where noUtilisateur=?";
+	private String DELETE = "DELETE from UTILISATEUR where pseudo=?";
 	private String UPDATE = "UPDATE UTILISATEUR set pseudo=?,nom=?,prenom=?,email=?,telephone=?,"
 			+ "rue=?,codePostal=?,ville=?,motDePasse=?,credit=?, administrateur=? where noUtilisateur= ? ";
 	private String SELECTALL = "SELECT * FROM UTILISATEUR";	
@@ -65,10 +65,10 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 			
 
 	@Override
-	public void delete(Integer id) throws UtilisateurDALException {
+	public void delete(String pseudo) throws UtilisateurDALException {
 		try (Connection cnx = ConnectionProvider.getConnection()){
 			PreparedStatement stmt = cnx.prepareStatement(DELETE);
-			stmt.setInt(1, id);
+			stmt.setString(1, pseudo);
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
