@@ -19,7 +19,7 @@
 	
 	<h3>Filtres :</h3>
 	
-	<form>
+	<form action="AccueilNonConnecteServlet" method="GET">
 	<table>
 		<tr>
 			<td><input type="search" name="rechercheNom" placeholder="Le nom de l'article contient..." style="width: 250px"></td>
@@ -43,12 +43,14 @@
 	
 	
 	<c:forEach var="art" items="${model.getLstArt()}">
+		<c:if test="${art.getEtatVente().equals('EC')}">
 		<p>
 			${art.getNomArticle()}<br>
 			Prix : ${art.getMiseAPrix()}<br>
 			Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 			Vendeur : ${art.getUtilisateur().getNom()}		
 		</p>
+		</c:if>
 	</c:forEach>
 	
 	
