@@ -137,7 +137,7 @@
 									&& art.getDateFinEncheres().compareTo(critere) >= 0}">
 							
 								<p>
-									<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+									<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 									Prix : ${art.getMiseAPrix()} points<br>
 									Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 									Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
@@ -160,6 +160,8 @@
 							
 							<p>
 								<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+							
+								<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
 								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
 								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
 								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
@@ -202,7 +204,7 @@
 					<c:forEach var="art" items="${model.getLstArt()}">
 
 						<p>
-							<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 							Prix : ${art.getMiseAPrix()} points<br>
 							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>		
