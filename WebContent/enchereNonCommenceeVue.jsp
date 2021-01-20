@@ -22,12 +22,12 @@
 	<table>
 		<tr>
 			<td><label for="nomArticle">Article : </label></td>
-			<td><input id="nomArticle" type="text" name="nomArticle" required="required"></td>
+			<td><input id="nomArticle" type="text" name="nomArticle" value="${article.getNomArticle()}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="description">Description : </label></td>
-			<td><textarea id="description" rows="3" maxlength="300" name="description"></textarea></td>
+			<td><textarea id="description" rows="3" maxlength="300" name="description">${article.getDescription()}</textarea></td>
 		</tr>
 		
 		<tr>
@@ -48,17 +48,17 @@
 		
 		<tr>
 			<td><label for="miseAPrix">Mise à prix : </label></td>
-			<td><input id=" miseAPrix" type="number" value="100" name="miseAPrix"></td>
+			<td><input id=" miseAPrix" type="number" value="100" name="miseAPrix" value="${article.getMiseAPrix()}"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="dateDebutEncheres">Début des enchères : </label></td>
-			<td><input id="dateDebutEncheres" type="date" name="dateDebutEncheres" required="required"></td>
+			<td><input id="dateDebutEncheres" type="date" name="dateDebutEncheres" value="${article.getDateDebutEncheres().toString()} required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="dateFinEncheres">Fin des enchères : </label></td>
-			<td><input id="dateFinEncheres" type="date" name="dateFinEncheres" required="required"></td>
+			<td><input id="dateFinEncheres" type="date" name="dateFinEncheres" value="${article.getDateFinEncheres()} required="required"></td>
 		</tr>
 	</table>
 	
@@ -67,25 +67,25 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" value="${rueSess}" required="required"></td>
+			<td><input id="rue" type="text" name="rue" value="${utilisateurSess.getRue()}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" value="${codePostalSess}" required="required"></td>
+			<td><input id="codePostal" type="text" name="codePostal" value="${utilisateurSess.getCodePostal()}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" value="${villeSess}" required="required"></td>
+			<td><input id="ville" type="text" name="ville" value="${utilisateurSess.getVille()}" required="required"></td>
 		</tr>
 	
 	</table>
 	</fieldset>
 	
 	<input type="submit" value="Enregistrer" name="bouton">
-	<input type="reset" value="Réinitialiser" name="bouton">
 	<input type="submit" value="Annuler" name="bouton" formnovalidate>
+	<input type="submit" value="Annuler la vente" name="bouton" formnovalidate>
 
 	</form>
 	

@@ -1,14 +1,26 @@
 package fr.eni.ProjetEncheres.test;
 
+import java.util.Date;
+
+import fr.eni.ProjetEncheres.bll.article.ArticleManager;
+import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
+import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
+import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
+import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
+import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
+import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
+import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
+import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 public class TestUtilBLL {
-	public static void main(String[] args) throws UtilisateurExceptionBLL {
+	public static void main(String[] args) throws UtilisateurExceptionBLL, BLL_ArticleException, DAL_ArticleException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException {
 		
 		UtilisateurManager um= new UtilisateurManagerSingl().getInstance();
+		ArticleManager am = new ArticleManagerSing().getInstance();
 		
 		//Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
 		//Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
@@ -44,7 +56,12 @@ public class TestUtilBLL {
 		
 		//um.deleteUtilisateur(37);
 		
-		System.out.println(um.getUtilisateurParId(45));
+		//System.out.println(um.getUtilisateurParId(45));
+		//System.out.println(um.getUtilisateurParPseudo("RV").getNoUtilisateur());
+		
+		//am.selectionnerArticleParNom("ordi");
+		System.out.println(am.selectionnerArticleParId(1));
+		
 		
 	}
 
