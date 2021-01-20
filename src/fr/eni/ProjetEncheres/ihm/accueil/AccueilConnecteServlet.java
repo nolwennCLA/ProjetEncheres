@@ -122,10 +122,13 @@ public class AccueilConnecteServlet extends HttpServlet {
 					//si on cherche les enchères de l'utilisateur, on a besoin du noUtilisateur (en session)	
 					} else if(critere.equals("mesEncheres")) {
 						request.setAttribute("sousCat", request.getParameter("encheres"));
-						request.setAttribute("critere", request.getSession().getAttribute("noSess"));
+						request.setAttribute("critere", noSess);
 					
-					//si on cherche les enchères remportées, on a besoin du noUtilisateur (en session) et de l'état de vente
-						request.setAttribute("critere", request.getSession().getAttribute("noSess"));
+					
+					} else if(critere.equals("encheresRemportees")) {
+						//si on cherche les enchères remportées, on a besoin du noUtilisateur (en session) et de l'état de vente
+						request.setAttribute("sousCat", request.getParameter("encheres"));
+						request.setAttribute("critere", noSess);
 					}
 				}
 			}

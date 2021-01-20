@@ -17,9 +17,7 @@ import fr.eni.ProjetEncheres.bll.categorie.CategorieManagerSing;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
-import fr.eni.ProjetEncheres.dal.article.DAOArticle;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
-import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 /**
@@ -36,6 +34,7 @@ public class AccueilNonConnecteServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		CategorieManager cm = CategorieManagerSing.getInstance();
 		ArticleManager am = ArticleManagerSing.getInstance();
 		
