@@ -1,6 +1,10 @@
 package fr.eni.ProjetEncheres.ihm.accueil;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,11 +18,16 @@ import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManager;
 import fr.eni.ProjetEncheres.bll.categorie.CategorieManagerSing;
+import fr.eni.ProjetEncheres.bll.enchere.BLL_EnchereException;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereManager;
+import fr.eni.ProjetEncheres.bll.enchere.EnchereManagerSing;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
+import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
+import fr.eni.ProjetEncheres.dal.enchere.DAL_EnchereException;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
 /**
@@ -28,7 +37,9 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 public class AccueilConnecteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	AccueilConnecteModel model = new AccueilConnecteModel();
+	AccueilConnecteModel model;
+	Calendar cal = Calendar.getInstance();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 
 	/**
@@ -37,14 +48,13 @@ public class AccueilConnecteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		CategorieManager cm = CategorieManagerSing.getInstance();
 		ArticleManager am = ArticleManagerSing.getInstance();
+		EnchereManager em = EnchereManagerSing.getInstance();
 		
 		String path2 = "/accueilConnecteVue.jsp";
 		
 		
-//		//si une session est ouverte, on crée un Utilisateur de session
-//		if(request.getSession() != null) {
-//			
-//		}
+		
+
 		
 		
 		//on assigne les catégories à la select
@@ -60,72 +70,180 @@ public class AccueilConnecteServlet extends HttpServlet {
 		//si l'utilisateur a cliqué sur le bouton Rechercher
 		if(request.getParameter("bouton") != null && request.getParameter("bouton").equals("Rechercher")) {
 			
-			String achatsVentes = request.getParameter("achatsVentes");
-			request.setAttribute("achatsVentes", achatsVentes);
+			model = new AccueilConnecteModel();
 			
 			
 			
-			String encheres = request.getParameter("encheres");
-			if(encheres != null) {
-				System.out.println(encheres);
+			//si l'utilisateur a sélectionné le bouton radio 'Mes ventes'
+			if(request.getParameter("achatsVentes") != null && request.getParameter("achatsVentes").equals("ventes")) {
+				
+				//on attribue à la requête le bouton sélectionné
+				request.setAttribute("bouton", request.getParameter("achatsVentes"));
+				
+				//si l'utilisateur a sélectionné une sous-catégorie de 'Mes ventes' (EC, AV ou VT)
+				if(request.getParameter("mesVentes") != null) {
+					
+					//on attribue à la requête la sous-categorie sélectionnée
+					request.setAttribute("critere", request.getParameter("mesVentes"));
+				}
+				
 			}
 			
-			String mesVentes = request.getParameter("mesVentes");
-			request.setAttribute("mesVentes", mesVentes);
-			if(mesVentes != null) {
-				System.out.println(mesVentes);
-			}
 			
+			//si l'utilisateur a sélectionné le bouton radio 'Achats'
+			if(request.getParameter("achatsVentes") != null && request.getParameter("achatsVentes").equals("achats")) {
+				
+				//on attribue à la requête le bouton sélectionné
+				request.setAttribute("bouton", request.getParameter("achatsVentes"));
+				
+				//si l'utilisateur a sélectionné une sous-catégorie de 'Mes ventes' (enchères ouvertes, mes enchères ou mes enchères remportées)
+				if(request.getParameter("encheres") != null) {
+					
+					String critere = request.getParameter("encheres");
+					
+					//si on cherche les enchères ouvertes on a besoin de la date du jour pour la comparer au dates début et fin encheres
+					if(critere.equals("encheresOuvertes")) {
+						request.setAttribute("sousCat", request.getParameter("encheres"));
+						
+						//mise au format yyy-MM-dd de la date du jour
+						Date dJour = null;
+						cal.setTime(new Date());		
+						try {
+							dJour = new Date(sdf.parse(cal.get(Calendar.YEAR) + "-" + cal.get(Calendar.MONTH)+1 + "-" + cal.get(Calendar.DAY_OF_MONTH)).getTime());
 
-			
-			
-			
-			
-			
-			
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						request.setAttribute("critere", dJour);
+					
+					//si on cherche les enchères de l'utilisateur, on a besoin du noUtilisateur (en session)	
+					} else if(critere.equals("mesEncheres")) {
+						request.setAttribute("sousCat", request.getParameter("encheres"));
+						request.setAttribute("critere", request.getSession().getAttribute("noSess"));
+					
+					//si on cherche les enchères remportées, on a besoin du noUtilisateur (en session) et de l'état de vente
+						request.setAttribute("critere", request.getSession().getAttribute("noSess"));
+					}
+				}
+			}
+				
+				
 			//si recherche sans nom et sur toutes les catégories
 			if("".equals(request.getParameter("rechercheNom")) && request.getParameter("rechercheCategorie").equals("toutes")) {
-				try {
-					model.setLstArt(am.listerArticles());
-				} catch (DAL_ArticleException | BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
-						| DAL_RetraitException | UtilisateurExceptionBLL e) {
-					request.setAttribute("message", e.getMessage());
-					e.printStackTrace();
-				}
+				
+
+					try {
+						model.setLstEnch(em.listerEncheres());
+					} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException
+							| DAL_CategorieException | BLL_RetraitException | DAL_RetraitException
+							| DAL_ArticleException | BLL_ArticleException | UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+				
+				
+					try {
+						model.setLstArt(am.listerArticles());
+					} catch (DAL_ArticleException | BLL_CategorieException | DAL_CategorieException
+							| BLL_RetraitException | DAL_RetraitException | UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+	
+			
 			
 			//si rechercher sur nom et sur toutes les catégories
 			} else if(!"".equals(request.getParameter("rechercheNom")) && request.getParameter("rechercheCategorie").equals("toutes")) {
-				try {
-					model.setLstArt(am.selectionnerArticleParNom(request.getParameter("rechercheNom")));
-				} catch (BLL_ArticleException | DAL_ArticleException | BLL_CategorieException | DAL_CategorieException
-						| BLL_RetraitException | DAL_RetraitException | UtilisateurExceptionBLL e) {
-					request.setAttribute("message", e.getMessage());
-					e.printStackTrace();
-				}
 			
-			//si recherche sans nom mais sur une catégorie particulière
+				
+					try {
+						model.setLstEnch(em.selectionnerEnchereParNomArticle(request.getParameter("rechercheNom")));
+					} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException
+							| DAL_CategorieException | BLL_RetraitException | DAL_RetraitException
+							| DAL_ArticleException | BLL_ArticleException | UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+				
+				
+					try {
+						model.setLstArt(am.selectionnerArticleParNom(request.getParameter("rechercheNom")));
+					} catch (BLL_ArticleException | DAL_ArticleException | BLL_CategorieException
+							| DAL_CategorieException | BLL_RetraitException | DAL_RetraitException
+							| UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+			
+				
+			
+				//si recherche sans nom mais sur une catégorie particulière
 			} else if("".equals(request.getParameter("rechercheNom")) && !request.getParameter("rechercheCategorie").equals("toutes")) {
-				try {
-					model.setLstArt(am.selectionnerArticleParCategorie(Integer.parseInt(request.getParameter("rechercheCategorie"))));
-				} catch (BLL_ArticleException | DAL_ArticleException | BLL_CategorieException | DAL_CategorieException
-						| BLL_RetraitException | DAL_RetraitException | NumberFormatException | UtilisateurExceptionBLL e) {
-					request.setAttribute("message", e.getMessage());
-					e.printStackTrace();
-				}
 			
-			//si recherche sur nom et sur catégorie particulière
+				
+					try {
+						model.setLstEnch(em.selectionnerEnchereParCategorieArticle(Integer.parseInt(request.getParameter("rechercheCategorie"))));
+					} catch (NumberFormatException | BLL_EnchereException | DAL_EnchereException
+							| BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
+							| DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
+							| UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+				
+				
+					try {
+						model.setLstArt(am.selectionnerArticleParCategorie(Integer.parseInt(request.getParameter("rechercheCategorie"))));
+					} catch (NumberFormatException | BLL_ArticleException | DAL_ArticleException
+							| BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
+							| DAL_RetraitException | UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+				
+				
+				//si recherche sur nom et sur catégorie particulière
 			} else if(!"".equals(request.getParameter("rechercheNom")) && !request.getParameter("rechercheCategorie").equals("toutes")) {
-				try {
-					model.setLstArt(am.selectionnerArticleParNomEtCategorie(request.getParameter("rechercheNom"), Integer.parseInt(request.getParameter("rechercheCategorie"))));
-				} catch (BLL_ArticleException | DAL_ArticleException | BLL_CategorieException | DAL_CategorieException
-						| BLL_RetraitException | DAL_RetraitException | NumberFormatException | UtilisateurExceptionBLL e) {
-					request.setAttribute("message", e.getMessage());
-					e.printStackTrace();
-				}
-			}
 			
-			//on attribue le modèle à la requête
-			request.setAttribute("model", model);
+				
+					try {
+						model.setLstEnch(em.selectionnerEnchereParNomEtCategorieArticle(request.getParameter("rechercheNom"), Integer.parseInt(request.getParameter("rechercheCategorie"))));
+					} catch (NumberFormatException | BLL_EnchereException | DAL_EnchereException
+							| BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
+							| DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
+							| UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+				
+				
+					try {
+						model.setLstArt(am.selectionnerArticleParNomEtCategorie(request.getParameter("rechercheNom"), Integer.parseInt(request.getParameter("rechercheCategorie"))));
+					} catch (NumberFormatException | BLL_ArticleException | DAL_ArticleException
+							| BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
+							| DAL_RetraitException | UtilisateurExceptionBLL e) {
+						request.setAttribute("message", e.getMessage());
+						e.printStackTrace();
+					}
+				
+			}
+
+			
+			
+			//on attribue le modèle à la session
+			request.getSession().setAttribute("model", model);
+			AccueilConnecteModel modelSess = (AccueilConnecteModel) request.getSession().getAttribute("model");
+			//on attribue les listes du modèle à la session
+			request.getSession().setAttribute("listeArticles", modelSess.getLstArt());
+			request.getSession().setAttribute("listeEncheres", modelSess.getLstEnch());
+			
+			
 
 		}
 		

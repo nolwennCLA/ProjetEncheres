@@ -1,5 +1,6 @@
 package fr.eni.ProjetEncheres.bll.enchere;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
@@ -8,6 +9,7 @@ import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
+import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
@@ -17,12 +19,12 @@ import fr.eni.ProjetEncheres.dal.enchere.DAL_EnchereException;
 import fr.eni.ProjetEncheres.dal.enchere.DAOEnchere;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 
+
 public class EnchereManagerImpl implements EnchereManager {
 	
 	
 	DAOEnchere enchereDao = DAOFactory.getDAOEnchere();
 	UtilisateurManager um = UtilisateurManagerSingl.getInstance();
-	
 	
 	List<Enchere> lstEnch;
 	
@@ -82,7 +84,6 @@ public class EnchereManagerImpl implements EnchereManager {
 
 
 	
-	
 	@Override
 	public List<Enchere> selectionnerEnchereParNoArticle(Integer noArticle) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
 		if(noArticle != null) {
@@ -93,7 +94,67 @@ public class EnchereManagerImpl implements EnchereManager {
 		return lstEnch;
 	}	
 	
+	public List<Enchere> selectionnerEncheresOuvertes() throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
+		List<Enchere> lstEnchEC = new ArrayList<>();
+		lstEnch = this.listerEncheres();
+		for(Enchere ench : lstEnch) {
+			if(ench.getArticle().getEtatVente().equals("EC")) {
+				lstEnchEC.add(ench);
+			}
+		}
+		return lstEnchEC;
+	}
 	
+	@Override
+	public List<Enchere> selectionnerEnchereParNomArticle(String nomArticle) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
+		List<Enchere> lstEncheresParNomArticle;
+		if(nomArticle != null) {
+			List<Enchere> lstEncheres = this.listerEncheres();
+			lstEncheresParNomArticle = new ArrayList<>();
+			for(Enchere ench : lstEncheres) {
+				if(ench.getArticle().getNomArticle().contains(nomArticle)) {
+					lstEncheresParNomArticle.add(ench);
+				}
+			}
+		} else {
+			throw new BLL_EnchereException("BLL_EnchereManagerImpl_selectionnerEnchereParNomArticle() : Le nomArticle est null");
+		}
+		return lstEncheresParNomArticle;
+	}	
+
+	@Override
+	public List<Enchere> selectionnerEnchereParCategorieArticle(Integer noCategorie) throws DAL_EnchereException, BLL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
+		List<Enchere> lstEncheresParCategorieArticle;
+		if(noCategorie != null) {
+			List<Enchere> lstEncheres = this.listerEncheres();
+			lstEncheresParCategorieArticle = new ArrayList<>();
+			for(Enchere ench : lstEncheres) {
+				if(ench.getArticle().getCategorie().getNoCategorie() == noCategorie) {
+					lstEncheresParCategorieArticle.add(ench);
+				}
+			}
+		} else {
+			throw new BLL_EnchereException("BLL_EnchereManagerImpl_selectionnerEnchereParCategorieArticle() : Le noCategorie est null");
+		}
+		return lstEncheresParCategorieArticle;
+	}
+
+	@Override
+	public List<Enchere> selectionnerEnchereParNomEtCategorieArticle(String nomArticle, Integer noCategorie) throws DAL_EnchereException, BLL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
+		List<Enchere> lstEncheresParNomEtCategorieArticle;
+		if(nomArticle != null && noCategorie != null) {
+			List<Enchere> lstEncheres = this.listerEncheres();
+			lstEncheresParNomEtCategorieArticle = new ArrayList<>();
+			for(Enchere ench : lstEncheres) {
+				if(ench.getArticle().getNomArticle().contains(nomArticle) && ench.getArticle().getCategorie().getNoCategorie() == noCategorie) {
+					lstEncheresParNomEtCategorieArticle.add(ench);
+				}
+			}
+		} else {
+			throw new BLL_EnchereException("BLL_EnchereManagerImpl_selectionnerEnchereParCategorieArticle() : Le noCategorie ou le nomArticle est null");
+		}
+		return lstEncheresParNomEtCategorieArticle;
+	}
 	
 	
 	public boolean verifPossibiliteEnchere(Enchere enchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL {
