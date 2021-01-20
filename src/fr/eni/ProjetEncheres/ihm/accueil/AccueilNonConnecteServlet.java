@@ -25,7 +25,8 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 /**
  * Servlet implementation class AccueilNonConnecteServlet
  */
-@WebServlet("/AccueilNonConnecteServlet")
+@WebServlet(urlPatterns={"","/AccueilNonConnecteServlet"})
+
 public class AccueilNonConnecteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	

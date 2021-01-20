@@ -97,7 +97,7 @@ public class CreaCompteServlet extends HttpServlet {
 	}
 		// si l'utilisateur clique sur le bouton annuler il est renvoyé vers la page d'acceuilnon connecté
 		if (request.getParameter("annuler")!=null) {
-			request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
+			request.getRequestDispatcher("/AccueilNonConnecteServlet").forward(request, response);
 		}
 		
 		

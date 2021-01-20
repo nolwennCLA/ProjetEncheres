@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 					if ((identifiant.equals(util.getPseudo()) || identifiant.equals(util.getEmail())) && mdp.equals(util.getMotDePasse())) {
 						trouve =true;
 						utilisateur=util;
-						System.out.println("ok pour logger");
+		
 					}
 
 				}
