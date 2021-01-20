@@ -18,31 +18,34 @@ import fr.eni.ProjetEncheres.bo.Utilisateur;
 @WebServlet("/ModifProfilServlet")
 public class ModifProfilServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ModifProfilServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		CreaCompteModel model= new CreaCompteModel();
+	public ModifProfilServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		CreaCompteModel model = new CreaCompteModel();
 		Utilisateur utilisateur = null;
 		// je récupere l'utilisateur en session
 		try {
-			 utilisateur = um.getUtilisateurParPseudo((String)request.getSession().getAttribute("pseudo"));
+			utilisateur = um.getUtilisateurParPseudo((String) request.getSession().getAttribute("pseudo"));
 		} catch (UtilisateurExceptionBLL e2) {
 			request.setAttribute("message6", e2.getMessage());
 			e2.printStackTrace();
 		}
-		
+
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
@@ -51,19 +54,16 @@ public class ModifProfilServlet extends HttpServlet {
 		String rue = request.getParameter("rue");
 		String codePostal = request.getParameter("cpo");
 		String ville = request.getParameter("ville");
-		String mdpActuel = request.getParameter("mdpActuel");
+		String mdp = request.getParameter("mdpActuel");
 		String NouveauMotDePasse = request.getParameter("nouveauMdp");
 		String ConfirmationMotDePasse = request.getParameter("conf");
-		
+
 		// si l'utilisateur clique sur le bouton enregistrer
-		if (request.getParameter("enregistrer")!=null) {
-			
+		if (request.getParameter("enregistrer") != null) {
+
 			// si le mot de passe actuel est bon
-			if (mdpActuel.equals(request.getSession().getAttribute("motDePasse"))) {
-			
-				// si le nouveau mot de passe est identique à la confirmation du mot de passe
-			if (NouveauMotDePasse.equals(ConfirmationMotDePasse)) {
-				
+			if (mdp.equals(request.getSession().getAttribute("motDePasse"))) {
+
 				// je met à jour les infos de l'utilisateur
 				utilisateur.setPseudo(pseudo);
 				utilisateur.setNom(nom);
@@ -73,8 +73,14 @@ public class ModifProfilServlet extends HttpServlet {
 				utilisateur.setRue(rue);
 				utilisateur.setCodePostal(codePostal);
 				utilisateur.setVille(ville);
-				utilisateur.setMotDePasse(NouveauMotDePasse);
-			
+				// si le nouveau mot de passe est identique à la confirmation du mot de passe
+				if (NouveauMotDePasse.equals(ConfirmationMotDePasse) && !"".equals(NouveauMotDePasse)) {
+					utilisateur.setMotDePasse(NouveauMotDePasse);
+				} else {
+					request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
+
+				}
+
 				// j'update en BDD
 				try {
 					um.updateUtilisateur(utilisateur);
@@ -100,42 +106,40 @@ public class ModifProfilServlet extends HttpServlet {
 					request.getSession().setAttribute("ville", utilisateur.getVille());
 					request.getSession().setAttribute("motDePasse", utilisateur.getMotDePasse());
 					request.getSession().setAttribute("credit", utilisateur.getCredit());
-					
+
 					// je dirige vers la page d'accueil connecté
 					request.getRequestDispatcher("accueilConnecteVue.jsp").forward(request, response);
-			
-					
+
 				} catch (UtilisateurExceptionBLL e) {
 					e.printStackTrace();
 					request.setAttribute("message1", e.getMessage());
 					System.out.println("erreur lors de la modification de l'utilisateur");
 				}
-			}else {
-				request.setAttribute("message2", "Erreur lors de la confirmation du mot de passe");
-				
-			}
+
 			} else {
 				request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");
 			}
-			
-	}
-		
+
+		}
+
 		// si l'utilisateur clique sur le bouton supprimer
-		if (request.getParameter("delete")!=null) {
+		if (request.getParameter("delete") != null) {
 			// si le mot de passe est le bon
-			if (mdpActuel.equals(request.getSession().getAttribute("motDePasse"))) {
-				// j'invalide la session
-				request.getSession().invalidate();
+			if (mdp.equals(request.getSession().getAttribute("motDePasse"))) {
 				
 				// je supprime l'utilisateur de la liste de BDD
-				
+
 				try {
-					um.deleteUtilisateur((String)request.getSession().getAttribute("pseudo"));
+					um.deleteUtilisateur((String) request.getSession().getAttribute("pseudo"));
 				} catch (UtilisateurExceptionBLL e1) {
-					request.setAttribute("message5", e1.getMessage());
+					request.setAttribute("message5", "erreur : suppression impossible");
+					//request.setAttribute("message5", e1.getMessage());
 					e1.printStackTrace();
 				}
-						
+				// j'invalide la session
+				//request.getSession().invalidate();
+
+
 				// je modifie le model
 				try {
 					model.setListUtilisateur(um.getListUtilisateur());
@@ -146,23 +150,24 @@ public class ModifProfilServlet extends HttpServlet {
 				}
 				// je mets à jour le model
 				request.setAttribute("model", model);
-				//je renvoie vers la page accueil non connecté
-				request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
-				
-			
-		} else {
-			request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");
+				// je renvoie vers la page accueil non connecté
+				//request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
+
+			} else {
+				request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");
+			}
 		}
-		}
-	
+
 		request.getRequestDispatcher("modifProfil.jsp").forward(request, response);
-		
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

@@ -2,14 +2,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Nouvelle vente</title>
+<title>Enchere non commencée</title>
 </head>
 <body>
-
+	
 	<jsp:include page="header.jsp"></jsp:include>
 	
 	<p style="color: red">${pseudoSess}</p>
@@ -17,8 +18,7 @@
 	
 	<h2>Nouvelle vente</h2>
 	
-	
-	<form action="NouvelleVenteArticleServlet" method="GET">
+	<form action="EnchereNonCommenceeServlet" method="GET">
 	<table>
 		<tr>
 			<td><label for="nomArticle">Article : </label></td>
@@ -67,17 +67,17 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" value="${rue}" required="required"></td>
+			<td><input id="rue" type="text" name="rue" value="${rueSess}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" value="${codePostal}" required="required"></td>
+			<td><input id="codePostal" type="text" name="codePostal" value="${codePostalSess}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" value="${ville}" required="required"></td>
+			<td><input id="ville" type="text" name="ville" value="${villeSess}" required="required"></td>
 		</tr>
 	
 	</table>
@@ -91,6 +91,14 @@
 	
 	<p style="color: red">${messageErreur}</p>
 	
+	<c:forEach var="art" items="${listeSelection}" varStatus="status">
+		<p>
+			<a href="enchereNonCommenceeVue.jsp">${art.getNomArticle()}</a><br>
+			Prix : ${art.getMiseAPrix()}<br>
+			Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+			Vendeur : ${art.getUtilisateur().getNom()}<br>
+		<p>
+	</c:forEach>
 
 </body>
 </html>

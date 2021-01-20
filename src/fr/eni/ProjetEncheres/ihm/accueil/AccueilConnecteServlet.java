@@ -54,7 +54,8 @@ public class AccueilConnecteServlet extends HttpServlet {
 		
 		
 		
-
+		Integer noSess = (Integer) request.getSession().getAttribute("noUtilisateur");
+		request.setAttribute("noSess", noSess);
 		
 		
 		//on assigne les catégories à la select
@@ -88,6 +89,8 @@ public class AccueilConnecteServlet extends HttpServlet {
 				}
 				
 			}
+			
+			
 			
 			
 			//si l'utilisateur a sélectionné le bouton radio 'Achats'

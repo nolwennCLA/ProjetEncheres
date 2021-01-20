@@ -3,14 +3,8 @@ package fr.eni.ProjetEncheres.bll.retrait;
 //import java.util.ArrayList;
 import java.util.List;
 
-import fr.eni.ProjetEncheres.bll.article.ArticleManager;
-import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
-import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
-import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Retrait;
-import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
-import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 import fr.eni.ProjetEncheres.dal.retrait.DAORetrait;
