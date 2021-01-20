@@ -67,17 +67,17 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" value="${rueSess}" required="required"></td>
+			<td><input id="rue" type="text" name="rue" value="${rue}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" value="${codePostalSess}" required="required"></td>
+			<td><input id="codePostal" type="text" name="codePostal" value="${codePostal}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" value="${villeSess}" required="required"></td>
+			<td><input id="ville" type="text" name="ville" value="${ville}" required="required"></td>
 		</tr>
 	
 	</table>
