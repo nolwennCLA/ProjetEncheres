@@ -135,6 +135,7 @@ public class ModifProfilServlet extends HttpServlet {
 					request.setAttribute("message5", "erreur : suppression impossible");
 					//request.setAttribute("message5", e1.getMessage());
 					e1.printStackTrace();
+					//System.out.println(request.getSession().getAttribute("pseudo"));
 				}
 				// j'invalide la session
 				//request.getSession().invalidate();
