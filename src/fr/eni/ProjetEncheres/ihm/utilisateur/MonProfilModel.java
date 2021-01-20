@@ -3,6 +3,7 @@ package fr.eni.ProjetEncheres.ihm.utilisateur;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 
 public class MonProfilModel {
+	
 	Utilisateur utilisateur= new Utilisateur();
 
 	public MonProfilModel() {

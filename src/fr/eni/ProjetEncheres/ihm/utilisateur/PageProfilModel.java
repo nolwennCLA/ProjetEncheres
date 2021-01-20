@@ -4,27 +4,35 @@ import fr.eni.ProjetEncheres.bo.Utilisateur;
 
 public class PageProfilModel {
 	
-
-	private String pseudo;
-	
+	Utilisateur utilisateur = new Utilisateur();
 
 	public PageProfilModel() {
 		super();
 	}
 
-	public PageProfilModel(String pseudo) {
+	public PageProfilModel(Utilisateur utilisateur) {
 		super();
-		this.pseudo = pseudo;
+		this.utilisateur = utilisateur;
 	}
 
-	public String getPseudo() {
-		return pseudo;
+	public Utilisateur getUtilisateur() {
+		return utilisateur;
 	}
 
-	public void setPseudo(String pseudo) {
-		this.pseudo = pseudo;
+	public void setUtilisateur(Utilisateur utilisateur) {
+		this.utilisateur = utilisateur;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("PageProfilModel [utilisateur=");
+		builder.append(utilisateur);
+		builder.append("]");
+		return builder.toString();
 	}
 	
 	
+
 
 }

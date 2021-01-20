@@ -18,7 +18,7 @@
 	<h2>Nouvelle vente</h2>
 	
 	
-	<form action="NouvelleVenteArticleServlet" method="GET">
+	<form action="NouvelleVenteArticleServlet" method="POST">
 	<table>
 		<tr>
 			<td><label for="nomArticle">Article : </label></td>
@@ -67,17 +67,17 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" value="${rue}" required="required"></td>
+			<td><input id="rue" type="text" name="rue" placeholder="${rue}" ></td>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" value="${codePostal}" required="required"></td>
+			<td><input id="codePostal" type="text" name="codePostal" placeholder="${codePostal}" ></td>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" value="${ville}" required="required"></td>
+			<td><input id="ville" type="text" name="ville" placeholder="${ville}" ></td>
 		</tr>
 	
 	</table>
