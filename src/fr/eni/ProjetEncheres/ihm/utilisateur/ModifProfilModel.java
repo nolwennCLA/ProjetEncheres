@@ -2,15 +2,15 @@ package fr.eni.ProjetEncheres.ihm.utilisateur;
 
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 
-public class TestModel {
+public class ModifProfilModel {
+	
+	Utilisateur utilisateur = new Utilisateur();
 
-	Utilisateur utilisateur= new Utilisateur();
-
-	public TestModel() {
+	public ModifProfilModel() {
 		super();
 	}
 
-	public TestModel(Utilisateur utilisateur) {
+	public ModifProfilModel(Utilisateur utilisateur) {
 		super();
 		this.utilisateur = utilisateur;
 	}
@@ -26,11 +26,14 @@ public class TestModel {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("TestModel [utilisateur=");
+		builder.append("ModifProfilModel [utilisateur=");
 		builder.append(utilisateur);
 		builder.append("]");
 		return builder.toString();
 	}
 	
 	
+	
+	
+
 }

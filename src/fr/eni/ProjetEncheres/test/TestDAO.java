@@ -1,5 +1,7 @@
 package fr.eni.ProjetEncheres.test;
 
+import fr.eni.ProjetEncheres.bo.Article;
+import fr.eni.ProjetEncheres.bo.Retrait;
 import fr.eni.ProjetEncheres.bo.Utilisateur;
 import fr.eni.ProjetEncheres.dal.dal.DAOFactory;
 import fr.eni.ProjetEncheres.dal.utilisateur.UtilisateurDALException;
@@ -24,15 +26,23 @@ public class TestDAO {
 		
 		
 //		System.out.println(dao.selectById(10));
-//		Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
-//		Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
-//		dao.insert(Julien);
-//		dao.insert(Vincent);
+		Utilisateur Vincent= new Utilisateur("vinc", "le bras", "vincent", "tyu", "  ", "lkj", "2580", "quimper", "password");
+		//Utilisateur Julien= new Utilisateur("jul", "clerc", "julien", "lh", "  ", "lkj", "2580", "quimper", "password");
+		//dao.insert(Julien);
+	dao.insert(Vincent);
 		
 //		Vincent.setPseudo("abc");
 //		dao.update(Vincent);
 //		
-	System.out.println(dao.selectById(45));
+	//System.out.println(dao.selectById(45));
+		//Article article= new Article();
+//		article.setUtilisateur(Julien);
+//		System.out.println(article.getUtilisateur());
+//		Retrait retrait = new Retrait();
+//		dao.
+//	
+	//System.out.println(Vincent.getNoUtilisateur());
+//		System.out.println(article.getNoArticle());
 		
 		
 	
