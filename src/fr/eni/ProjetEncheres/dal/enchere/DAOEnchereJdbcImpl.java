@@ -15,6 +15,7 @@ import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
+import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
@@ -31,6 +32,8 @@ public class DAOEnchereJdbcImpl implements DAOEnchere {
 	
 	private final String SELECT_BY_NOARTICLE = "SELECT * FROM Enchere WHERE noArticle = ? ORDER BY montantEnchere DESC";
 	
+//	private final String SELECT_BY_ARTICLE_NAME = "SELECT"
+	
 	//a priori inutile
 	private final String UPDATE = "UPDATE Enchere SET "
 			+ "dateEnchere = ?, "
@@ -39,13 +42,19 @@ public class DAOEnchereJdbcImpl implements DAOEnchere {
 			+ "noUtilisateur = ?";
 	
 	private final String DELETE = "DELETE FROM Enchere WHERE noEnchere = ?";
-			
+	
+	
+	
+	
 	private List<Enchere> lstEnch;
 	private Enchere ench;
 	private ArticleManager am = ArticleManagerSing.getInstance();
 	private UtilisateurManager um = UtilisateurManagerSingl.getInstance();
 	
-
+	
+	
+	
+	
 	@Override
 	public Enchere insert(Enchere enchere) throws DAL_EnchereException {
 		
@@ -240,5 +249,11 @@ public class DAOEnchereJdbcImpl implements DAOEnchere {
 		return lstEnch;
 		
 	}
+
+	
+	
+	
+	
+
 
 }

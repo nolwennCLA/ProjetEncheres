@@ -6,6 +6,7 @@ import fr.eni.ProjetEncheres.bll.article.BLL_ArticleException;
 import fr.eni.ProjetEncheres.bll.categorie.BLL_CategorieException;
 import fr.eni.ProjetEncheres.bll.retrait.BLL_RetraitException;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
+import fr.eni.ProjetEncheres.bo.Article;
 import fr.eni.ProjetEncheres.bo.Enchere;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;

@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +17,7 @@
 	
 	<p style="color: red">${pseudoSess}</p>
 	
-	<p><a href="">Enchères</a> - <a href="nouvelleVenteArticleVue.jsp">Vendre un article</a> - <a href="monProfil.jsp">Mon profil</a> - <a href="">Déconnexion</a></p>
+	<p><a href="">Enchères</a> - <a href="nouvelleVenteArticleVue.jsp">Vendre un article</a> - <a href="">Mon profil</a> - <a href="">Déconnexion</a></p>
 	
 	<h2>Liste des enchères</h2>
 	
@@ -56,44 +59,151 @@
 		</td>
 		
 		<td>
-			<input id="ventesEnCours" type="radio" value="ventesEnCours" name="mesVentes" disabled="disabled"><label for="ventesEnCours">mes ventes en cours</label><br>
-			<input id="ventesNonDebutees" type="radio" value="ventesNonDebutees" name="mesVentes" disabled="disabled"><label for="ventesNonDebutees">ventes non débutées</label><br>
-			<input id="ventesTerminees" type="radio" value="ventesTerminees" name="mesVentes" disabled="disabled"><label for="ventesTerminees">ventes terminées</label>
+			<input id="ventesEnCours" type="radio" value="EC" name="mesVentes" disabled="disabled"><label for="ventesEnCours">mes ventes en cours</label><br>
+			<input id="ventesNonDebutees" type="radio" value="AV" name="mesVentes" disabled="disabled"><label for="ventesNonDebutees">ventes non débutées</label><br>
+			<input id="ventesTerminees" type="radio" value="VT" name="mesVentes" disabled="disabled"><label for="ventesTerminees">ventes terminées</label>
 		</td>
 	</tr>
 	</table>
 	</form>
 	
 	
-<%-- 	<c:choose>
-	<c:when test="${achatsVentes.equals('ventes')}">
-		<c:if test="${mesVentes.equals('ventesNonDebutees')}">
-			<c:forEach var="art" items="${model.getLstArt()}">
-				<c:if test="${art.getUtilisateur().getNoUtilisateur() == noSess}">
-					<p>
-						${art.getNomArticle()}<br>
-						Prix : ${art.getMiseAPrix()}<br>
-						Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-						Vendeur : ${art.getUtilisateur().getNom()}		
-					</p>
-				</c:if>
-			</c:forEach>
-		</c:if>
-	</c:when>
-	</c:choose> --%>
 	
-	<c:if test="${achatsVentes.equals('ventes') && mesVentes.equals('ventesNonDebutees')}">
-			<c:forEach var="art" items="${model.getLstArt()}">
-				<c:if test="${art.getUtilisateur().getNoUtilisateur() == noSess}">
+	<%--si l'utilisateur a sélectionné le bouton 'Mes Ventes' --%>
+	<c:if test="${bouton.equals('ventes')}">
+	
+	<c:forEach var="art" items="${model.getLstArt()}">
+	
+		<%--on sélectionne uniquement les items de l'utilisateur en sessions --%>
+		<c:if test="${art.getUtilisateur().getNoUtilisateur() == noSess}">
+		
+			<c:choose>
+				<%--si l'utilisateur a coché une sous categorie --%>
+				<c:when test="${critere != null}">
+					<%--si l'etat de vente de l'article correspond à la sous categorie, on affiche --%>
+					<c:if test="${art.getEtatVente().equals(critere)}">
+						<p>
+							${art.getNomArticle()}<br>
+							Prix : ${art.getMiseAPrix()}<br>
+							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+							Vendeur : ${art.getUtilisateur().getNom()}		
+						</p>
+					</c:if>
+				</c:when>
+				
+				<%--si l'utilisateur n'a pas coché de sous categorie, on affiche tous les articles de l'utilisateur --%>
+				<c:otherwise>
 					<p>
 						${art.getNomArticle()}<br>
 						Prix : ${art.getMiseAPrix()}<br>
 						Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 						Vendeur : ${art.getUtilisateur().getNom()}		
 					</p>
-				</c:if>
-			</c:forEach>
+				</c:otherwise>
+			</c:choose>
+			
+		</c:if>
+	</c:forEach>
+
 	</c:if>
+	
+	
+	<%--si l'utilisateur a sélectionné le bouton 'Achats' --%>
+	<c:if test="${bouton.equals('achats')}">
+	
+		<c:choose>
+				<%--si l'utilisateur a coché une sous categorie --%>
+				<c:when test="${critere != null}">
+				
+				<%--si la sous-cat est 'Enchères ouvertes' --%>
+				<c:if test="${sousCat.equals('encheresOuvertes')}">
+				
+					<c:forEach var="art" items="${model.getLstArt()}">
+					
+						<%--si la date du jour est comprise entre la dateDebutEnchere et la dateFinEnchere de l'article, on affiche --%>
+						<c:if test="${art.getDateDebutEncheres().compareTo(critere) <= 0
+									&& art.getDateFinEncheres().compareTo(critere) >= 0}">
+							
+								<p>
+									${art.getNomArticle()}<br>
+									Prix : ${art.getMiseAPrix()}<br>
+									Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+									Vendeur : ${art.getUtilisateur().getNom()}	
+								</p>
+						
+						</c:if>
+						
+					</c:forEach>
+					
+				</c:if>
+				
+					
+				<%--si la sous-cat est 'Mes enchères' --%>
+				<c:if test="${sousCat.equals('mesEncheres')}">
+				
+					<c:forEach var="ench" items="${model.getLstEnch()}">
+					
+						<%--si le numéro de l'enchérisseur correspond à celui de l'utilisateur en session, on affiche --%>
+						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere}">
+							
+							<p>
+								${ench.getArticle().getNomArticle()}<br>
+								Prix : ${ench.getArticle().getMiseAPrix()}<br>
+								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
+								Vendeur : ${ench.getArticle().getUtilisateur().getNom()}
+							</p>
+						
+						</c:if>
+						
+					</c:forEach>
+
+				</c:if>
+				
+				
+				<%--si la sous-cat est 'Mes enchères remportées' --%>
+				<c:if test="${sousCat.equals('encheresRemportees')}">
+				
+					<c:forEach var="ench" items="${model.getLstEnch()}">
+						
+						<%--si l'enchère est terminée et qu'elle est rattachée à l'utilisateur en session, c'est que celui-ci l'a remportée --%>
+						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere
+									&& ench.getArticle().getEtatVente().equals('VT')}">
+						
+							<p>
+								${ench.getArticle().getNomArticle()}<br>
+								Prix : ${ench.getArticle().getMiseAPrix()}<br>
+								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
+								Vendeur : ${ench.getArticle().getUtilisateur().getNom()}
+							</p>
+						
+						</c:if>
+						
+					</c:forEach>
+					
+				</c:if>
+				
+				</c:when>
+				
+				<%--si l'utilisateur n'a pas coché de sous categorie, on affiche tous les articles --%>
+				<c:otherwise>
+				
+					<c:forEach var="art" items="${model.getLstArt()}">
+
+						<p>
+							${art.getNomArticle()}<br>
+							Prix : ${art.getMiseAPrix()}<br>
+							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+							Vendeur : ${art.getUtilisateur().getNom()}	
+						</p>
+						
+
+				</c:forEach>
+
+				</c:otherwise>
+		</c:choose>
+
+	</c:if>
+
 	
 
 </body>
