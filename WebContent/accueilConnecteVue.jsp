@@ -14,7 +14,9 @@
 	
 	<p style="color: red">${pseudoSess}</p>
 	
-	<p><a href="">Enchères</a> - <a href="nouvelleVenteArticleVue.jsp">Vendre un article</a> - <a href="monProfil.jsp">Mon profil</a> - <a href="">Déconnexion</a></p>
+	<p><a href="">Enchères</a> - <a href="<%=request.getContextPath()+"/NouvelleVenteArticleServlet"%>">Vendre un article</a> - <a href="<%=request.getContextPath()+"/MonProfilServlet"%>">Mon profil</a> - <a href="<%=request.getContextPath()+"/DeconnexionServlet"%>">Déconnexion</a></p>
+	
+	
 	
 	<h2>Liste des enchères</h2>
 	

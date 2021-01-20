@@ -124,6 +124,8 @@ public class ModifProfilServlet extends HttpServlet {
 		if (request.getParameter("delete")!=null) {
 			// si le mot de passe est le bon
 			if (mdpActuel.equals(request.getSession().getAttribute("motDePasse"))) {
+				// j'invalide la session
+				request.getSession().invalidate();
 				
 				// je supprime l'utilisateur de la liste de BDD
 				
