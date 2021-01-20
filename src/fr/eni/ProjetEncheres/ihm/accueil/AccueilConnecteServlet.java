@@ -51,7 +51,7 @@ public class AccueilConnecteServlet extends HttpServlet {
 		EnchereManager em = EnchereManagerSing.getInstance();
 		
 		String path2 = "/accueilConnecteVue.jsp";
-		
+		String chemin2;
 		
 		
 		Integer noSess = (Integer) request.getSession().getAttribute("noUtilisateur");
@@ -86,6 +86,12 @@ public class AccueilConnecteServlet extends HttpServlet {
 					
 					//on attribue à la requête la sous-categorie sélectionnée
 					request.setAttribute("critere", request.getParameter("mesVentes"));
+					
+					if(request.getParameter("mesVentes").equals("AV")) {
+						chemin2 = request.getContextPath()+"/EnchereNonCommenceeServlet";
+						System.out.println(chemin2);
+						request.setAttribute("chemin2", chemin2);
+					}
 				}
 				
 			}

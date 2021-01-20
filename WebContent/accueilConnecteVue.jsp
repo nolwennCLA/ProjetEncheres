@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
+<%-- <% String chemin; %> --%>
 
 
 <!DOCTYPE html>
@@ -86,7 +86,7 @@
 					<c:if test="${art.getEtatVente().equals(critere)}">
 						<p>
 					
-							<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							<a href="${chemin2}?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 							Prix : ${art.getMiseAPrix()} points<br>
 							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
@@ -96,8 +96,17 @@
 				
 				<%--si l'utilisateur n'a pas coché de sous categorie, on affiche tous les articles de l'utilisateur --%>
 				<c:otherwise>
-					<p>
-						<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+				
+				<p>
+				<c:if test="${art.getEtatVente().equals('AV')}">
+					<a href="<%=request.getContextPath()+"/EnchereNonCommenceeServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+				</c:if>
+				<c:if test="${art.getEtatVente().equals('EC')}">
+					<a href="<%=request.getContextPath()+"/DetailMaVenteFinEnchereServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+				</c:if>
+				<c:if test="${art.getEtatVente().equals('VT')}">
+					<a href="<%=request.getContextPath()+"/DetailMaVenteFinEnchereServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+				</c:if>
 						Prix : ${art.getMiseAPrix()} points<br>
 						Fin de l'enchère : ${art.getDateFinEncheres()}<br>
 						Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>			
@@ -150,7 +159,6 @@
 						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere}">
 							
 							<p>
-							
 								<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
 								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
 								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>

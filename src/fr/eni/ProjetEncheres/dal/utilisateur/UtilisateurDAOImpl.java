@@ -22,7 +22,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	private String UPDATE = "UPDATE UTILISATEUR set pseudo=?,nom=?,prenom=?,email=?,telephone=?,"
 			+ "rue=?,codePostal=?,ville=?,motDePasse=?,credit=?, administrateur=? where noUtilisateur= ? ";
 	private String SELECTALL = "SELECT * FROM UTILISATEUR";	
-	private String SELECTBYPSEUDO = "select * from utilisateur where pseudo = ?";
+	private String SELECTBYPSEUDO = "select * from utilisateur where pseudo LIKE ?";
 	private String SELECTBYID = "select * from utilisateur where noUtilisateur = ?";
 	
 	
