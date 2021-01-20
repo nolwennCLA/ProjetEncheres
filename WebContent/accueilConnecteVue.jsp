@@ -85,10 +85,11 @@
 					<%--si l'etat de vente de l'article correspond à la sous categorie, on affiche --%>
 					<c:if test="${art.getEtatVente().equals(critere)}">
 						<p>
-							${art.getNomArticle()}<br>
-							Prix : ${art.getMiseAPrix()}<br>
+					
+							<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							Prix : ${art.getMiseAPrix()} points<br>
 							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-							Vendeur : ${art.getUtilisateur().getNom()}		
+							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
 						</p>
 					</c:if>
 				</c:when>
@@ -96,10 +97,10 @@
 				<%--si l'utilisateur n'a pas coché de sous categorie, on affiche tous les articles de l'utilisateur --%>
 				<c:otherwise>
 					<p>
-						${art.getNomArticle()}<br>
-						Prix : ${art.getMiseAPrix()}<br>
+						<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+						Prix : ${art.getMiseAPrix()} points<br>
 						Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-						Vendeur : ${art.getUtilisateur().getNom()}		
+						Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>			
 					</p>
 				</c:otherwise>
 			</c:choose>
@@ -127,10 +128,10 @@
 									&& art.getDateFinEncheres().compareTo(critere) >= 0}">
 							
 								<p>
-									${art.getNomArticle()}<br>
-									Prix : ${art.getMiseAPrix()}<br>
+									<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+									Prix : ${art.getMiseAPrix()} points<br>
 									Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-									Vendeur : ${art.getUtilisateur().getNom()}	
+									Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
 								</p>
 						
 						</c:if>
@@ -149,10 +150,11 @@
 						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere}">
 							
 							<p>
-								${ench.getArticle().getNomArticle()}<br>
-								Prix : ${ench.getArticle().getMiseAPrix()}<br>
+							
+								<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
 								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
-								Vendeur : ${ench.getArticle().getUtilisateur().getNom()}
+								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
 							</p>
 						
 						</c:if>
@@ -172,10 +174,10 @@
 									&& ench.getArticle().getEtatVente().equals('VT')}">
 						
 							<p>
-								${ench.getArticle().getNomArticle()}<br>
-								Prix : ${ench.getArticle().getMiseAPrix()}<br>
+								<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
 								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
-								Vendeur : ${ench.getArticle().getUtilisateur().getNom()}
+								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
 							</p>
 						
 						</c:if>
@@ -192,10 +194,10 @@
 					<c:forEach var="art" items="${model.getLstArt()}">
 
 						<p>
-							${art.getNomArticle()}<br>
-							Prix : ${art.getMiseAPrix()}<br>
+							<a href="<%=request.getContextPath()+"/DetailVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							Prix : ${art.getMiseAPrix()} points<br>
 							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-							Vendeur : ${art.getUtilisateur().getNom()}	
+							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>		
 						</p>
 						
 
