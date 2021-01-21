@@ -44,6 +44,7 @@ public class MaVenteFinEncheresServlet extends HttpServlet {
 	Integer noArticle;
 	List<Enchere> lstEnch;
 	Enchere derniereEnchere;
+	Integer afficheEnchere;
 	
     
 	/**
@@ -86,44 +87,60 @@ public class MaVenteFinEncheresServlet extends HttpServlet {
 		}
 		
 		
-		//on récupère la dernière enchère, celle du gagant
+		//on récupère la dernière enchère, celle du gagnant
 		if(lstEnch.size() != 0) {
 			derniereEnchere = lstEnch.get(0);
+			afficheEnchere = 1;
+			request.setAttribute("afficheEnchere", afficheEnchere);
+		} else {
+			derniereEnchere = null;
+			afficheEnchere = 0;
+			request.setAttribute("afficheEnchere", afficheEnchere);
 		}
 		
 		
 		//on attribue à la requête les paramètres attendus
-		Utilisateur gagnant = null;
-		try {
-			gagnant = um.getUtilisateurParId(derniereEnchere.getUtilisateur().getNoUtilisateur());
-		} catch (UtilisateurExceptionBLL e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
-		String pseudoGagnant = gagnant.getPseudo();
-		request.setAttribute("pseudoGagnant", pseudoGagnant);
-		
-		request.setAttribute("nomArticle", a.getNomArticle());
-		
-		request.setAttribute("description", a.getDescription());
-		
-		request.setAttribute("meilleureOffre", derniereEnchere.getMontantEnchere());
-		
-		request.setAttribute("miseAPrix", a.getMiseAPrix());
-		
-		request.setAttribute("dateFinEncheres", a.getDateFinEncheres());
-		
-		if(a.getRetrait() != null) {
-			request.setAttribute("rue", a.getRetrait().getRue());
-			request.setAttribute("codePostal", a.getRetrait().getCodePostal());
-			request.setAttribute("ville", a.getRetrait().getVille());
+		if(derniereEnchere != null) {
+			Utilisateur gagnant = null;
+			try {
+				gagnant = um.getUtilisateurParId(derniereEnchere.getUtilisateur().getNoUtilisateur());
+			} catch (UtilisateurExceptionBLL e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+			String pseudoGagnant = gagnant.getPseudo();
+			request.setAttribute("pseudoGagnant", pseudoGagnant);
+			
+			request.setAttribute("nomArticle", a.getNomArticle());
+			
+			request.setAttribute("description", a.getDescription());
+			
+			request.setAttribute("meilleureOffre", derniereEnchere.getMontantEnchere());
+			
+			request.setAttribute("miseAPrix", a.getMiseAPrix());
+			
+			request.setAttribute("dateFinEncheres", a.getDateFinEncheres());
+			
+			if(a.getRetrait() != null) {
+				request.setAttribute("rue", a.getRetrait().getRue());
+				request.setAttribute("codePostal", a.getRetrait().getCodePostal());
+				request.setAttribute("ville", a.getRetrait().getVille());
+			} else {
+				request.setAttribute("rue", a.getUtilisateur().getRue());
+				request.setAttribute("codePostal", a.getUtilisateur().getCodePostal());
+				request.setAttribute("ville", a.getUtilisateur().getVille());
+			}
+			
+			request.setAttribute("vendeur", uSess.getPseudo());
+			
 		} else {
-			request.setAttribute("rue", a.getUtilisateur().getRue());
-			request.setAttribute("codePostal", a.getUtilisateur().getCodePostal());
-			request.setAttribute("ville", a.getUtilisateur().getVille());
+			request.setAttribute("nomArticle", a.getNomArticle());
+			request.setAttribute("description", a.getDescription());
+			request.setAttribute("miseAPrix", a.getMiseAPrix());
+			request.setAttribute("dateFinEncheres", a.getDateFinEncheres());
+			request.setAttribute("vendeur", uSess.getPseudo());
 		}
 		
-		request.setAttribute("vendeur", uSess.getPseudo());
 		
 		
 		
