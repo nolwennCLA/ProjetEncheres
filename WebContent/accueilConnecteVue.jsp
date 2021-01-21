@@ -196,7 +196,7 @@
 									&& ench.getArticle().getEtatVente().equals('VT')}">
 						
 							<p>
-								<a href="<%=request.getContextPath()+"/AcquisitionServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+								<a href="<%=request.getContextPath()+"/RemporteVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
 								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
 								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
 								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	

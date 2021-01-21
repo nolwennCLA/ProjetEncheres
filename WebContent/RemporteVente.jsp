@@ -13,34 +13,40 @@
 	<h2>Vous avez remporté la vente</h2>
 	
 	
+	
+	
 		<table>
 			<tr>
-				<td><label for="nomArticle">Article : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->		
+				<td> <h3>${model.article.nomArticle}</h3></td>
+				<td>	
 			</tr>
 			<tr>
-				<td><label for="description">Description : </label>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->
+				<td>Description : </td>
+				<td> ${model.article.description}</td>
 			</tr>
 			<tr>
-				<td><label for="meilleureOffre">Meilleure offre : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->	
+				<td>Meilleure offre : </td>
+				<td> ${meilleureOffre} pts</td>	
 			</tr>
 			<tr>
-				<td><label for="miseAPrix">Mise à prix : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->					
+				<td>Mise à prix :</td>
+				<td>${model.article.miseAPrix} points</td>					
 			</tr>
 			<tr>
-				<td><label for="retrait">Retrait : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->					
+				<td>Retrait : </td>
+				<td>${model.article.retrait.rue}</td>				
 			</tr>
 			<tr>
-				<td><label for="vendeur">Vendeur : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->					
+				<td></td>
+				<td>${model.article.retrait.codePostal}    ${model.article.retrait.ville}</td>				
 			</tr>
 			<tr>
-				<td><label for="vendeur">Téléphone : </label></td>
-				<td><!-- Faire le lien avec le noArticle de la page accueilConnectéServlet -->					
+				<td>Vendeur : </td>
+				<td>${model.article.utilisateur.nom}</td>				
+			</tr>
+			<tr>
+				<td>Tél : </td>
+				<td>${model.article.utilisateur.telephone}</td>				
 			</tr>
 		</table>
 				
@@ -49,5 +55,6 @@
 			<input type="submit" value="Back">
 	</form>
 
+${message }
 </body>
 </html>
