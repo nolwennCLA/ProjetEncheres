@@ -76,7 +76,7 @@ public class MaVenteFinEncheresServlet extends HttpServlet {
 		request.setAttribute("article", a);
 		
 		
-		//on récupère la liste des enchères sur l'article
+		//on récupère la liste des enchères sur l'article ( liste dejà triée par oredre de montant d'encheres. la 1ere est la plus forte)
 		try {
 			lstEnch = em.selectionnerEnchereParNoArticle(noArticle);
 		} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException | DAL_CategorieException

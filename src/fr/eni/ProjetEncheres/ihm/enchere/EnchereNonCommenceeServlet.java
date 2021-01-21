@@ -45,6 +45,7 @@ public class EnchereNonCommenceeServlet extends HttpServlet {
 	Article a;
 	String path;
 	Integer noArticle;
+	Integer afficheRetrait;
 	
 
 	/**
@@ -88,6 +89,16 @@ public class EnchereNonCommenceeServlet extends HttpServlet {
 		}
 		request.setAttribute("article", a);
 		
+		
+		//on vérifie si l'article a un retrait et on attribue la réponse à la jsp
+		if(a.getRetrait() != null) {
+			afficheRetrait = 1;
+		} else {
+			afficheRetrait = 0;
+		}
+		request.setAttribute("afficheRetrait", afficheRetrait);
+		
+		
 		path = "enchereNonCommenceeVue.jsp";
 		
 
@@ -122,7 +133,7 @@ public class EnchereNonCommenceeServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 			try {
-				a.setDateFinEncheres(new Date(sdf.parse(dd).getTime()));
+				a.setDateFinEncheres(new Date(sdf.parse(df).getTime()));
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -138,6 +149,7 @@ public class EnchereNonCommenceeServlet extends HttpServlet {
 			
 			//on vérifie s'il faut préparer un retrait
 			Retrait ret = null;
+			//si l'article a déjà un retrait
 			if(!rue.equalsIgnoreCase(uSess.getRue()) || !codePostal.equalsIgnoreCase(uSess.getCodePostal()) || !ville.equalsIgnoreCase(uSess.getVille())) {
 				ret = new Retrait(rue, codePostal, ville);
 				try {

@@ -83,10 +83,10 @@ public class TestClaire {
 	        Retrait ret = new Retrait("rue1", "29000", "Quimper");
 	        
 	        // Décommenter les lignes suivantes pour l'insertion dans la BDD : les recommenter quand c'est fait pour éviter les doublons
-	       um.addUtilisateur(claire);
-	       um.addUtilisateur(nolwenn);
-	       um.addUtilisateur(vincent);
-	         cm.creerCategorie(catInf);
+//	       um.addUtilisateur(claire);
+//	       um.addUtilisateur(nolwenn);
+//	       um.addUtilisateur(vincent);
+//	         cm.creerCategorie(catInf);
 	          cm.creerCategorie(catAmeu);
 	          cm.creerCategorie(catVet);
 	          cm.creerCategorie(catSL);

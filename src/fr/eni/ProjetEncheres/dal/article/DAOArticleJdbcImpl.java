@@ -414,10 +414,15 @@ public class DAOArticleJdbcImpl implements DAOArticle {
 				pstmt.setInt(8, article.getCategorie().getNoCategorie());
 				pstmt.setInt(9, article.getUtilisateur().getNoUtilisateur());
 				if(article.getRetrait() != null) {
-					pstmt.setInt(10, article.getRetrait().getNoRetrait());
+					if(article.getRetrait().getNoRetrait() != null) {
+						pstmt.setInt(10, article.getRetrait().getNoRetrait());
+					} else {
+						pstmt.setNull(10, Types.INTEGER);
+					}
 				} else {
 					pstmt.setNull(10, Types.INTEGER);
 				}
+				
 				
 				pstmt.setInt(11, article.getNoArticle());
 				

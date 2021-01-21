@@ -67,17 +67,17 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" placeholder="${rue}" ></td>
+			<td><input id="rue" type="text" name="rue" value="${rue}" ></td>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" placeholder="${codePostal}" ></td>
+			<td><input id="codePostal" type="text" name="codePostal" value="${codePostal}" ></td>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" placeholder="${ville}" ></td>
+			<td><input id="ville" type="text" name="ville" value="${ville}" ></td>
 		</tr>
 	
 	</table>
