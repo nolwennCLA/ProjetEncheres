@@ -36,15 +36,12 @@ public class ModifProfilServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		CreaCompteModel model = new CreaCompteModel();
+		ModifProfilModel model = new ModifProfilModel();
 		Utilisateur utilisateur = null;
 		// je récupere l'utilisateur en session
-		try {
-			utilisateur = um.getUtilisateurParPseudo((String) request.getSession().getAttribute("pseudo"));
-		} catch (UtilisateurExceptionBLL e2) {
-			request.setAttribute("message6", e2.getMessage());
-			e2.printStackTrace();
-		}
+		
+			utilisateur= (Utilisateur)request.getSession().getAttribute("utilisateur");
+			
 
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
@@ -84,14 +81,9 @@ public class ModifProfilServlet extends HttpServlet {
 				// j'update en BDD
 				try {
 					um.updateUtilisateur(utilisateur);
-					// je modifie la liste du model avec la nouvelle liste en BDD
-					try {
-						model.setListUtilisateur(um.getListUtilisateur());
-					} catch (UtilisateurExceptionBLL e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						request.setAttribute("message3", e.getMessage());
-					}
+					// je modifie le model 
+					model.setUtilisateur(utilisateur);
+					
 					// je met à jour le model
 					request.setAttribute("model", model);
 					// je met en session toutes les infos de l'utilisateur
@@ -137,22 +129,12 @@ public class ModifProfilServlet extends HttpServlet {
 					e1.printStackTrace();
 					//System.out.println(request.getSession().getAttribute("pseudo"));
 				}
-				// j'invalide la session
+				 //j'invalide la session
 				//request.getSession().invalidate();
 
 
-				// je modifie le model
-				try {
-					model.setListUtilisateur(um.getListUtilisateur());
-				} catch (UtilisateurExceptionBLL e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					request.setAttribute("message3", e.getMessage());
-				}
-				// je mets à jour le model
-				request.setAttribute("model", model);
 				// je renvoie vers la page accueil non connecté
-				//request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
+					request.getRequestDispatcher("accueilNonConnecteVue.jsp").forward(request, response);
 
 			} else {
 				request.setAttribute("message4", "Erreur sur le mot de Passe Actuel");

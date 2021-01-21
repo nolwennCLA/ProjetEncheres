@@ -90,7 +90,7 @@
 								<a href="<%=request.getContextPath()+"/EnchereNonCommenceeServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 							</c:if>
 							<c:if test="${art.getEtatVente().equals('EC')}">
-								<a href="<%=request.getContextPath()+"/MaVenteFinEncheresServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+								<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 							</c:if>
 							<c:if test="${art.getEtatVente().equals('VT')}">
 								<a href="<%=request.getContextPath()+"/MaVenteFinEncheresServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
@@ -169,7 +169,7 @@
 									<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 								</c:if>
 								<c:if test="${art.getEtatVente().equals('EC')}">
-									<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+									<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()} </a><br>
 								</c:if>
 								<c:if test="${art.getEtatVente().equals('VT')}">
 									<a href="<%=request.getContextPath()+"/AcquisitionServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
@@ -220,7 +220,7 @@
 							<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
 						</c:if>
 						<c:if test="${art.getEtatVente().equals('EC')}">
-							<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()} </a><br>
 						</c:if>
 						<c:if test="${art.getEtatVente().equals('VT')}">
 							<a href="<%=request.getContextPath()+"/AcquisitionServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>

@@ -23,6 +23,13 @@ public class EncherirModel {
 		this.enchere = enchere;
 	}
 
+	
+	public EncherirModel(Article article, Enchere enchere) {
+		super();
+		this.article = article;
+		this.enchere = enchere;
+	}
+
 	public Article getArticle() {
 		return article;
 	}

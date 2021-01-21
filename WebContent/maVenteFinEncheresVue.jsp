@@ -10,34 +10,70 @@
 </head>
 <body>
 
-	<h4>${pseudoGagnant} a remporté l'enchère</h4>
+	<jsp:include page="header.jsp"></jsp:include>
+
+	<c:if test="${afficheEnchere == 1}">
+		<h4>${pseudoGagnant} a remporté l'enchère</h4>
+	</c:if>
+	<c:if test="${afficheEnchere == 0}">
+		<h4>L'article n' reçu aucune enchère</h4>
+	</c:if>
 	
-	<h4>Le nom de l'article : ${nomArticle}</h4>
 	
-	<form action="MaVenteFinEncheres" method="GET">
-	<table>
-		<tr>
-			<td>Description : </td><td>${description}</td>
-		</tr>
-		<tr>
-			<td>Meilleure offre : </td><td>${meilleureOffre} pts par ${pseudoGagnant}</td>
-		</tr>
-		<tr>
-			<td>Mise à prix : </td><td>${miseAPrix} points</td>
-		</tr>
-		<tr>
-			<td>Fin de l'enchère : </td><td>${dateFinEncheres}</td>
-		</tr>
-		<tr>
-			<td rowspan="2">Retrait : </td><td>${rue}</td>
-											<td>${codePostal} ${ville}</td>
-		</tr>
-		<tr>
-			<td>Vendeur : </td><td>${vendeur}</td>	
-		</tr>
-	</table>
-		<input type="submit" name="bouton" value="Retrait effectué">
-	</form>
+	<h4>Article : ${nomArticle}</h4>
+	
+	
+	<c:if test="${afficheEnchere == 1}">
+		<table>
+			<tr>
+				<td>Description : </td><td>${description}</td>
+			</tr>
+			<tr>
+				<td>Meilleure offre : </td><td>${meilleureOffre} pts par ${pseudoGagnant}</td>
+			</tr>
+			<tr>
+				<td>Mise à prix : </td><td>${miseAPrix} points</td>
+			</tr>
+			<tr>
+				<td>Fin de l'enchère : </td><td>${dateFinEncheres}</td>
+			</tr>
+			<tr>
+				<td rowspan="2">Retrait : </td><td>${rue}</td>								
+			</tr>
+			<tr>
+				<td>${codePostal} ${ville}</td>
+			</tr>
+			<tr>
+				<td>Vendeur : </td><td>${vendeur}</td>	
+			</tr>
+		</table>
+		
+		<form action="AccueilConnecteServlet" method="GET">
+			<input type="submit" name="bouton" value="Retrait effectué">
+		</form>
+	</c:if>
+	
+	<c:if test="${afficheEnchere == 0}">
+		<table>
+			<tr>
+				<td>Description : </td><td>${description}</td>
+			</tr>
+			<tr>
+				<td>Meilleure offre : </td><td>Pas d'offre sur cette enchère</td>
+			</tr>
+			<tr>
+				<td>Mise à prix : </td><td>${miseAPrix} points</td>
+			</tr>
+			<tr>
+				<td>Fin de l'enchère : </td><td>${dateFinEncheres}</td>
+			</tr>
+			<tr>
+				<td>Vendeur : </td><td>${vendeur}</td>	
+			</tr>
+		</table>
+	</c:if>
+	
+	
 
 </body>
 </html>
