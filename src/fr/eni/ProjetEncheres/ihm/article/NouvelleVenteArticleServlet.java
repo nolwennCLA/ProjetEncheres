@@ -112,11 +112,11 @@ public class NouvelleVenteArticleServlet extends HttpServlet {
 			}
 
 			//création d'un Retrait
-			if (rue==null || codePostal==null || ville ==null) {
-				rue=uSess.getRue();
-				codePostal= uSess.getCodePostal();
-				ville = uSess.getVille();
-			}
+//			if (rue==null || codePostal==null || ville ==null) {
+//				rue=uSess.getRue();
+//				codePostal= uSess.getCodePostal();
+//				ville = uSess.getVille();
+//			}
 			Retrait retrait = new Retrait(rue, codePostal, ville);
 			
 			//création d'un Article

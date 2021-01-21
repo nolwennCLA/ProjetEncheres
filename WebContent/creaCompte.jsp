@@ -27,24 +27,27 @@
 <tr>
 <td><label for="prenom">Prénom : </label> </td>
 <td><input type="text" name="prenom" id="prenom" required></td>
-<td><label for="tel">Téléphone : </label> </td>
-<td><input type="tel" name="tel" id="tel" required></td>
-</tr>
-<tr>
-<td><label for="cpo">Code Postal : </label></td>
-<td><input type="number" name="cpo" id="cpo" min="01000" max="99999" required></td>
-<td><label for="mdp">Mot de passe : </label></td>
-<td><input type="password" name="mdp" id="mdp" required></td>
-</tr>
-<tr>
 <td><label for="email">Email : </label></td>
 <td><input type="email" name="email" id="email" required></td>
+</tr>
+
+<tr>
+<td><label for="tel">Téléphone : </label> </td>
+<td><input type="tel" name="tel" id="tel" required></td>
 <td><label for="rue">Rue : </label></td>
 <td><input type="text" name="rue" id="rue" required></td>
 </tr>
+
 <tr>
+<td><label for="cpo">Code Postal : </label></td>
+<td><input type="number" name="cpo" id="cpo" min="01000" max="99999" required></td>
 <td><label for="ville">Ville : </label></td> 
 <td><input type="text" name="ville" id="ville" required></td>
+</tr>
+
+<tr>
+<td><label for="mdp">Mot de passe : </label></td>
+<td><input type="password" name="mdp" id="mdp" required></td>
 <td><label for="conf">Confirmation : </label></td>
 <td> <input type="password" name="conf" id="conf" required></td>
 </tr>
