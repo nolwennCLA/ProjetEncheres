@@ -18,7 +18,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 	
 	private String INSERT = "INSERT into UTILISATEUR (pseudo,nom,prenom,email,telephone,rue,"
 			+ "codePostal,ville,motDePasse,credit,administrateur ) values(?,?,?,?,?,?,?,?,?,?,?)";
-	private String DELETE = "DELETE from UTILISATEUR where pseudo=?";
+	private String DELETE = "DELETE  from UTILISATEUR where pseudo=?";
 	private String UPDATE = "UPDATE UTILISATEUR set pseudo=?,nom=?,prenom=?,email=?,telephone=?,"
 			+ "rue=?,codePostal=?,ville=?,motDePasse=?,credit=?, administrateur=? where noUtilisateur= ? ";
 	private String SELECTALL = "SELECT * FROM UTILISATEUR";	
