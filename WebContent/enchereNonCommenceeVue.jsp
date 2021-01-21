@@ -35,7 +35,14 @@
 			<td>
 				<select id="categorie" name="categorie" required="required">
 					<c:forEach var="c" items="${lstCategories}">
-						<option value="${c.getNoCategorie()}">${c.getLibelle()}</option>
+						<c:choose>
+							<c:when test="${article.getCategorie().getNoCategorie() == c.getNoCategorie()}">
+								<option value="${c.getNoCategorie()}" selected="selected">${c.getLibelle()}</option>
+							</c:when>
+							<c:otherwise>
+								<option value="${c.getNoCategorie()}">${c.getLibelle()}</option>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</select>
 			</td>
@@ -48,17 +55,17 @@
 		
 		<tr>
 			<td><label for="miseAPrix">Mise à prix : </label></td>
-			<td><input id=" miseAPrix" type="number" value="100" name="miseAPrix" value="${article.getMiseAPrix()}"></td>
+			<td><input id=" miseAPrix" type="number" value="${article.getMiseAPrix()}" name="miseAPrix"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="dateDebutEncheres">Début des enchères : </label></td>
-			<td><input id="dateDebutEncheres" type="date" name="dateDebutEncheres" value="${article.getDateDebutEncheres().toString()} required="required"></td>
+			<td><input id="dateDebutEncheres" type="date" name="dateDebutEncheres" value="${article.getDateDebutEncheres()}" required="required"></td>
 		</tr>
 		
 		<tr>
 			<td><label for="dateFinEncheres">Fin des enchères : </label></td>
-			<td><input id="dateFinEncheres" type="date" name="dateFinEncheres" value="${article.getDateFinEncheres()} required="required"></td>
+			<td><input id="dateFinEncheres" type="date" name="dateFinEncheres" value="${article.getDateFinEncheres()}" required="required"></td>
 		</tr>
 	</table>
 	
@@ -67,17 +74,38 @@
 	<table>
 		<tr>
 			<td><label for="rue">Rue : </label></td>
-			<td><input id="rue" type="text" name="rue" value="${utilisateurSess.getRue()}" required="required"></td>
+			<c:choose>
+				<c:when test="${empty sessionScope.article.getRetrait()}">
+					<td><input id="rue" type="text" name="rue" value="${article.getRetrait().getRue()}" required="required"></td>
+				</c:when>
+				<c:otherwise>
+					<td><input id="rue" type="text" name="rue" value="${utilisateurSess.getRue()}" required="required"></td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		
 		<tr>
 			<td><label for="codePostal">Code postal : </label></td>
-			<td><input id="codePostal" type="text" name="codePostal" value="${utilisateurSess.getCodePostal()}" required="required"></td>
+			<c:choose>
+				<c:when test="${!empty sessionScope.article.getRetrait()}">
+					<td><input id="rue" type="text" name="rue" value="${article.getRetrait().getCodePostal()}" required="required"></td>
+				</c:when>
+				<c:otherwise>
+					<td><input id="rue" type="text" name="rue" value="${utilisateurSess.getCodePostal()}" required="required"></td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		
 		<tr>
 			<td><label for="ville">Ville : </label></td>
-			<td><input id="ville" type="text" name="ville" value="${utilisateurSess.getVille()}" required="required"></td>
+			<c:choose>
+				<c:when test="${!empty sessionScope.article.getRetrait()}">
+					<td><input id="rue" type="text" name="rue" value="${article.getRetrait().getVille()}" required="required"></td>
+				</c:when>
+				<c:otherwise>
+					<td><input id="rue" type="text" name="rue" value="${utilisateurSess.getVille()}" required="required"></td>
+				</c:otherwise>
+			</c:choose>
 		</tr>
 	
 	</table>

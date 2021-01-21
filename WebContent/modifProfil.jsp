@@ -61,14 +61,6 @@
 <td> <input type="password" name="conf" id="conf"></td>
 </tr>
 
-<tr>
-<td><label for="nouveauMdp">Nouveau mot de passe:</label></td>
-<td><input type="password" name="nouveauMdp" id="nouveauMdp"></td>
-<td><label for="conf">Confirmation : </label></td>
-<td> <input type="password" name="conf" id="conf"></td>
-</tr>
-</table>
-
 crédit: 
 
 <table>

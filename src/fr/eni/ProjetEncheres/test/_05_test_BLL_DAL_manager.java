@@ -2,7 +2,7 @@ package fr.eni.ProjetEncheres.test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.Date;
 
 import fr.eni.ProjetEncheres.bll.article.ArticleManager;
 import fr.eni.ProjetEncheres.bll.article.ArticleManagerSing;
@@ -15,9 +15,6 @@ import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurExceptionBLL;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManager;
 import fr.eni.ProjetEncheres.bll.utilisateur.UtilisateurManagerSingl;
 import fr.eni.ProjetEncheres.bo.Article;
-import fr.eni.ProjetEncheres.bo.Categorie;
-import fr.eni.ProjetEncheres.bo.Retrait;
-import fr.eni.ProjetEncheres.bo.Utilisateur;
 import fr.eni.ProjetEncheres.dal.article.DAL_ArticleException;
 import fr.eni.ProjetEncheres.dal.categorie.DAL_CategorieException;
 import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
@@ -33,7 +30,13 @@ public class _05_test_BLL_DAL_manager {
 		ArticleManager am = ArticleManagerSing.getInstance();
 		
 
+		Article a = am.selectionnerArticleParId(97);
+		System.out.println(a.getDateDebutEncheres());
 		
+		a.setDateDebutEncheres(new Date());
+		
+		a = am.modifierArticle(a);
+		System.out.println(a.getDateDebutEncheres());
 		
 		
 		
@@ -91,10 +94,10 @@ public class _05_test_BLL_DAL_manager {
 //		System.out.println(a.toString());
 
 		
-		List<Article> lstArt = am.listerArticles();
-		for(Article a : lstArt) {
-			System.out.println(a.toString());
-		}
+//		List<Article> lstArt = am.listerArticles();
+//		for(Article a : lstArt) {
+//			System.out.println(a.toString());
+//		}
 		
 	}
 
