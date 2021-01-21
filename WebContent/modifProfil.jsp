@@ -60,8 +60,9 @@
 <td><label for="conf">Confirmation : </label></td>
 <td> <input type="password" name="conf" id="conf"></td>
 </tr>
+</table>
 
-crédit: 
+crédit: ${credit }
 
 <table>
 <tr>
@@ -75,9 +76,8 @@ crédit:
 
 ${message1}
 ${message2}
-${message3}
 ${message4}
 ${message5}
-${message6}
+
 </body>
 </html>
