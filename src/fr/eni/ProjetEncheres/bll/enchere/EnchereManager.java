@@ -41,4 +41,10 @@ public interface EnchereManager {
 	
 	
 	
+	public boolean verifPossibiliteEnchere(Enchere enchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
+	public Enchere recupererDerniereEnchere(Enchere enchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
+	public void debitCredit(Enchere enchere) throws BLL_EnchereException, DAL_EnchereException, BLL_CategorieException, DAL_CategorieException, BLL_RetraitException, DAL_RetraitException, DAL_ArticleException, BLL_ArticleException, UtilisateurExceptionBLL;
+	
 }
