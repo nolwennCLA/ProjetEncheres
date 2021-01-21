@@ -1,6 +1,7 @@
 package fr.eni.ProjetEncheres.ihm.enchere;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -48,37 +49,39 @@ public class EncherirServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		EnchereManager em = EnchereManagerSing.getInstance();
 		ArticleManager am = ArticleManagerSing.getInstance();
-
+		
 		// Récupération du noArticle qui a transité par l'url
-		String noArticleString = request.getParameter("noArticle");
-
-		// Conversion du noArticle en Integer
-		Integer noArticle = Integer.parseInt(noArticleString);
-
+		Integer noArticle = null;
+		if (request.getParameter("noArticle")!=null) {
+			 noArticle= Integer.parseInt(request.getParameter("noArticle"));
+			 request.getSession().setAttribute("noArticle", noArticle);
+		}else {
+			noArticle = (Integer) request.getSession().getAttribute("noArticle");
+		}
+		
 		// Création des objets
 		Article article = null;
 //		Enchere enchere = null;
 
 		// Création des model
-		EncherirModel modelArticle = new EncherirModel();
-		EncherirModel modelEnchere = new EncherirModel();
+		EncherirModel model= new EncherirModel();
 
 		try {
 			article = am.selectionnerArticleParId(noArticle);
 		} catch (BLL_ArticleException | BLL_CategorieException | DAL_CategorieException | BLL_RetraitException
 				| DAL_RetraitException | DAL_ArticleException | UtilisateurExceptionBLL e) {
-			// TODO Auto-generated catch block
+			request.setAttribute("message1", e.getMessage());
 			e.printStackTrace();
 		}
 
-		modelArticle.setArticle(article);
+		model.setArticle(article);
 		
 		//Si l'enchère est ouverte : récupération de la meilleure offre
 		
-		
+		//em.recupererDerniereEnchere(em.selectionnerEnchereParId(noEnchere));
 
 		//Si l'utilisateur clique sur le bouton enchérir
-		if (request.getParameter("Enchérir") != null) {
+		if (request.getParameter("montantEnchere") != null) {
 			
 			//Récupération du montant enregistré dans le formulaire et mise dans l'application
 			String montantEnchereString = request.getParameter("montantEnchere");
@@ -86,35 +89,39 @@ public class EncherirServlet extends HttpServlet {
 			// convertion du montant de l'enchère en Integer
 			Integer montantEnchere = Integer.parseInt(montantEnchereString);
 
-			//Le montant de l'enchère proposé doit être supérieur à la meilleure offre (si existant)
-			
-				
 			// la date de l'enchère est la date du jour
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date maintenant = new Date();
 			
 			//Récupération de l'utilisateur
-			Utilisateur utilisateur = modelArticle.getArticle().getUtilisateur();
+			Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("utilisateur");
+			
 			
 			//Création de l'enchère
 			Enchere enchere = new Enchere(maintenant, montantEnchere, utilisateur, article);
+			model.setEnchere(enchere);
+			System.out.println("l'enchere est cree");
 			
 			//Enregristrement de l'enchère dans la BDD
 			try {
 				em.creerEnchere(enchere);
+				
 			} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException | DAL_CategorieException
 					| BLL_RetraitException | DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
 					| UtilisateurExceptionBLL e) {
-				// TODO Auto-generated catch block
+				request.setAttribute("message1", e.getMessage());
 				e.printStackTrace();
 			}
 			
-			//Je mets dans le contexte d'application
-			this.getServletContext().setAttribute("meilleurOffre", enchere);
+			//Je mets dans le contexte d'application pour que l'enchère soit visible par tous les utilisateurs
+			//this.getServletContext().setAttribute("meilleurOffre", enchere);
 
+			
 		}
-
-		request.setAttribute("modelArticle", modelArticle);
+		
+		
+		request.setAttribute("model", model);
+		
 
 		request.getRequestDispatcher("Encherir.jsp").forward(request, response);
 	}
