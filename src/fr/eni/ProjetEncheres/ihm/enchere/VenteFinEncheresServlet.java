@@ -31,8 +31,8 @@ import fr.eni.ProjetEncheres.dal.retrait.DAL_RetraitException;
 /**
  * Servlet implementation class MaVenteFinEnchereServlet
  */
-@WebServlet("/MaVenteFinEncheresServlet")
-public class MaVenteFinEncheresServlet extends HttpServlet {
+@WebServlet("/VenteFinEncheresServlet")
+public class VenteFinEncheresServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	ArticleManager am = ArticleManagerSing.getInstance();
@@ -146,7 +146,7 @@ public class MaVenteFinEncheresServlet extends HttpServlet {
 		
 		
 		
-		request.getRequestDispatcher("maVenteFinEncheresVue.jsp").forward(request, response);
+		request.getRequestDispatcher("VenteFinEncheresVue.jsp").forward(request, response);
 
 	}
 

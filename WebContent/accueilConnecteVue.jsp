@@ -127,113 +127,122 @@
 	</c:if>
 	
 	
+	
+	
+	
+	
+	
 	<%--si l'utilisateur a sélectionné le bouton 'Achats' --%>
 	<c:if test="${bouton.equals('achats')}">
-	
+		
 		<c:choose>
-				<%--si l'utilisateur a coché une sous categorie --%>
-				<c:when test="${critere != null}">
+			
+			<%--si la sous-cat est 'Enchères ouvertes' --%>
+			<c:when test="${sousCat.equals('encheresOuvertes')}">
+			
+				<c:forEach var="art" items="${model.getLstArt()}">
 				
-				<%--si la sous-cat est 'Enchères ouvertes' --%>
-				<c:if test="${sousCat.equals('encheresOuvertes')}">
-				
-					<c:forEach var="art" items="${model.getLstArt()}">
+					<%--si la date du jour est comprise entre la dateDebutEnchere et la dateFinEnchere de l'article, on affiche --%>
+					<c:if test="${art.getDateDebutEncheres().compareTo(critere) <= 0
+								&& art.getDateFinEncheres().compareTo(critere) >= 0}">	
+						<p>					
+							<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+							Prix : ${art.getMiseAPrix()} points<br>
+							Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
+						</p>
 					
-						<%--si la date du jour est comprise entre la dateDebutEnchere et la dateFinEnchere de l'article, on affiche --%>
-						<c:if test="${art.getDateDebutEncheres().compareTo(critere) <= 0
-									&& art.getDateFinEncheres().compareTo(critere) >= 0}">	
-							<p>					
-								<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
-								Prix : ${art.getMiseAPrix()} points<br>
-								Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
-							</p>
-						
-						</c:if>
-						
-					</c:forEach>
+					</c:if>
 					
-				</c:if>
+				</c:forEach>
 				
-					
-				<%--si la sous-cat est 'Mes enchères' --%>
-				<c:if test="${sousCat.equals('mesEncheres')}">
+			</c:when>
+		
+			
+			<%--si la sous-cat est 'Mes enchères' --%>
+			<c:when test="${sousCat.equals('mesEncheres')}">
+			
+				<c:forEach var="ench" items="${model.getLstEnch()}">
 				
-					<c:forEach var="ench" items="${model.getLstEnch()}">
-					
-						<%--si le numéro de l'enchérisseur correspond à celui de l'utilisateur en session, on affiche --%>
-						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere}">
-							
-							<p>					
-								<c:if test="${ench.getArticle().getEtatVente().equals('AV')}">
-									<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
-								</c:if>
-								<c:if test="${ench.getArticle().getEtatVente().equals('EC')}">
-									<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()} </a><br>
-								</c:if>
-								<c:if test="${ench.getArticle().getEtatVente().equals('VT')}">
-									<a href="<%=request.getContextPath()+"/AcquisitionServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
-								</c:if>
-								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
-								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
-								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${ench.getUtilisateur().getPseudo()}">${ench.getUtilisateur().getPseudo()}</a>	
-							</p>
+					<%--si le numéro de l'enchérisseur correspond à celui de l'utilisateur en session, on affiche --%>
+					<c:if test="${ench.getUtilisateur().getNoUtilisateur() == noSess}">
 						
-						</c:if>
-						
-					</c:forEach>
-
-				</c:if>
-				
-				
-				<%--si la sous-cat est 'Mes enchères remportées' --%>
-				<c:if test="${sousCat.equals('encheresRemportees')}">
-				
-					<c:forEach var="ench" items="${model.getLstEnch()}">
-						
-						<%--si l'enchère est terminée et qu'elle est rattachée à l'utilisateur en session, c'est que celui-ci l'a remportée --%>
-						<c:if test="${ench.getUtilisateur().getNoUtilisateur() == critere
-									&& ench.getArticle().getEtatVente().equals('VT')}">
-						
-							<p>
+						<p>					
+							<c:if test="${ench.getArticle().getEtatVente().equals('AV')}">
+								<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+							</c:if>
+							<c:if test="${ench.getArticle().getEtatVente().equals('EC')}">
+								<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()} </a><br>
+							</c:if>
+							<c:if test="${ench.getArticle().getEtatVente().equals('VT') && model.meilleurOffrantParEnchere(ench)==true}">
 								<a href="<%=request.getContextPath()+"/RemporteVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
-								Prix : ${ench.getArticle().getMiseAPrix()} points<br>
-								Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
-								Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
-							</p>
-						
-						</c:if>
-						
-					</c:forEach>
+							</c:if>
+							<c:if test="${ench.getArticle().getEtatVente().equals('VT') && model.meilleurOffrantParEnchere(ench)==false}">
+								<a href="<%=request.getContextPath()+"/VenteFinEncheresServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+							</c:if>
+							Prix : ${ench.getArticle().getMiseAPrix()} points<br>
+							Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
+							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${ench.getUtilisateur().getPseudo()}">${ench.getUtilisateur().getPseudo()}</a>	
+						</p>
 					
-				</c:if>
-				
-				</c:when>
-				
-				<%--si l'utilisateur n'a pas coché de sous categorie, on affiche tous les articles --%>
-				<c:otherwise>
-				
-					<c:forEach var="art" items="${model.getLstArt()}">
-
-					<p>					
-						<c:if test="${art.getEtatVente().equals('AV')}">
-							<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
-						</c:if>
-						<c:if test="${art.getEtatVente().equals('EC')}">
-							<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()} </a><br>
-						</c:if>
-						<c:if test="${art.getEtatVente().equals('VT')}">
-							<a href="<%=request.getContextPath()+"/AcquisitionServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
-						</c:if>
-						Prix : ${art.getMiseAPrix()} points<br>
-						Fin de l'enchère : ${art.getDateFinEncheres()}<br>
-						Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
-					</p>
-						
-
+					</c:if>
+					
 				</c:forEach>
 
-				</c:otherwise>
+			</c:when>
+		
+		
+			<%--si la sous-cat est 'Mes enchères remportées' --%>
+			<c:when test="${sousCat.equals('encheresRemportees')}">
+			
+				<c:forEach var="ench" items="${model.getLstMeilleuresOffres()}">
+					
+					<%--si l'enchère est terminée et qu'elle est rattachée à l'utilisateur en session, c'est que celui-ci l'a remportée --%>
+					<c:if test="${ench.getUtilisateur().getNoUtilisateur() == noSess
+								&& ench.getArticle().getEtatVente().equals('VT')}">
+					
+						<p>
+							<a href="<%=request.getContextPath()+"/RemporteVenteServlet"%>?noArticle=${ench.getArticle().getNoArticle()}">${ench.getArticle().getNomArticle()}</a><br>
+							Prix : ${ench.getArticle().getMiseAPrix()} points<br>
+							Fin de l'enchère : ${ench.getArticle().getDateFinEncheres()}<br>
+							Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
+						</p>
+					
+					</c:if>
+					
+				</c:forEach>
+				
+			</c:when>		
+		
+			
+			<%--si aucune soous-categorie n'a été cochée --%>
+			<c:otherwise>
+			
+				<c:forEach var="art" items="${model.getLstArt()}">
+	
+				<p>					
+					<c:if test="${art.getEtatVente().equals('AV')}">
+						<a href="<%=request.getContextPath()+"/AccueilConnecteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+					</c:if>
+					<c:if test="${art.getEtatVente().equals('EC')}">
+						<a href="<%=request.getContextPath()+"/EncherirServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()} </a><br>
+					</c:if>
+					<c:if test="${art.getEtatVente().equals('VT') && model.meilleurOffrantParArticle(art, noSess) == true}">
+						<a href="<%=request.getContextPath()+"/RemporteVenteServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+					</c:if>
+					<c:if test="${art.getEtatVente().equals('VT') && model.meilleurOffrantParArticle(art, noSess) == false}">
+						<a href="<%=request.getContextPath()+"/VenteFinEncheresServlet"%>?noArticle=${art.getNoArticle()}">${art.getNomArticle()}</a><br>
+					</c:if>
+					Prix : ${art.getMiseAPrix()} points<br>
+					Fin de l'enchère : ${art.getDateFinEncheres()}<br>
+					Vendeur : <a href="<%=request.getContextPath()+"/PageProfilServlet"%>?pseudo=${art.getUtilisateur().getPseudo()}">${art.getUtilisateur().getPseudo()}</a>	
+				</p>
+					
+	
+				</c:forEach>
+	
+			</c:otherwise>
+		
 		</c:choose>
 
 	</c:if>
