@@ -36,68 +36,122 @@ public class RemporteVenteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	ArticleManager am = ArticleManagerSing.getInstance();
-	List<Enchere> lstEnch;
 	EnchereManager em = EnchereManagerSing.getInstance();  
+	UtilisateurManager um = UtilisateurManagerSingl.getInstance();
+	
+	Article a;
+	Integer noArticle;
+	List<Enchere> lstEnch;
 	Enchere derniereEnchere;
 	Integer afficheEnchere;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RemporteVenteServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
+	
+	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		RemporteVenteModel model = new RemporteVenteModel();
-		Article article= null;
-		// je recupere le numero d'article transmis par l'url
-		Integer noArticle= Integer.parseInt(request.getParameter("noArticle"));
+//		RemporteVenteModel model = new RemporteVenteModel();
+//		Article article= null;
+//		// je recupere le numero d'article transmis par l'url
+//		Integer noArticle= Integer.parseInt(request.getParameter("noArticle"));
+//		
+//		// je recupere l'article en BDD
+//		try {
+//			article= am.selectionnerArticleParId(noArticle);
+//		} catch (BLL_CategorieException | DAL_CategorieException | BLL_RetraitException | DAL_RetraitException
+//				| DAL_ArticleException | BLL_ArticleException | UtilisateurExceptionBLL e) {
+//			request.setAttribute("message1", e.getMessage());
+//			e.printStackTrace();
+//		}
+//		// je mets à jour mon model
+//		model.setArticle(article);
+//		
+//		//on récupère la liste des enchères sur l'article ( liste dejà triée par oredre de montant d'encheres. la 1ere est la plus forte)
+//				try {
+//					lstEnch = em.selectionnerEnchereParNoArticle(noArticle);
+//				} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException | DAL_CategorieException
+//						| BLL_RetraitException | DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
+//						| UtilisateurExceptionBLL e) {
+//					System.out.println(e.getMessage());
+//					e.printStackTrace();
+//				}
+//				
+//				
+//				//on récupère la dernière enchère, celle du gagnant
+//				if(lstEnch.size() != 0) {
+//					derniereEnchere = lstEnch.get(0);
+//					afficheEnchere = 1;
+//					request.setAttribute("afficheEnchere", afficheEnchere);
+//				} else {
+//					derniereEnchere = null;
+//					afficheEnchere = 0;
+//					request.setAttribute("afficheEnchere", afficheEnchere);
+//				}
+//				request.setAttribute("meilleureOffre", derniereEnchere.getMontantEnchere());
+//		
+//		request.setAttribute("model", model);
 		
-		// je recupere l'article en BDD
+		//on récupère l'utilisateur en session et on l'attribue à la requête
+		Utilisateur uSess = (Utilisateur) request.getSession().getAttribute("utilisateur");
+		request.setAttribute("utilisateurSess", uSess);
+		
+		
+		//on récupère le paramètre en URL ou en session 
+		if(request.getParameter("noArticle") != null) {
+			noArticle = Integer.parseInt(request.getParameter("noArticle"));
+			request.getSession().setAttribute("noArticle", noArticle);
+		} else {
+			noArticle = (Integer) request.getSession().getAttribute("noArticle");
+		}
+		
+		
+		//on récupère l'article à partir du paramètre et on attribue l'article à la session
 		try {
-			article= am.selectionnerArticleParId(noArticle);
+			a = am.selectionnerArticleParId(noArticle);
 		} catch (BLL_CategorieException | DAL_CategorieException | BLL_RetraitException | DAL_RetraitException
 				| DAL_ArticleException | BLL_ArticleException | UtilisateurExceptionBLL e) {
-			request.setAttribute("message1", e.getMessage());
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// je mets à jour mon model
-		model.setArticle(article);
+		request.setAttribute("article", a);
+		
 		
 		//on récupère la liste des enchères sur l'article ( liste dejà triée par oredre de montant d'encheres. la 1ere est la plus forte)
-				try {
-					lstEnch = em.selectionnerEnchereParNoArticle(noArticle);
-				} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException | DAL_CategorieException
-						| BLL_RetraitException | DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
-						| UtilisateurExceptionBLL e) {
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				}
-				
-				
-				//on récupère la dernière enchère, celle du gagnant
-				if(lstEnch.size() != 0) {
-					derniereEnchere = lstEnch.get(0);
-					afficheEnchere = 1;
-					request.setAttribute("afficheEnchere", afficheEnchere);
-				} else {
-					derniereEnchere = null;
-					afficheEnchere = 0;
-					request.setAttribute("afficheEnchere", afficheEnchere);
-				}
-				request.setAttribute("meilleureOffre", derniereEnchere.getMontantEnchere());
-		
-		request.setAttribute("model", model);
+		try {
+			lstEnch = em.selectionnerEnchereParNoArticle(noArticle);
+		} catch (BLL_EnchereException | DAL_EnchereException | BLL_CategorieException | DAL_CategorieException
+				| BLL_RetraitException | DAL_RetraitException | DAL_ArticleException | BLL_ArticleException
+				| UtilisateurExceptionBLL e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 		
 		
-
-				
-				request.getRequestDispatcher("RemporteVente.jsp").forward(request, response);
+		//on récupère la dernière enchère, celle du gagnant
+		derniereEnchere = lstEnch.get(0);
+		
+		
+		//on attribue à la requête les paramètres attendus
+	
+		request.setAttribute("nomArticle", a.getNomArticle());
+		request.setAttribute("description", a.getDescription());		
+		request.setAttribute("meilleureOffre", derniereEnchere.getMontantEnchere());		
+		request.setAttribute("miseAPrix", a.getMiseAPrix());
+		if(a.getRetrait() != null) {
+			request.setAttribute("rue", a.getRetrait().getRue());
+			request.setAttribute("codePostal", a.getRetrait().getCodePostal());
+			request.setAttribute("ville", a.getRetrait().getVille());
+		} else {
+			request.setAttribute("rue", a.getUtilisateur().getRue());
+			request.setAttribute("codePostal", a.getUtilisateur().getCodePostal());
+			request.setAttribute("ville", a.getUtilisateur().getVille());
+		}
+		request.setAttribute("vendeur", a.getUtilisateur().getPseudo());
+		request.setAttribute("telephone", a.getUtilisateur().getTelephone());
+		
+	
+		request.getRequestDispatcher("RemporteVente.jsp").forward(request, response);
 	}
 
 	/**

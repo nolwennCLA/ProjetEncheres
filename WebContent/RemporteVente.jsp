@@ -11,18 +11,15 @@
 	<jsp:include page="header.jsp"></jsp:include>
 	
 	<h2>Vous avez remporté la vente</h2>
-	
-	
-	
-	
+
 		<table>
 			<tr>
-				<td> <h3>${model.article.nomArticle}</h3></td>
+				<td> <h3>${nomArticle}</h3></td>
 				<td>	
 			</tr>
 			<tr>
 				<td>Description : </td>
-				<td> ${model.article.description}</td>
+				<td> ${description}</td>
 			</tr>
 			<tr>
 				<td>Meilleure offre : </td>
@@ -30,23 +27,22 @@
 			</tr>
 			<tr>
 				<td>Mise à prix :</td>
-				<td>${model.article.miseAPrix} points</td>					
+				<td>${miseAPrix} points</td>					
 			</tr>
 			<tr>
-				<td>Retrait : </td>
-				<td>${model.article.retrait.rue}</td>				
+				<td rowspan="2">Retrait : </td>
+				<td>${rue}</td>				
 			</tr>
 			<tr>
-				<td></td>
-				<td>${model.article.retrait.codePostal}    ${model.article.retrait.ville}</td>				
+				<td>${codePostal} ${ville}</td>				
 			</tr>
 			<tr>
 				<td>Vendeur : </td>
-				<td>${model.article.utilisateur.nom}</td>				
+				<td>${vendeur}</td>				
 			</tr>
 			<tr>
 				<td>Tél : </td>
-				<td>${model.article.utilisateur.telephone}</td>				
+				<td>${telephone}</td>				
 			</tr>
 		</table>
 				
