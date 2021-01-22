@@ -67,8 +67,7 @@
 		<table>
 			<tr>
 				<td><label for="montantEnchere">Ma proposition : </label></td>
-				<td><input id="montantEnchere" type="number"
-					name="montantEnchere" required="required" maxlength="3"></td>
+				<td><input id="montantEnchere" type="number" name="montantEnchere" required="required" min="${meilleureOffre}"></td>
 				<!-- Mettre la dernière enchère avec 1 point en plus dans un attribut value et fixer cette valeur mini avec un attribut min-->
 				<td><input type="submit" value="Encherir" name="encherir"></td>
 			</tr>
